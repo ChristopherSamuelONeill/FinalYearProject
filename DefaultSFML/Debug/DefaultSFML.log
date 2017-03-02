@@ -1,0 +1,43 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DefaultSFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  TextBox.cpp
+  Profile.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\profile.h(109): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\profile.cpp(78): warning C4018: '<': signed/unsigned mismatch
+  Overlay.cpp
+  main.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\profile.h(109): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(121): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(142): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(270): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(284): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(285): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(395): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(434): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(445): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(586): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(650): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(659): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(662): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(719): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(764): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(768): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(786): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(798): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(803): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(809): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(817): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(822): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(830): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(834): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(840): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(989): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(998): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(885): warning C4390: ';': empty controlled statement found; is this the intent?
+  Hoverable.cpp
+  Clickable.cpp
+  Button.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(38): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  Achievement.cpp
+  Generating Code...
+  DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
+  DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)
