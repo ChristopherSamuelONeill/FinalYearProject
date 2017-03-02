@@ -1,0 +1,4 @@
+c x res	y res full textures gme vl  ivl mvl
+s 1280  720   0    1        10      5   5
+c name			level   xp tPed tCar cTot  fTot fRat
+d NoProfileSelected 	0	0   0    0	0    0	 0
