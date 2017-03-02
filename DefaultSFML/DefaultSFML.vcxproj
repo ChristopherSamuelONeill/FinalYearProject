@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="src\Achievement.cpp" />
     <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Car.cpp" />
     <ClCompile Include="src\Clickable.cpp" />
     <ClCompile Include="src\Hoverable.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -144,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="include\Achievement.h" />
     <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\Car.h" />
     <ClInclude Include="include\Clickable.h" />
     <ClInclude Include="include\Hoverable.h" />
     <ClInclude Include="include\Overlay.h" />

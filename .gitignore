@@ -29,4 +29,5 @@
 *.app
 
 #others
-*TrafficManagement.VC.db
+*.VC.db
+*.opendb
