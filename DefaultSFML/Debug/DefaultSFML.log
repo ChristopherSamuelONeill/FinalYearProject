@@ -35,6 +35,8 @@ d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\sr
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(885): warning C4390: ';': empty controlled statement found; is this the intent?
   Hoverable.cpp
   Clickable.cpp
+  Car.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(33): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Button.cpp
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(38): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   Achievement.cpp

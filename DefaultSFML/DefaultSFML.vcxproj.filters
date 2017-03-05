@@ -25,6 +25,12 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{d300addf-80d4-4746-8f7d-38b3f05033c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObjects">
+      <UniqueIdentifier>{c6f39626-efd6-46cd-ae67-ba31e7b3d7e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Obejcts">
+      <UniqueIdentifier>{bf3b2b43-ba12-4ab7-ad9e-24be2365ca9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -51,6 +57,9 @@
     <ClCompile Include="src\TextBox.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Car.cpp">
+      <Filter>Source Files\Game Obejcts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -73,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="include\TextBox.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Car.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
