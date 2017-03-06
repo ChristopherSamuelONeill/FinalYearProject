@@ -9,6 +9,7 @@
 #include "Button.h"
 #include "Overlay.h"
 #include "TextBox.h"
+#include "Game.h"
 
 using namespace std;
 using namespace sf;
@@ -1055,4 +1056,22 @@ void settingsMenu(bool tutorial)
 
 void playMenu()
 {
+	//Create a window with the specifications of the profile
+	RenderWindow window;
+	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu", Style::Fullscreen);
+	else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
+	window.setFramerateLimit(60);
+
+	//Game Object
+	Game game("./Assets/Levels/Test.xml");
+
+	
+
+	while (window.isOpen())
+	{
+		window.clear(Color::Green);
+		game.drawScene(window);
+		window.display();
+	}
+
 }
