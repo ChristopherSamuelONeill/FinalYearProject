@@ -7,7 +7,7 @@ Button::Button()
 Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
 {
 
-
+	m_sButtonText = text;
 	float scalex = size.x / 400 ;
 	float scaley = size.y / 118 ;
 	float textScale = scalex / scaley;
@@ -33,11 +33,11 @@ Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
 	m_sfSprite.setTexture(m_sfTexture);
 	m_sfSprite.setPosition(m_sfRect.getPosition().x , m_sfRect.getPosition().y );
 	
-	m_sfButtonText.setFont(m_sfFont);
-	m_sfButtonText.setString(text);
+	// Create a text
+	m_sfButtonText = Text(m_sButtonText, m_sfFont);
 	m_sfButtonText.setCharacterSize(36 * textScale);
+	m_sfButtonText.setStyle(Text::Bold);
 	m_sfButtonText.setFillColor(Color(0, 0, 0));
-	m_sfButtonText.setPosition(pos);
 
 }
 
@@ -46,6 +46,5 @@ Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
 void Button::draw(RenderTarget & target, RenderStates states) const
 {
 	target.draw(m_sfSprite);
-	
-	  target.draw(m_sfButtonText);
+//	target.draw(m_sfButtonText);
 }

@@ -9,6 +9,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "tinyxml2.h"
+
 using namespace std;
 using namespace sf;
 
@@ -26,10 +28,11 @@ private:
 	int m_iMaxTurnAngle; // \breif Maximum angle the cars can turn
 	float m_fSteerOrientation; // \breif Orientation of wheels
 
-	bool m_bBraking = false;// \breif True when braking
+	bool m_bBraking = true;// \breif True when braking
 	bool m_bLights = true;// \breif True when lights on
 
 	Texture m_sfTexture[8];
+	Texture temp;
 
 	RectangleShape m_sfCarRect;// \brief Rect for the Car
 	Sprite m_sfCarSprite; // \brief Sprite for the Car
@@ -58,7 +61,7 @@ public:
 	/// \param size sVector2f size of the button
 	/// \param Textures String Locations of the textures
 	////////////////////////////////////////////////////////////
-	Car(Vector2f Position, Vector2f Size, String textures[8]);
+	Car(Vector2f Position, Vector2f Size, const char carType[] );
 
 
 

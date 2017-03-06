@@ -1,0 +1,110 @@
+\hypertarget{class_text_box}{}\section{Text\+Box Class Reference}
+\label{class_text_box}\index{Text\+Box@{Text\+Box}}
+Inheritance diagram for Text\+Box\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_text_box}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_text_box_a25b67e5ff6788c60b8aef3f3540879d0}{Text\+Box} ()
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_text_box_a9df04c5eb70d4d6b75907c56ecce6d8e}{Text\+Box} (string text, Vector2f pos, Vector2f size, string texture\+Name)
+\begin{DoxyCompactList}\small\item\em Overloaded Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_text_box_ac3cc88a3ac171658ebaf44b01f4adf80}{$\sim$\+Text\+Box} ()
+\begin{DoxyCompactList}\small\item\em Default de\+Constructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_text_box_a9139c31dc807fa0c478215086f3fc7f1}{take\+Input} (Keyboard\+::\+Key pressed\+Key)
+\begin{DoxyCompactList}\small\item\em Processes key presses while button is selected. \end{DoxyCompactList}\item 
+void \hyperlink{class_text_box_a94f8b1fa218dabaaf892388cbf8df1fa}{draw} (Render\+Target \&target, Render\+States states) const
+\begin{DoxyCompactList}\small\item\em draw function \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_text_box_a9bd587d5dda491ff96bb5ef4497eb406}{}\label{class_text_box_a9bd587d5dda491ff96bb5ef4497eb406} 
+bool \hyperlink{class_text_box_a9bd587d5dda491ff96bb5ef4497eb406}{m\+\_\+b\+Is\+Entering} = false
+\begin{DoxyCompactList}\small\item\em bool for entering text \end{DoxyCompactList}\item 
+\hypertarget{class_text_box_a79dde249421f3a5b26f52bbf59f9f2c3}{}\label{class_text_box_a79dde249421f3a5b26f52bbf59f9f2c3} 
+String \hyperlink{class_text_box_a79dde249421f3a5b26f52bbf59f9f2c3}{m\+\_\+s\+Text}
+\begin{DoxyCompactList}\small\item\em string for the text \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_text_box_a25b67e5ff6788c60b8aef3f3540879d0}{}\label{class_text_box_a25b67e5ff6788c60b8aef3f3540879d0} 
+\index{Text\+Box@{Text\+Box}!Text\+Box@{Text\+Box}}
+\index{Text\+Box@{Text\+Box}!Text\+Box@{Text\+Box}}
+\subsubsection{\texorpdfstring{Text\+Box()}{TextBox()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Text\+Box\+::\+Text\+Box (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default Constructor. 
+
+Creates an empty \hyperlink{class_text_box}{Text\+Box} \hypertarget{class_text_box_a9df04c5eb70d4d6b75907c56ecce6d8e}{}\label{class_text_box_a9df04c5eb70d4d6b75907c56ecce6d8e} 
+\index{Text\+Box@{Text\+Box}!Text\+Box@{Text\+Box}}
+\index{Text\+Box@{Text\+Box}!Text\+Box@{Text\+Box}}
+\subsubsection{\texorpdfstring{Text\+Box()}{TextBox()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Text\+Box\+::\+Text\+Box (\begin{DoxyParamCaption}\item[{string}]{text,  }\item[{Vector2f}]{pos,  }\item[{Vector2f}]{size,  }\item[{string}]{texture\+Name }\end{DoxyParamCaption})}
+
+
+
+Overloaded Constructor. 
+
+Creates the \hyperlink{class_text_box}{Text\+Box} with its parameteres
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & string Text that is displayed on the \hyperlink{class_text_box}{Text\+Box} \\
+\hline
+{\em pos} & s\+Vector2f position of the \hyperlink{class_text_box}{Text\+Box} \\
+\hline
+{\em size} & s\+Vector2f size of the \hyperlink{class_text_box}{Text\+Box} \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_text_box_ac3cc88a3ac171658ebaf44b01f4adf80}{}\label{class_text_box_ac3cc88a3ac171658ebaf44b01f4adf80} 
+\index{Text\+Box@{Text\+Box}!````~Text\+Box@{$\sim$\+Text\+Box}}
+\index{````~Text\+Box@{$\sim$\+Text\+Box}!Text\+Box@{Text\+Box}}
+\subsubsection{\texorpdfstring{$\sim$\+Text\+Box()}{~TextBox()}}
+{\footnotesize\ttfamily Text\+Box\+::$\sim$\+Text\+Box (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default de\+Constructor. 
+
+Deletes the text\+Box 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_text_box_a94f8b1fa218dabaaf892388cbf8df1fa}{}\label{class_text_box_a94f8b1fa218dabaaf892388cbf8df1fa} 
+\index{Text\+Box@{Text\+Box}!draw@{draw}}
+\index{draw@{draw}!Text\+Box@{Text\+Box}}
+\subsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void Text\+Box\+::draw (\begin{DoxyParamCaption}\item[{Render\+Target \&}]{target,  }\item[{Render\+States}]{states }\end{DoxyParamCaption}) const}
+
+
+
+draw function 
+
+draws the Buttons sprite and text \hypertarget{class_text_box_a9139c31dc807fa0c478215086f3fc7f1}{}\label{class_text_box_a9139c31dc807fa0c478215086f3fc7f1} 
+\index{Text\+Box@{Text\+Box}!take\+Input@{take\+Input}}
+\index{take\+Input@{take\+Input}!Text\+Box@{Text\+Box}}
+\subsubsection{\texorpdfstring{take\+Input()}{takeInput()}}
+{\footnotesize\ttfamily void Text\+Box\+::take\+Input (\begin{DoxyParamCaption}\item[{Keyboard\+::\+Key}]{pressed\+Key }\end{DoxyParamCaption})}
+
+
+
+Processes key presses while button is selected. 
+
+If valid charachter add to string if enter complete string if escape clear string
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+Uni/\+Year Three/\+Project/\+Product Creation/\+Code/\+Traffic\+Management/\+Default\+S\+F\+M\+L/include/Text\+Box.\+h\end{DoxyCompactItemize}

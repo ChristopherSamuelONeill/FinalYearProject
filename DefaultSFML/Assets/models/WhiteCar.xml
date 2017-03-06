@@ -1,12 +1,12 @@
-<baseModel>Assets\textures\Cars\car_white.png</baseModel>
+<baseModel>./Assets/textures/Cars/car_white.png</baseModel>
 	
-<rearLightsUnlitModel>Assets\textures\Cars\rearLight_notLit.png</rearLightsUnlitModel>
-<rearLightslitModel>Assets\textures\Cars\rearLight_Lit.png</rearLightslitModel>
+<rearLightsUnlitModel>./Assets/textures/Cars/rearLight_notLit.png</rearLightsUnlitModel>
+<rearLightslitModel>./Assets/textures/Cars/rearLight_Lit.png</rearLightslitModel>
 
-<frontLightsUnlitModel>Assets\textures\Cars\FrontLights_NotLit.png</frontLightsUnlitModel>
-<frontLightslitModel>Assets\textures\Cars\FrontLights_Lit.png</frontLightslitModel>
+<frontLightsUnlitModel>./Assets/textures/Cars/FrontLights_NotLit.png</frontLightsUnlitModel>
+<frontLightslitModel>./Assets/textures/Cars/FrontLights_Lit.png</frontLightslitModel>
 
 
-<LeftWheelModel>Assets\textures\Cars\FrontWheel_left.png</LeftWheelModel>
-<rightWheelModel>Assets\textures\Cars\FrontWheel_right.png</rightWheelModel>
-<rearWheelModel>Assets\textures\Cars\RearWheels.png</rearWheelModel>
+<LeftWheelModel>./Assets/textures/Cars/FrontWheel_left.png</LeftWheelModel>
+<rightWheelModel>./Assets/textures/Cars/FrontWheel_right.png</rightWheelModel>
+<rearWheelModel>./Assets/textures/Cars/RearWheels.png</rearWheelModel>
