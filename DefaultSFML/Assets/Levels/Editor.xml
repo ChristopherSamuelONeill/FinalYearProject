@@ -1,4 +1,9 @@
 <?xml version = "1.0"?>
+<Map>
+	<x>2000</x>
+	<y>2000</y>
+</Map>
+
 
 <Car>
 	<type>0</type>

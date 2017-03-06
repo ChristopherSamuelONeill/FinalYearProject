@@ -135,6 +135,7 @@
     <ClCompile Include="src\Achievement.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Car.cpp" />
+    <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Clickable.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Hoverable.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="src\Overlay.cpp" />
     <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="src\TextBox.cpp" />
+    <ClCompile Include="src\TextureObject.cpp" />
     <ClCompile Include="src\tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +155,9 @@
     <ClInclude Include="include\Hoverable.h" />
     <ClInclude Include="include\Overlay.h" />
     <ClInclude Include="include\Profile.h" />
+    <ClInclude Include="include\SceneObject.h" />
     <ClInclude Include="include\TextBox.h" />
+    <ClInclude Include="include\TextureObject.h" />
     <ClInclude Include="include\tinyxml2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

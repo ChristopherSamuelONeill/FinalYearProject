@@ -4,8 +4,11 @@ Car::Car()
 {
 }
 
-Car::Car(Vector2f Position, Vector2f Size, const char carType[])
+Car::Car(Vector2f Position, Vector2f Size, Texture textures[8])
 {
+	
+	
+
 	// Initialize Data
 	m_sfPosition = Position;
 	m_sfSize = Size;
@@ -15,157 +18,14 @@ Car::Car(Vector2f Position, Vector2f Size, const char carType[])
 	m_fRotation = 0;
 
 
-	//load textures
-	tinyxml2::XMLDocument levelFile;
-	levelFile.LoadFile(carType);
-
-	string base;
-	string rearlightsOFF;
-	string rearlightsON;
-	string frontlightsOFF;
-	string frontlightsON;
-	string rearWheels;
-	string frontLeftWheel;
-	string frontRightWheel;
-
-
-	//find textures
-	for (tinyxml2::XMLNode* child = levelFile.FirstChild(); child != NULL; child = child->NextSibling())
-	{
-		const char* Value = child->Value();
-
-		if (strcmp(Value, "baseModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				base = Value;
-
-			}
-
-		}
-		if (strcmp(Value, "rearLightsUnlitModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				rearlightsOFF = Value;
-
-			}
-
-		}
-		if (strcmp(Value, "rearLightslitModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				rearlightsON = Value;
-
-			}
-
-		}
-		if (strcmp(Value, "frontLightsUnlitModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				frontlightsOFF = Value;
-
-			}
-
-		}
-
-		if (strcmp(Value, "frontLightslitModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				frontlightsON = Value;
-
-			}
-
-		}
-		if (strcmp(Value, "LeftWheelModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				frontLeftWheel = Value;
-
-			}
-
-		}
-		if (strcmp(Value, "rightWheelModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				frontRightWheel = Value;
-
-			}
-
-		}
-		if (strcmp(Value, "rearWheelModel") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
-			{
-				Value = child2->Value();
-				rearWheels = Value;
-
-			}
-
-		}
-
-	}
-
-	//base
-	if (!m_sfTexture[0].loadFromFile(base))
-	{
-		cout << "Error: Base Texture was unable to load." << endl;
-	};
-	//rear lights
-	if (!m_sfTexture[1].loadFromFile(rearlightsOFF))
-	{
-		cout << "Error: rearlightsOFF was unable to load." << endl;
-	};
-	if (!m_sfTexture[2].loadFromFile(rearlightsON))
-	{
-		cout << "Error: rearlightsON was unable to load." << endl;
-	};
-	//front lights
-	if (!m_sfTexture[3].loadFromFile(frontlightsOFF))
-	{
-		cout << "Error: frontlightsOFF was unable to load." << endl;
-	};
-	if (!m_sfTexture[4].loadFromFile(frontlightsON))
-	{
-		cout << "Error: frontlightsON was unable to load." << endl;
-	};
-
-	//wheels
-	if (!m_sfTexture[5].loadFromFile(rearWheels))
-	{
-		cout << "Error: rearWheels was unable to load." << endl;
-	};
-	if (!m_sfTexture[6].loadFromFile(frontLeftWheel))
-	{
-		cout << "Error: frontLeftWheel was unable to load." << endl;
-	};
-	if (!m_sfTexture[7].loadFromFile(frontRightWheel))
-	{
-		cout << "Error: frontRightWheel was unable to load." << endl;
-	};
-
-
-	//Set Up drawables
-
-	if (!temp.loadFromFile("./Assets/textures/Cars/car_white.png"))
-	{
-		cout << base << endl;
-	};
-
-	
-
+	m_sfTexture[0] = textures[0]; // car
+	m_sfTexture[1] = textures[1];// rear lights
+	m_sfTexture[2] = textures[2];// rear lights
+	m_sfTexture[3] = textures[3];// front lights
+	m_sfTexture[4] = textures[4];// front lights
+	m_sfTexture[5] = textures[5];// rear wheels
+	m_sfTexture[6] = textures[6];// front wheels
+	m_sfTexture[7] = textures[7];// front wheels
 
 }
 
@@ -186,6 +46,8 @@ void Car::draw(RenderTarget & target, RenderStates states) const
 
 void Car::update(float dt)
 {
+	//Set Up drawables
+
 	//base car
 	m_sfCarRect.setPosition(m_sfPosition);
 	m_sfCarRect.setSize(m_sfSize);
@@ -193,7 +55,7 @@ void Car::update(float dt)
 	m_sfCarRect.setOrigin(m_sfSize.x / 2, m_sfSize.y / 2);
 	m_sfCarRect.setRotation(m_fRotation);
 
-	m_sfCarSprite.setTexture(temp);
+	m_sfCarSprite.setTexture(m_sfTexture[0]);
 	m_sfCarSprite.setPosition(m_sfCarRect.getPosition());
 	m_sfCarSprite.setOrigin(m_sfSize.x / 2, m_sfSize.y / 2);
 	m_sfCarSprite.setRotation(m_fRotation);

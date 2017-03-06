@@ -17,7 +17,7 @@ using namespace sf;
 void mainMenu(bool tutorial);
 void profileMenu(bool tutorial);
 void settingsMenu(bool tutorial);
-void playMenu();
+void editor();
 
 bool DEBUGMODE = true;
 Profile player;
@@ -75,8 +75,6 @@ int main()
 		mainMenu(true);
 	}
 	
-
-	system("pause");
 	return 0;
 }
 
@@ -324,7 +322,7 @@ void mainMenu(bool tutorial)
 						if (play.m_bClicked(sfMousePos) && tutorialState == 11)
 						{
 							window.close();
-							playMenu();
+							editor();
 
 						}
 						if (settings.m_bClicked(sfMousePos) && tutorialState == 11)
@@ -1378,46 +1376,123 @@ void settingsMenu(bool tutorial)
 
 }
 
-void playMenu()
+void editor()
 {
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;
-	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu", Style::Fullscreen);
-	else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
+	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Editor", Style::Fullscreen);
+	else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Editor");
 	window.setFramerateLimit(60);
 
+	//create a view to fill the windowfor game render
+	View gameView;
+	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	gameView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
+	gameView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+
+	//create a view to fill the windowfor game render
+	View hudView;
+	hudView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	hudView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
+	hudView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+
+	//helps scale hud elements
+	Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+
+	//create Buttons for the editor
+	Button BackgroundButton
+	("Background",
+		Vector2f(0, 0),
+		Vector2f(300 * resolutionScale.x , 88.5 * resolutionScale.y) ,
+		"Button_Green"
+		);
+
+
 	//Game Object
-	Game game("./Assets/Levels/Test.xml");
-
-	Texture m_sfTexture;
-	RectangleShape m_sfCarRect;// \brief Rect for the Car
-	Sprite m_sfCarSprite; // \brief Sprite for the Car
-
-	if (!m_sfTexture.loadFromFile("./Assets/textures/Cars/car_white.png"))
-	{
-		
-	};
-
-	//base car
-	m_sfCarRect.setPosition(400,400);
-	m_sfCarRect.setSize(Vector2f(250,100));
-	m_sfCarRect.setFillColor(Color::Red);
-	//m_sfCarRect.setOrigin(m_sfSize.x / 2, m_sfSize.y / 2);
-	//m_sfCarRect.setRotation(m_fRotation);
-
-	m_sfCarSprite.setTexture(m_sfTexture);
-	m_sfCarSprite.setPosition(m_sfCarRect.getPosition());
-	//m_sfCarSprite.setOrigin(m_sfSize.x / 2, m_sfSize.y / 2);
-	//m_sfCarSprite.setRotation(m_fRotation);
-
+	Game game("./Assets/Levels/Editor.xml");
 
 	while (window.isOpen())
 	{
-		window.clear(Color::Green);
+		//handle input
+		Event event;
+		Vector2f sfMousePos;
+		int iMouseWheel;
+
+		//move camera
+		float fMoveSpeed = 10;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+		{
+			fMoveSpeed *= 3;
+		}
+		//key presses
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+		{
+			gameView.move(Vector2f(0.0f, -fMoveSpeed));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+		{
+			gameView.move(Vector2f(0.0f, fMoveSpeed));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+		{
+			gameView.move(Vector2f(-fMoveSpeed, 0.0f));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+		{
+			gameView.move(Vector2f(fMoveSpeed, 0.0f));
+		}
+
+
+
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::MouseMoved)
+			{
+				sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
+			}
+			if (event.type == Event::MouseWheelMoved)
+			{
+				iMouseWheel= event.mouseWheel.delta;
+				if (iMouseWheel > 0)
+				{
+					//zoom in
+					gameView.zoom(0.9);
+				}
+				if (iMouseWheel < 0)
+				{
+					//zoom out
+					gameView.zoom(1.1);
+				}
+			}
+
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					//check if background Button has been clicked
+				}
+			}
+
+			if (event.type == Event::Closed)
+			{
+				window.close(); // Allows window to close when 'X' is pressed
+				return;
+			}
+
 		
-		game.m_vCars[0].update(0.01f);
-		window.draw(game.m_vCars[0]);
+
+		}
+
+		window.clear(Color::Green);
+		window.setView(gameView);
+		
+		game.updateScene(0.01f);
+		game.drawScene(window);
+
+		window.setView(hudView);
+		window.draw(BackgroundButton);
+
 		window.display();
 	}
 

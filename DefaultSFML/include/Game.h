@@ -6,6 +6,8 @@
 
 #include "tinyxml2.h"
 #include "Car.h"
+#include "TextureObject.h"
+#include "SceneObject.h"
 
 using namespace sf;
 using namespace std;
@@ -19,12 +21,13 @@ private:
 	// \param Path to the level
 	void loadLevel(const char dir[]);
 
+	vector<Car> m_vCars; // \breif list of cars for the scene
+	vector<SceneObject> m_vSceneObejcts; // \breif list of SceneObjects for the Scene
 
+
+	TextureObject m_Gametextures;// \breif handle to all game textures
 
 public:
-
-	vector<Car> m_vCars; // \breif list of cars for the scene
-
 
 	Game(); // \breif Default constructor of game object
 
@@ -34,7 +37,15 @@ public:
 
 	// \breif function to spawn car objects
 	// \param path to car model
-	void spawnCar(const char dir[]);
+	void spawnCar(int cartype,Vector2f pos , Vector2f size);
+
+	// \breif function to update scene
+	// \param time change
+	void updateScene(float dt);
+
+	// \breif function to update scene
+	// \param time change
+	void drawScene(RenderWindow& window);
 
 	
 
