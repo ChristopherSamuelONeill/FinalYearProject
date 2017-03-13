@@ -84,7 +84,7 @@ void Game::loadLevel(const char dir[])
 
 			}
 
-			spawnCar(model, pos, size);
+			//spawnCar(model, pos, size);
 		}
 	}	
 }
