@@ -1379,6 +1379,10 @@ void settingsMenu(bool tutorial)
 void editor()
 {
 
+	
+	//Game Object
+	Game Editor("./Assets/Levels/Editor.xml");
+
 	//Create a window with the specifications of the profile
 	RenderWindow window;
 	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Editor", Style::Fullscreen);
@@ -1388,7 +1392,7 @@ void editor()
 	//create a view to fill the windowfor game render
 	View gameView;
 	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-	gameView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
+	gameView.setCenter(Editor.m_sfLevelSize / 2.0f);
 	gameView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
 
 	//create a view to fill the windowfor game render
@@ -1407,10 +1411,19 @@ void editor()
 		Vector2f(300 * resolutionScale.x , 88.5 * resolutionScale.y) ,
 		"Button_Green"
 		);
+	Button SizeButton
+	("Level Size",
+		Vector2f(0, 88.5 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Green"
+	);
 
-
-	//Game Object
-	Game game("./Assets/Levels/Editor.xml");
+	Button TimeButton
+	("Time of Day",
+		Vector2f(0, 167 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Green"
+	);
 
 	while (window.isOpen())
 	{
@@ -1449,7 +1462,7 @@ void editor()
 		{
 			if (event.type == sf::Event::MouseMoved)
 			{
-				sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
+				sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
 			}
 			if (event.type == Event::MouseWheelMoved)
 			{
@@ -1470,7 +1483,17 @@ void editor()
 			{
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
+					sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
+					
 					//check if background Button has been clicked
+					if (BackgroundButton.m_bClicked(sfMousePos))Editor.cycleBackground();
+
+					//check if size Button has been clicked
+					if (SizeButton.m_bClicked(sfMousePos))Editor.cycleLevelSize();
+
+					//check if time Button has been clicked
+					if (TimeButton.m_bClicked(sfMousePos))Editor.cycleLevelTime();
+
 				}
 			}
 
@@ -1484,14 +1507,16 @@ void editor()
 
 		}
 
-		window.clear(Color::Green);
+		window.clear(Color::Black);
 		window.setView(gameView);
 		
-		game.updateScene(0.01f);
-		game.drawScene(window);
+		Editor.updateScene(0.01f);
+		Editor.drawScene(window);
 
 		window.setView(hudView);
 		window.draw(BackgroundButton);
+		window.draw(SizeButton);
+		window.draw(TimeButton);
 
 		window.display();
 	}

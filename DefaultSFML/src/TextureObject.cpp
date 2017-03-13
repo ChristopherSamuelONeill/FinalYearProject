@@ -125,27 +125,99 @@ void TextureObject::loadTextures()
 	m_vCarLights.push_back(sfTempTexture);
 
 
-	//Wheels---------------------------------------------------------------------
+	//Background Textures---------------------------------------------------------------------
 
-	//wheels
-	if (!sfTempTexture.loadFromFile("./Assets/textures/Cars/RearWheels.png"))
+	//Grass
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/GreenGrass.png"))
 	{
-		cout << "Error: RearWheels.png was unable to load." << endl;
+		cout << "Error: GreenGrass.png was unable to load." << endl;
 	};
-	m_vCarWheels.push_back(sfTempTexture);
+	m_vBackgroundTextures.push_back(sfTempTexture);
 
-	if (!sfTempTexture.loadFromFile("./Assets/textures/Cars/FrontWheel_left.png"))
+	//Grass
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/YellowGrass.png"))
 	{
-		cout << "Error: FrontWheel_left.png was unable to load." << endl;
+		cout << "Error: YellowGrass.png was unable to load." << endl;
 	};
-	m_vCarWheels.push_back(sfTempTexture);
+	m_vBackgroundTextures.push_back(sfTempTexture);
 
-	if (!sfTempTexture.loadFromFile("./Assets/textures/Cars/FrontWheel_right.png"))
+	//Sand
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/GreySand.png"))
 	{
-		cout << "Error: FrontWheel_right.png was unable to load." << endl;
+		cout << "Error: GreySand.png was unable to load." << endl;
 	};
-	m_vCarWheels.push_back(sfTempTexture);
+	m_vBackgroundTextures.push_back(sfTempTexture);
 
-	cout << "Textures Loaded" << endl;
+	//Sand
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/YellowSand.png"))
+	{
+		cout << "Error: YellowSand.png was unable to load." << endl;
+	};
+	m_vBackgroundTextures.push_back(sfTempTexture);
+
+	//Concrete
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/Concrete.png"))
+	{
+		cout << "Error: Concrete.png was unable to load." << endl;
+	};
+	m_vBackgroundTextures.push_back(sfTempTexture);
+
+
+	//Dirt
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/DirtPath.png"))
+	{
+		cout << "Error: DirtPath.png was unable to load." << endl;
+	};
+	m_vBackgroundTextures.push_back(sfTempTexture);
+
+
+	//Time Textures---------------------------------------------------------------------
+
+	//Normal.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Time of Day/Normal.png"))
+	{
+		cout << "Error: Normal.png was unable to load." << endl;
+	};
+	m_vTimeTextures.push_back(sfTempTexture);
+
+	//Day.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Time of Day/Day.png"))
+	{
+		cout << "Error: Day.png was unable to load." << endl;
+	};
+	m_vTimeTextures.push_back(sfTempTexture);
+
+	//Summer.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Time of Day/Summer.png"))
+	{
+		cout << "Error: Summer.png was unable to load." << endl;
+	};
+	m_vTimeTextures.push_back(sfTempTexture);
+
+	//Evening.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Time of Day/Evening.png"))
+	{
+		cout << "Error: Evening.png was unable to load." << endl;
+	};
+	m_vTimeTextures.push_back(sfTempTexture);
+
+	//Night.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Time of Day/Night.png"))
+	{
+		cout << "Error: Night.png was unable to load." << endl;
+	};
+	m_vTimeTextures.push_back(sfTempTexture);
+
+	//Winter.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Time of Day/Winter.png"))
+	{
+		cout << "Error: Winter.png was unable to load." << endl;
+	};
+	m_vTimeTextures.push_back(sfTempTexture);
+
+
+
+
+	cout << "Finished loading textures" << endl;
 
 }
