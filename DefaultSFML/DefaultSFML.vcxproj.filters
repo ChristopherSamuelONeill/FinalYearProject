@@ -84,6 +84,9 @@
     <ClCompile Include="src\SceneObject.cpp">
       <Filter>Source Files\Game Obejcts</Filter>
     </ClCompile>
+    <ClCompile Include="src\Road.cpp">
+      <Filter>Source Files\Game Obejcts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="include\SceneObject.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Road.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
