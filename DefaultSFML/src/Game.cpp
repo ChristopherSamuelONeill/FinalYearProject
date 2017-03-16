@@ -193,10 +193,6 @@ void Game::cycleLevelSize()
 	}
 
 	m_sfLevelSize = Vector2f(3000 + m_iLevelSize * 2000, 3000 + m_iLevelSize * 2000);
-
-	std::cout << " P : " << m_sfLevelSize.x / 2.0f << " " <<m_sfLevelSize.y / 2.0f << std::endl;
-	std::cout << " S : " << m_sfLevelSize.x << " " << m_sfLevelSize.y << std::endl;
-
 	m_Background.setSize(m_sfLevelSize);
 }
 

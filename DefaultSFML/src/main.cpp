@@ -1378,8 +1378,6 @@ void settingsMenu(bool tutorial)
 
 void editor()
 {
-
-	
 	//Game Object
 	Game Editor("./Assets/Levels/Editor.xml");
 
@@ -1413,28 +1411,28 @@ void editor()
 		);
 	Button SizeButton
 	("Level Size",
-		Vector2f(0, 88.5 * resolutionScale.y),
+		Vector2f(0, 90 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
 
 	Button TimeButton
 	("Time of Day",
-		Vector2f(0, 167 * resolutionScale.y),
+		Vector2f(0, 180 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
 
 	Button RoadSelectorButton
 	("Roads",
-		Vector2f(0, 167 * resolutionScale.y),
+		Vector2f(0, 270 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
 
 	Button twoWayButton
 	("Two Way Road",
-		Vector2f(300, 167 * resolutionScale.y),
+		Vector2f(300, 270 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
@@ -1512,19 +1510,34 @@ void editor()
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
-					
+
 					//check if background Button has been clicked
-					if (BackgroundButton.m_bClicked(sfMousePos))Editor.cycleBackground();
+					if (BackgroundButton.m_bClicked(sfMousePos))
+					{
+						Editor.cycleBackground();
+						RoadSelectorBool = false;
+					}
 
 					//check if size Button has been clicked
-					else if (SizeButton.m_bClicked(sfMousePos))Editor.cycleLevelSize();
+					else if (SizeButton.m_bClicked(sfMousePos))
+					{
+						Editor.cycleLevelSize();
+						RoadSelectorBool = false;
+					}
 
 					//check if time Button has been clicked
-					else if (TimeButton.m_bClicked(sfMousePos))Editor.cycleLevelTime();
+					else if (TimeButton.m_bClicked(sfMousePos))
+					{
+						Editor.cycleLevelTime();
+						RoadSelectorBool = false;
+					}
 
 					//check if road selector Button has been clicked
-					else if (RoadSelectorButton.m_bClicked(sfMousePos))RoadSelectorBool = true;
-					
+					else if (RoadSelectorButton.m_bClicked(sfMousePos))
+					{
+						if (RoadSelectorBool == false)RoadSelectorBool = true;
+						else if (RoadSelectorBool == true)RoadSelectorBool = false;
+					}
 					//check if road selector Button has been clicked
 					else if (twoWayButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
 					{
