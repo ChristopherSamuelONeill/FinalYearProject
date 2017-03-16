@@ -1425,6 +1425,24 @@ void editor()
 		"Button_Green"
 	);
 
+	Button RoadSelectorButton
+	("Roads",
+		Vector2f(0, 167 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+
+	Button twoWayButton
+	("Two Way Road",
+		Vector2f(300, 167 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+
+	//selections bools
+	bool RoadSelectorBool = false; // true while choosing roads
+	bool placingRoadBool = false; // true while placing roads
+
 	while (window.isOpen())
 	{
 		//handle input
@@ -1463,6 +1481,11 @@ void editor()
 			if (event.type == sf::Event::MouseMoved)
 			{
 				sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
+				if (placingRoadBool)
+				{
+
+				}
+			
 			}
 			if (event.type == Event::MouseWheelMoved)
 			{
@@ -1481,6 +1504,11 @@ void editor()
 
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
+				if (placingRoadBool)
+				{
+
+				}
+
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
 					sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
@@ -1489,11 +1517,26 @@ void editor()
 					if (BackgroundButton.m_bClicked(sfMousePos))Editor.cycleBackground();
 
 					//check if size Button has been clicked
-					if (SizeButton.m_bClicked(sfMousePos))Editor.cycleLevelSize();
+					else if (SizeButton.m_bClicked(sfMousePos))Editor.cycleLevelSize();
 
 					//check if time Button has been clicked
-					if (TimeButton.m_bClicked(sfMousePos))Editor.cycleLevelTime();
+					else if (TimeButton.m_bClicked(sfMousePos))Editor.cycleLevelTime();
 
+					//check if road selector Button has been clicked
+					else if (RoadSelectorButton.m_bClicked(sfMousePos))RoadSelectorBool = true;
+					
+					//check if road selector Button has been clicked
+					else if (twoWayButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
+					{
+						placingRoadBool = true;
+
+					}
+					else
+					{
+						//reset all selectors
+						RoadSelectorBool = false;
+						
+					}
 				}
 			}
 
@@ -1517,6 +1560,11 @@ void editor()
 		window.draw(BackgroundButton);
 		window.draw(SizeButton);
 		window.draw(TimeButton);
+		window.draw(RoadSelectorButton);
+		if (RoadSelectorBool)
+		{
+			window.draw(twoWayButton);
+		}
 
 		window.display();
 	}

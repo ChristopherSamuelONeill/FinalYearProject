@@ -216,6 +216,14 @@ void TextureObject::loadTextures()
 	m_vTimeTextures.push_back(sfTempTexture);
 
 
+	//Time Textures---------------------------------------------------------------------
+
+	//normal2WayStreet.png.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/normal2WayStreet.png"))
+	{
+		cout << "Error: normal2WayStreet.png was unable to load." << endl;
+	};
+	m_vTwoWayStreetTextures.push_back(sfTempTexture);
 
 
 	cout << "Finished loading textures" << endl;

@@ -22,5 +22,9 @@ public:
 	//Scene texture
 	vector<Texture> m_vBackgroundTextures; // \breif Texture for background
 	vector<Texture> m_vTimeTextures; // \breif Texture for background
+
+	//Road Textures
+	vector<Texture> m_vTwoWayStreetTextures; // \breif Texture for cars going either way
+
 };
 #endif

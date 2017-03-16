@@ -66,6 +66,10 @@ public:
 	// \breif function to cycle Level time of day
 	void cycleLevelTime();
 
+	// \breif function to cycle Level time of day
+	void spawnTempRoad(Vector2f position);
+
+	void placeRoad();
 
 	Vector2f m_sfLevelSize;// \breif Function to load an xml file
 	
