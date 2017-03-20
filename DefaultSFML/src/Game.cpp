@@ -18,8 +18,8 @@ Game::Game(const char dir[])
 		m_sfLevelSize = Vector2f(1024 ,1024);
 		m_iLevelSize = 0;
 		m_iLevelTime = 0;
-		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0], 0.0f);
-		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[0], 0.0f);
+		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0] , 0.0f, "Background");
+		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[0], 0.0f, "Background");
 	}
 	else // load level
 	{
@@ -172,7 +172,16 @@ void Game::cycleBackground()
 		m_iCurrentBackground = 0;
 	}
 
-	m_Background.setTexture(m_Gametextures.m_vBackgroundTextures[m_iCurrentBackground]);
+	string sName;
+
+	if (m_iLevelTime == 0)sName = "GreenGrass";
+	if (m_iLevelTime == 1)sName = "YellowGrass";
+	if (m_iLevelTime == 2)sName = "GreySand";
+	if (m_iLevelTime == 3)sName = "YellowSand";
+	if (m_iLevelTime == 4)sName = "Concrete";
+	if (m_iLevelTime == 5)sName = "Dirt";
+
+	m_Background.setTexture(m_Gametextures.m_vBackgroundTextures[m_iCurrentBackground], sName);
 }
 
 void Game::cycleLevelSize()
@@ -203,7 +212,58 @@ void Game::cycleLevelTime()
 	{
 		m_iLevelTime = 0;
 	}
+	string sName;
 
-	m_Time.setTexture(m_Gametextures.m_vTimeTextures[m_iLevelTime]);
+	if (m_iLevelTime == 0)sName = "Normal";
+	if (m_iLevelTime == 1)sName = "Day";
+	if (m_iLevelTime == 2)sName = "Summer";
+	if (m_iLevelTime == 3)sName = "Evening";
+	if (m_iLevelTime == 4)sName = "Night";
+	if (m_iLevelTime == 5)sName = "Winter";
+
+
+	m_Time.setTexture(m_Gametextures.m_vTimeTextures[m_iLevelTime],sName);
+}
+
+void Game::saveLevelToFile(const char dir[])
+{
+	//create the file
+	tinyxml2::XMLDocument levelFile;
+
+	//Create a root node so that objects can easily be added
+	tinyxml2::XMLNode * pRoot = levelFile.NewElement("Level");
+
+	//add the root node to the document as a child
+	levelFile.InsertFirstChild(pRoot);
+
+	//creat child of root
+	tinyxml2::XMLElement * pRootChild = levelFile.NewElement("Scene Object");
+
+	//loop the scene objects
+	for (int i = 0; i < m_vSceneObejcts.size(); i++)
+	{
+		//add a scene object with the following attributes
+		pRoot->InsertEndChild(pRootChild);
+		pRootChild->SetAttribute("pos x", m_vSceneObejcts[i].m_sfPosition.x);
+		pRootChild->SetAttribute("pos y", m_vSceneObejcts[i].m_sfPosition.y);
+		pRootChild->SetAttribute("size x", m_vSceneObejcts[i].m_sfSize.x);
+		pRootChild->SetAttribute("size y", m_vSceneObejcts[i].m_sfSize.y);
+		pRootChild->SetAttribute("Rotation", m_vSceneObejcts[i].m_fRotation);
+		pRootChild->SetAttribute("Name", m_vSceneObejcts[i].m_sName);
+		pRoot->InsertEndChild(pRootChild);
+
+	}
+
+	//add the cars
+	pRootChild = levelFile.NewElement("Cars");
+	pRoot->InsertEndChild(pRootChild);
+	pRootChild->SetAttribute("Number of cars", m_vCars.size());
+
+
+	pRoot->InsertEndChild(pRootChild);
+	//add the root node to the document as a child
+	
+
+
 }
 

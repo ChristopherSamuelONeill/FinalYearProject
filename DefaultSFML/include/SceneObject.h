@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
 
+using namespace std;
 using namespace sf;
 
 
@@ -15,21 +16,22 @@ private :
 	Sprite m_sfSprite;
 	Texture m_sfTexture;
 
-	Vector2f m_sfPosition;
-	Vector2f m_sfSize;
-	float m_fRotation;
-
 public:
 
 	// \breif Default constructor of scene object
 	SceneObject();
 
 	// \breif Default constructor of scene object
+	// \param Name the name of the texture (used for the saving)
+	SceneObject(char Name[]);
+
+	// \breif Default constructor of scene object
 	// \param Postion of sceneObject
 	// \param Size sceneObject
 	// \param Texture of sceneObject
 	// \param Rotation of sceneObject
-	SceneObject(Vector2f Pos, Vector2f Size, Texture Texture,float Rotation);
+	// \param Name the name of the texture (used for the saving)
+	SceneObject(Vector2f Pos, Vector2f Size, Texture Texture,float Rotation,char Name[]);
 
 	// \breif Updates object
 	void update();
@@ -39,7 +41,7 @@ public:
 
 	// \breif function to update objects texture
 	// \param Texture of sceneObject
-	void setTexture(Texture newTexture);
+	void setTexture(Texture newTexture, char Name[]);
 
 	// \breif function to update objects postion
 	// \param Postion of sceneObject
@@ -52,6 +54,13 @@ public:
 	// \breif function to change objects rotation
 	// \param Rotation , amount to change rotation by
 	void incrementRotation(float increment);
+
+	Vector2f m_sfPosition; 	// \breif X Y coords of the object
+	Vector2f m_sfSize;// \breif Dimensions of the object
+	float m_fRotation;// \breif oreientation of the object
+	char m_sName[]; // \breif the name of the texture (used for the saving)
+
+	
 
 };
 

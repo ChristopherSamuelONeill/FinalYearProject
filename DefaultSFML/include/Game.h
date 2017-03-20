@@ -67,6 +67,9 @@ public:
 	void cycleLevelTime();
 
 	// \breif function to cycle Level time of day
+	void saveLevelToFile(const char dir[]);
+
+	// \breif function to cycle Level time of day
 	void spawnTempRoad(Vector2f position);
 
 	void placeRoad();

@@ -1,6 +1,17 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DefaultSFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  tinyxml2.cpp
+  TextureObject.cpp
+  TextBox.cpp
+  Profile.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\profile.h(109): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\profile.cpp(78): warning C4018: '<': signed/unsigned mismatch
+  Overlay.cpp
   main.cpp
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\profile.h(109): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\sceneobject.h(61): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\sceneobject.h(61): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\game.h(26): error C2229: class 'Game' has an illegal zero-sized array
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\game.h(27): error C2229: class 'Game' has an illegal zero-sized array
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(123): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(144): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(272): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
@@ -47,13 +58,36 @@ d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\sr
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1422): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1429): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1436): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1494): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1499): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1443): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1501): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1506): warning C4305: 'argument': truncation from 'double' to 'float'
+  Hoverable.cpp
   Game.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\sceneobject.h(61): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\sceneobject.h(61): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\game.h(26): error C2229: class 'Game' has an illegal zero-sized array
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\game.h(27): error C2229: class 'Game' has an illegal zero-sized array
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(134): warning C4018: '<': signed/unsigned mismatch
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(151): warning C4018: '<': signed/unsigned mismatch
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(157): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(195): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(184): error C2664: 'void SceneObject::setTexture(sf::Texture,char [])': cannot convert argument 2 from 'std::string' to 'char []'
+  d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(184): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(204): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(225): error C2664: 'void SceneObject::setTexture(sf::Texture,char [])': cannot convert argument 2 from 'std::string' to 'char []'
+  d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(225): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(243): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(260): error C2059: syntax error: ')'
+  Clickable.cpp
+  SceneObject.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\sceneobject.h(61): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\sceneobject.h(61): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\sceneobject.cpp(19): error C2065: 'm_cName': undeclared identifier
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\sceneobject.cpp(65): error C3863: array type 'char []' is not assignable
+  Road.cpp
+  Car.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(153): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Button.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(36): warning C4244: 'initializing': conversion from 'std::size_t' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(41): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  Achievement.cpp
   Generating Code...
-  DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
-  DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)

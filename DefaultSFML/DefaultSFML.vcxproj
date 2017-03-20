@@ -146,6 +146,7 @@
     <ClCompile Include="src\TextBox.cpp" />
     <ClCompile Include="src\TextureObject.cpp" />
     <ClCompile Include="src\tinyxml2.cpp" />
+    <ClCompile Include="src\TrafficLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="include\TextBox.h" />
     <ClInclude Include="include\TextureObject.h" />
     <ClInclude Include="include\tinyxml2.h" />
+    <ClInclude Include="include\TrafficLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

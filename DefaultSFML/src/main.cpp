@@ -1437,6 +1437,13 @@ void editor()
 		"Button_Yellow"
 	);
 
+	Button oneWayButton
+	("Single Lane",
+		Vector2f(300, 270 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+
 	//selections bools
 	bool RoadSelectorBool = false; // true while choosing roads
 	bool placingRoadBool = false; // true while placing roads

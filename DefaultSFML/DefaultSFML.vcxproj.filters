@@ -87,6 +87,9 @@
     <ClCompile Include="src\Road.cpp">
       <Filter>Source Files\Game Obejcts</Filter>
     </ClCompile>
+    <ClCompile Include="src\TrafficLight.cpp">
+      <Filter>Source Files\Game Obejcts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -126,6 +129,9 @@
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="include\Road.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TrafficLight.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
