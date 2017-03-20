@@ -15,7 +15,7 @@ Game::Game(const char dir[])
 	{
 		cout << "Editor Mode" << endl;
 		m_iCurrentBackground = 0;
-		m_sfLevelSize = Vector2f(1024 ,1024);
+		m_sfLevelSize = Vector2f(5333,3000);
 		m_iLevelSize = 0;
 		m_iLevelTime = 0;
 		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0] , 0.0f, "Background");
@@ -159,6 +159,10 @@ void Game::drawScene(RenderWindow & window)
 		window.draw(m_vCars[i]);
 	}
 
+
+	//draw temp object
+	if (m_bPlacingObject)window.draw(m_sfTempSprite);
+
 	//draw time of day
 	window.draw(m_Time);
 }
@@ -172,16 +176,16 @@ void Game::cycleBackground()
 		m_iCurrentBackground = 0;
 	}
 
-	string sName;
+	//string sName;
 
-	if (m_iLevelTime == 0)sName = "GreenGrass";
-	if (m_iLevelTime == 1)sName = "YellowGrass";
-	if (m_iLevelTime == 2)sName = "GreySand";
-	if (m_iLevelTime == 3)sName = "YellowSand";
-	if (m_iLevelTime == 4)sName = "Concrete";
-	if (m_iLevelTime == 5)sName = "Dirt";
+	//if (m_iLevelTime == 0)sName = "GreenGrass";
+	//if (m_iLevelTime == 1)sName = "YellowGrass";
+	//if (m_iLevelTime == 2)sName = "GreySand";
+	//if (m_iLevelTime == 3)sName = "YellowSand";
+	//if (m_iLevelTime == 4)sName = "Concrete";
+	//if (m_iLevelTime == 5)sName = "Dirt";
 
-	m_Background.setTexture(m_Gametextures.m_vBackgroundTextures[m_iCurrentBackground], sName);
+	m_Background.setTexture(m_Gametextures.m_vBackgroundTextures[m_iCurrentBackground], "");
 }
 
 void Game::cycleLevelSize()
@@ -201,7 +205,7 @@ void Game::cycleLevelSize()
 		m_iLevelSize = 0;
 	}
 
-	m_sfLevelSize = Vector2f(3000 + m_iLevelSize * 2000, 3000 + m_iLevelSize * 2000);
+	m_sfLevelSize = Vector2f(5333 + m_iLevelSize * 2000, 3000 + m_iLevelSize * 2000);
 	m_Background.setSize(m_sfLevelSize);
 }
 
@@ -212,17 +216,17 @@ void Game::cycleLevelTime()
 	{
 		m_iLevelTime = 0;
 	}
-	string sName;
+	/*string sName;
 
 	if (m_iLevelTime == 0)sName = "Normal";
 	if (m_iLevelTime == 1)sName = "Day";
 	if (m_iLevelTime == 2)sName = "Summer";
 	if (m_iLevelTime == 3)sName = "Evening";
 	if (m_iLevelTime == 4)sName = "Night";
-	if (m_iLevelTime == 5)sName = "Winter";
+	if (m_iLevelTime == 5)sName = "Winter";*/
 
 
-	m_Time.setTexture(m_Gametextures.m_vTimeTextures[m_iLevelTime],sName);
+	m_Time.setTexture(m_Gametextures.m_vTimeTextures[m_iLevelTime],"");
 }
 
 void Game::saveLevelToFile(const char dir[])
@@ -249,7 +253,8 @@ void Game::saveLevelToFile(const char dir[])
 		pRootChild->SetAttribute("size x", m_vSceneObejcts[i].m_sfSize.x);
 		pRootChild->SetAttribute("size y", m_vSceneObejcts[i].m_sfSize.y);
 		pRootChild->SetAttribute("Rotation", m_vSceneObejcts[i].m_fRotation);
-		pRootChild->SetAttribute("Name", m_vSceneObejcts[i].m_sName);
+		//tinyxml2::XMLText * text = m_vSceneObejcts[i].m_sName;
+		//pRootChild->SetAttribute("Name",text );
 		pRoot->InsertEndChild(pRootChild);
 
 	}
@@ -264,6 +269,30 @@ void Game::saveLevelToFile(const char dir[])
 	//add the root node to the document as a child
 	
 
+
+}
+
+void Game::spawnTempObject(Vector2f position, float rot, string type)
+{
+	//set up drawbales
+	m_sfTempRect.setPosition(position);
+	m_sfTempRect.setFillColor(Color::Red);
+	m_sfTempRect.setRotation(rot);
+
+	Vector2f size;
+	if (type == "Traffic Light")
+	{
+		size = Vector2f(800, 600);
+		m_sfTempRect.setSize(size);
+		m_sfTempRect.setOrigin(size/2.0f);
+		m_sfTempTexture = m_Gametextures.m_vTrafficLightTextures[0];
+		m_sfTempSprite.setOrigin(size / 2.0f);
+	}
+	
+
+	m_sfTempSprite.setPosition(m_sfTempRect.getPosition());
+	m_sfTempSprite.setTexture(m_sfTempTexture);
+	m_sfTempSprite.setRotation(rot);
 
 }
 

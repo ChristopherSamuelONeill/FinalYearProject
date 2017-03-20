@@ -26,5 +26,8 @@ public:
 	//Road Textures
 	vector<Texture> m_vTwoWayStreetTextures; // \breif Texture for cars going either way
 
+	//Traffic Textures
+	vector<Texture> m_vTrafficLightTextures; // \breif Texture traffic lights  0 red , 1 yellow, 2 green
+
 };
 #endif

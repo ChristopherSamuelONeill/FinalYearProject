@@ -55,6 +55,7 @@ public:
 	// \param time change
 	void drawScene(RenderWindow& window);
 
+	Vector2f m_sfLevelSize;// \breif The dimensions of the level
 	//editor functions-----------------------------
 
 	// \breif function to cycle scene background
@@ -70,11 +71,16 @@ public:
 	void saveLevelToFile(const char dir[]);
 
 	// \breif function to cycle Level time of day
-	void spawnTempRoad(Vector2f position);
+	void spawnTempObject(Vector2f position,float rot,string type);
 
-	void placeRoad();
+	RectangleShape m_sfTempRect; // \breif Temp Rect for editor 
+	Sprite m_sfTempSprite; // \breif Temp Rect for editor 
+	Texture m_sfTempTexture; // \breif Temp Texture for editor 
+	bool m_bPlacingObject = false; // \breif True while placing an object
 
-	Vector2f m_sfLevelSize;// \breif Function to load an xml file
+	void placeTrafficLights();
+
+	
 	
 
 };

@@ -16,7 +16,7 @@ SceneObject::SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rot
 	m_sfPosition = Pos;
 	m_sfSize = Size;
 	m_fRotation = Rotation;
-	m_cName = Name;
+	//m_cName = Name;
 
 	//set up drawbales
 	m_sfRect.setPosition(m_sfPosition);
@@ -62,7 +62,7 @@ void SceneObject::draw(RenderTarget & target, RenderStates states) const
 void SceneObject::setTexture(Texture newTexture, char Name[])
 {
 	m_sfTexture = newTexture;
-	m_sName = Name;
+	//m_sName = Name;
 
 
 }

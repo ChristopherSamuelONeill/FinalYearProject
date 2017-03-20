@@ -1390,7 +1390,7 @@ void editor()
 	//create a view to fill the windowfor game render
 	View gameView;
 	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-	gameView.setCenter(Editor.m_sfLevelSize / 2.0f);
+	gameView.setCenter(Vector2f(0,0));
 	gameView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
 
 	//create a view to fill the windowfor game render
@@ -1437,22 +1437,41 @@ void editor()
 		"Button_Yellow"
 	);
 
-	Button oneWayButton
-	("Single Lane",
-		Vector2f(300, 270 * resolutionScale.y),
+	Button trafficLightButton
+	("Lights",
+		Vector2f(0, 360 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+
+	Button normalLightButton
+	("Traffic Lights",
+		Vector2f(300, 315 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button pedLightButton
+	("Pedestrian Lights",
+		Vector2f(300, 405 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
 
 	//selections bools
-	bool RoadSelectorBool = false; // true while choosing roads
-	bool placingRoadBool = false; // true while placing roads
+	bool RoadSelectorBool = false; // true while choosing road
+	bool LightSelectorBool = false; // true while choosing roads
+
+	bool placingBool = false; // true while placing roads
+
+	//selection string
+	string sType; // type of object been placed by the editor
 
 	while (window.isOpen())
 	{
 		//handle input
 		Event event;
 		Vector2f sfMousePos;
+		Vector2f sfPlacingPos;
 		int iMouseWheel;
 
 		//move camera
@@ -1479,19 +1498,20 @@ void editor()
 			gameView.move(Vector2f(fMoveSpeed, 0.0f));
 		}
 
+		//move the editor objects
+		sfPlacingPos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
 
+		if (placingBool)
+		{
+			Editor.spawnTempObject(sfPlacingPos, 0.0f, sType);
+			Editor.m_bPlacingObject = true;
+		}
 
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::MouseMoved)
-			{
-				sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
-				if (placingRoadBool)
-				{
 
-				}
-			
-			}
+			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
+				
 			if (event.type == Event::MouseWheelMoved)
 			{
 				iMouseWheel= event.mouseWheel.delta;
@@ -1509,9 +1529,14 @@ void editor()
 
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				if (placingRoadBool)
+				if (event.mouseButton.button == sf::Mouse::Right)
 				{
-
+					//cancel all placement
+					Editor.m_bPlacingObject = false;
+					LightSelectorBool = false;
+					placingBool = false;
+					RoadSelectorBool = false;
+			
 				}
 
 				if (event.mouseButton.button == sf::Mouse::Left)
@@ -1523,6 +1548,7 @@ void editor()
 					{
 						Editor.cycleBackground();
 						RoadSelectorBool = false;
+						LightSelectorBool = false;
 					}
 
 					//check if size Button has been clicked
@@ -1530,6 +1556,7 @@ void editor()
 					{
 						Editor.cycleLevelSize();
 						RoadSelectorBool = false;
+						LightSelectorBool = false;
 					}
 
 					//check if time Button has been clicked
@@ -1537,24 +1564,56 @@ void editor()
 					{
 						Editor.cycleLevelTime();
 						RoadSelectorBool = false;
+						LightSelectorBool = false;
 					}
 
 					//check if road selector Button has been clicked
 					else if (RoadSelectorButton.m_bClicked(sfMousePos))
 					{
-						if (RoadSelectorBool == false)RoadSelectorBool = true;
-						else if (RoadSelectorBool == true)RoadSelectorBool = false;
+						if (RoadSelectorBool == false)
+						{
+							RoadSelectorBool = true;
+							LightSelectorBool = false;
+						}
+						else if (RoadSelectorBool == true)
+						{
+							RoadSelectorBool = false;
+							LightSelectorBool = false;
+						}
 					}
-					//check if road selector Button has been clicked
+					//check if 2 way road Button has been clicked
 					else if (twoWayButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
 					{
-						placingRoadBool = true;
+						placingBool = true;
+						LightSelectorBool = false;
 
+					}
+					//check if traffic selector Button has been clicked
+					else if (trafficLightButton.m_bClicked(sfMousePos))
+					{
+						if (LightSelectorBool == false)
+						{
+							LightSelectorBool = true;
+							RoadSelectorBool = false;
+						}
+						else if (LightSelectorBool == true)
+						{
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+						}
+					}
+					else if (normalLightButton.m_bClicked(sfMousePos))
+					{
+						placingBool = true;
+						LightSelectorBool = false;
+						sType = "Traffic Light";
+						
 					}
 					else
 					{
 						//reset all selectors
 						RoadSelectorBool = false;
+						LightSelectorBool = false;
 						
 					}
 				}
@@ -1571,21 +1630,31 @@ void editor()
 		}
 
 		window.clear(Color::Black);
+
+		//draw the game 
 		window.setView(gameView);
 		
 		Editor.updateScene(0.01f);
 		Editor.drawScene(window);
 
+		//draw the hud
 		window.setView(hudView);
 		window.draw(BackgroundButton);
 		window.draw(SizeButton);
 		window.draw(TimeButton);
 		window.draw(RoadSelectorButton);
+		window.draw(trafficLightButton);
 		if (RoadSelectorBool)
 		{
 			window.draw(twoWayButton);
 		}
+		if (LightSelectorBool)
+		{
+			window.draw(normalLightButton);
+			window.draw(pedLightButton);
+		}
 
+		//show the window
 		window.display();
 	}
 
