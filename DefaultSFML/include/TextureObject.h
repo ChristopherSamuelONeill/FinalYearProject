@@ -29,5 +29,8 @@ public:
 	//Traffic Textures
 	vector<Texture> m_vTrafficLightTextures; // \breif Texture traffic lights  0 red , 1 yellow, 2 green
 
+	//Pedestrian Light Textures
+	vector<Texture> m_vPedestrianLightTextures; // \breif Texture traffic lights  0 red , 1 yellow, 2 green
+
 };
 #endif

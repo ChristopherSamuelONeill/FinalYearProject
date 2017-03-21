@@ -135,6 +135,7 @@
     <ClCompile Include="src\Achievement.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Car.cpp" />
+    <ClCompile Include="src\CollisionDetection.cpp" />
     <ClCompile Include="src\Road.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Clickable.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Car.h" />
     <ClInclude Include="include\Clickable.h" />
+    <ClInclude Include="include\CollisionDetection.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Hoverable.h" />
     <ClInclude Include="include\Overlay.h" />

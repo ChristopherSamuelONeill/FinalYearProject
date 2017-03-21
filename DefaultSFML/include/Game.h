@@ -8,6 +8,7 @@
 #include "Car.h"
 #include "TextureObject.h"
 #include "SceneObject.h"
+#include "Road.h"
 
 using namespace sf;
 using namespace std;
@@ -25,7 +26,7 @@ private:
 	SceneObject m_Background; // \breif Background for the level
 	SceneObject m_Time; // \breif time of day overlay for level
 	vector<SceneObject> m_vSceneObejcts; // \breif list of SceneObjects for the Scene
-
+	vector<Road> m_vRoads; // \breif list of the roads
 
 	TextureObject m_Gametextures;// \breif handle to all game textures
 
@@ -79,6 +80,11 @@ public:
 	bool m_bPlacingObject = false; // \breif True while placing an object
 
 	void placeTrafficLights();
+
+	// \breif function to attempt to place a road to the level
+	// \param Position , vector of the position the object
+	// \param Rotation , float of the orientation the object
+	bool placeRoad(Vector2f position, float rot);
 
 	
 	

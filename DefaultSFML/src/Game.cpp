@@ -7,7 +7,7 @@ Game::Game()
 
 Game::Game(const char dir[])
 {
-	
+		
 	m_Gametextures.loadTextures();
 	
 	//set up a blank senerio
@@ -130,6 +130,12 @@ void Game::updateScene(float dt)
 	//update Background
 	m_Background.update();
 
+	//update road
+	for (int i = 0; i < m_vRoads.size(); i++)
+	{
+		m_vRoads[i].update();
+	}
+
 	//update cars
 	for (int i = 0; i < m_vCars.size(); i++)
 	{
@@ -147,11 +153,19 @@ void Game::drawScene(RenderWindow & window)
 	//drawBackground
 	window.draw(m_Background);
 
+	//draw the road
+	for (int i = 0; i < m_vRoads.size(); i++)
+	{
+		window.draw(m_vRoads[i]);
+	}
+
 	//draw SceneObjects
 	for (int i = 0; i < m_vSceneObejcts.size(); i++)
 	{
 		window.draw(m_vSceneObejcts[i]);
 	}
+
+
 
 	//draw cars
 	for (int i = 0; i < m_vCars.size(); i++)
@@ -159,6 +173,7 @@ void Game::drawScene(RenderWindow & window)
 		window.draw(m_vCars[i]);
 	}
 
+	
 
 	//draw temp object
 	if (m_bPlacingObject)window.draw(m_sfTempSprite);
@@ -188,7 +203,7 @@ void Game::cycleBackground()
 	m_Background.setTexture(m_Gametextures.m_vBackgroundTextures[m_iCurrentBackground], "");
 }
 
-void Game::cycleLevelSize()
+ void Game::cycleLevelSize()
 {
 	m_iLevelSize++;
 
@@ -205,7 +220,7 @@ void Game::cycleLevelSize()
 		m_iLevelSize = 0;
 	}
 
-	m_sfLevelSize = Vector2f(5333 + m_iLevelSize * 2000, 3000 + m_iLevelSize * 2000);
+	m_sfLevelSize = Vector2f(5333 + m_iLevelSize * 3555, 3000 + m_iLevelSize * 2000);
 	m_Background.setSize(m_sfLevelSize);
 }
 
@@ -288,11 +303,54 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 		m_sfTempTexture = m_Gametextures.m_vTrafficLightTextures[0];
 		m_sfTempSprite.setOrigin(size / 2.0f);
 	}
+	if (type == "Pedestrian Light")
+	{
+		size = Vector2f(800, 600);
+		m_sfTempRect.setSize(size);
+		m_sfTempRect.setOrigin(size / 2.0f);
+		m_sfTempTexture = m_Gametextures.m_vPedestrianLightTextures[0];
+		m_sfTempSprite.setOrigin(size / 2.0f);
+	}
+	if (type == "Normal Road")
+	{
+		size = Vector2f(512, 1024);
+		m_sfTempRect.setSize(size);
+		m_sfTempRect.setOrigin(size / 2.0f);
+		m_sfTempTexture = m_Gametextures.m_vTwoWayStreetTextures[0];
+		m_sfTempSprite.setOrigin(size / 2.0f);
+	}
 	
 
 	m_sfTempSprite.setPosition(m_sfTempRect.getPosition());
 	m_sfTempSprite.setTexture(m_sfTempTexture);
 	m_sfTempSprite.setRotation(rot);
+
+}
+
+bool Game::placeRoad(Vector2f position, float rot)
+{
+	//check if temp object is in a valid location
+	Road tempRoad(position, Vector2f(512, 1024), rot, m_sfTempTexture);
+
+	//check if the new road is in the level
+	if(position.x > m_sfLevelSize.x)return false;
+	else if(position.x <= 0)return false;
+	else if (position.y <= 0)return false;
+	else if (position.y > m_sfLevelSize.y)return false;
+	
+	//check the road doesnt overlap with any other roads
+	for (int i = 0; i < m_vRoads.size(); i++)
+	{
+		if ()
+		{
+			return false;
+		}
+	}
+	
+	//if valid create road
+	
+		m_vRoads.push_back(tempRoad);
+		return true;
 
 }
 

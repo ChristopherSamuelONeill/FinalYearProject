@@ -1505,6 +1505,18 @@ void editor()
 		{
 			Editor.spawnTempObject(sfPlacingPos, 0.0f, sType);
 			Editor.m_bPlacingObject = true;
+			if (Keyboard::isKeyPressed(Keyboard::Return))
+			{
+				if (sType == "Normal Road")
+				{
+					Editor.placeRoad(sfPlacingPos, 0.0f);
+					Editor.m_bPlacingObject = false;
+					//reset all selectors
+					RoadSelectorBool = false;
+					LightSelectorBool = false;
+					placingBool = false;
+				}
+			}
 		}
 
 		while (window.pollEvent(event))
@@ -1580,14 +1592,19 @@ void editor()
 							RoadSelectorBool = false;
 							LightSelectorBool = false;
 						}
+						placingBool = false;
 					}
 					//check if 2 way road Button has been clicked
 					else if (twoWayButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
 					{
 						placingBool = true;
 						LightSelectorBool = false;
+						RoadSelectorBool = false;
+						sType = "Normal Road";
 
 					}
+					
+					
 					//check if traffic selector Button has been clicked
 					else if (trafficLightButton.m_bClicked(sfMousePos))
 					{
@@ -1601,13 +1618,23 @@ void editor()
 							LightSelectorBool = false;
 							RoadSelectorBool = false;
 						}
+						placingBool = false;
 					}
-					else if (normalLightButton.m_bClicked(sfMousePos))
+					//check if to spawn a traffic light
+					else if (normalLightButton.m_bClicked(sfMousePos) && LightSelectorBool == true )
 					{
 						placingBool = true;
 						LightSelectorBool = false;
 						sType = "Traffic Light";
 						
+					}
+					//check if to spawn a pedestrian light
+					else if (pedLightButton.m_bClicked(sfMousePos) && LightSelectorBool == true)
+					{
+						placingBool = true;
+						LightSelectorBool = false;
+						sType = "Pedestrian Light";
+
 					}
 					else
 					{

@@ -34,7 +34,7 @@ Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
 	m_sfSprite.setPosition(m_sfRect.getPosition().x , m_sfRect.getPosition().y );
 	
 	float numChar = m_sButtonText.getSize();
-	float xpos = (m_sfVTopLeftPos.x + (m_sfVSize.x / 2) - numChar * 10 *textScale);
+	float xpos = (m_sfVTopLeftPos.x + (m_sfVSize.x / 2) - numChar * 7 *textScale);
 	float ypos = (m_sfVTopLeftPos.y + m_sfVSize.y / 2) - 30 * textScale;
 	// Create a text
 	m_sfButtonText = Text(m_sButtonText, m_sfFont);

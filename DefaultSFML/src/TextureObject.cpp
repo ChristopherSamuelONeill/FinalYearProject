@@ -225,7 +225,7 @@ void TextureObject::loadTextures()
 	};
 	m_vTwoWayStreetTextures.push_back(sfTempTexture);
 
-	//Traffic Textures
+	//Traffic lights Textures--------------------------------------------------
 
 	//red.pmg
 	if (!sfTempTexture.loadFromFile("./Assets/textures/Traffic Lights/red.png"))
@@ -247,6 +247,24 @@ void TextureObject::loadTextures()
 		cout << "Error: green.png was unable to load." << endl;
 	};
 	m_vTrafficLightTextures.push_back(sfTempTexture);
+
+
+	//PedRed.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Traffic Lights/PedRed.png"))
+	{
+		cout << "Error: PedRed.png was unable to load." << endl;
+	};
+	m_vPedestrianLightTextures.push_back(sfTempTexture);
+
+	//PedGreen.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Traffic Lights/PedGreen.png"))
+	{
+		cout << "Error: PedGreen.png was unable to load." << endl;
+	};
+	m_vPedestrianLightTextures.push_back(sfTempTexture);
+	
+
+
 
 	cout << "Finished loading textures" << endl;
 

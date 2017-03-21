@@ -1,9 +1,11 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DefaultSFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Game.cpp
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(134): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(151): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(140): warning C4018: '<': signed/unsigned mismatch
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(157): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(208): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(247): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(163): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(171): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(223): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(262): warning C4018: '<': signed/unsigned mismatch
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)

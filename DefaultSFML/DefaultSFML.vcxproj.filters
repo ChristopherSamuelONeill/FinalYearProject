@@ -90,6 +90,9 @@
     <ClCompile Include="src\TrafficLight.cpp">
       <Filter>Source Files\Game Obejcts</Filter>
     </ClCompile>
+    <ClCompile Include="src\CollisionDetection.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="include\TrafficLight.h">
       <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CollisionDetection.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
