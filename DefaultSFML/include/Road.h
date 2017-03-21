@@ -26,6 +26,8 @@ public:
 	// \breif Update function ,
 	void update();
 
+	RectangleShape getCollisionBox();
+
 private:
 	
 	//position data

@@ -19,9 +19,16 @@ void profileMenu(bool tutorial);
 void settingsMenu(bool tutorial);
 void editor();
 
+void resetSelectors();
+
 bool DEBUGMODE = true;
 Profile player;
 
+//selections bools
+bool RoadSelectorBool = false; // true while choosing road
+bool LightSelectorBool = false; // true while choosing roads
+
+bool placingBool = false; // true while placing roads
 
 int tutorialState = 0;
 
@@ -1457,11 +1464,7 @@ void editor()
 		"Button_Yellow"
 	);
 
-	//selections bools
-	bool RoadSelectorBool = false; // true while choosing road
-	bool LightSelectorBool = false; // true while choosing roads
-
-	bool placingBool = false; // true while placing roads
+	
 
 	//selection string
 	string sType; // type of object been placed by the editor
@@ -1509,14 +1512,20 @@ void editor()
 			{
 				if (sType == "Normal Road")
 				{
-					Editor.placeRoad(sfPlacingPos, 0.0f);
-					Editor.m_bPlacingObject = false;
-					//reset all selectors
-					RoadSelectorBool = false;
-					LightSelectorBool = false;
-					placingBool = false;
+					
+					if (Editor.placeRoad(sfPlacingPos, 0.0f))
+					{
+						Editor.m_bPlacingObject = false;
+						resetSelectors();					
+					}
+					
+					
 				}
 			}
+		}
+		else
+		{
+			Editor.m_bPlacingObject = false;
 		}
 
 		while (window.pollEvent(event))
@@ -1545,9 +1554,7 @@ void editor()
 				{
 					//cancel all placement
 					Editor.m_bPlacingObject = false;
-					LightSelectorBool = false;
-					placingBool = false;
-					RoadSelectorBool = false;
+					resetSelectors();
 			
 				}
 
@@ -1603,8 +1610,7 @@ void editor()
 						sType = "Normal Road";
 
 					}
-					
-					
+		
 					//check if traffic selector Button has been clicked
 					else if (trafficLightButton.m_bClicked(sfMousePos))
 					{
@@ -1633,14 +1639,15 @@ void editor()
 					{
 						placingBool = true;
 						LightSelectorBool = false;
+						RoadSelectorBool = false;
 						sType = "Pedestrian Light";
 
 					}
 					else
 					{
 						//reset all selectors
-						RoadSelectorBool = false;
-						LightSelectorBool = false;
+						resetSelectors();
+						Editor.m_bPlacingObject = false;
 						
 					}
 				}
@@ -1685,4 +1692,12 @@ void editor()
 		window.display();
 	}
 
+}
+
+void resetSelectors()
+{
+	RoadSelectorBool = false;
+	LightSelectorBool = false;
+
+	placingBool = false; 
 }

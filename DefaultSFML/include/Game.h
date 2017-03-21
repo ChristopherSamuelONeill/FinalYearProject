@@ -9,6 +9,7 @@
 #include "TextureObject.h"
 #include "SceneObject.h"
 #include "Road.h"
+#include "CollisionDetection.h"
 
 using namespace sf;
 using namespace std;

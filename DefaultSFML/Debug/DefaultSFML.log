@@ -7,5 +7,6 @@ d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\sr
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(171): warning C4018: '<': signed/unsigned mismatch
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(223): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(262): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(345): warning C4018: '<': signed/unsigned mismatch
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)

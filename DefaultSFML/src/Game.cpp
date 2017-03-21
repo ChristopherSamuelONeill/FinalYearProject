@@ -332,25 +332,32 @@ bool Game::placeRoad(Vector2f position, float rot)
 	//check if temp object is in a valid location
 	Road tempRoad(position, Vector2f(512, 1024), rot, m_sfTempTexture);
 
-	//check if the new road is in the level
-	if(position.x > m_sfLevelSize.x)return false;
-	else if(position.x <= 0)return false;
-	else if (position.y <= 0)return false;
-	else if (position.y > m_sfLevelSize.y)return false;
+	////check if the new road is in the level
+	//if(position.x > m_sfLevelSize.x)return false;
+	//else if(position.x <= 0)return false;
+	//else if (position.y <= 0)return false;
+	//else if (position.y > m_sfLevelSize.y)return false;
+	//
+	CollisionDetection test;
 	
+
 	//check the road doesnt overlap with any other roads
 	for (int i = 0; i < m_vRoads.size(); i++)
 	{
-		if ()
+		if (test(tempRoad.getCollisionBox(), m_vRoads[i].getCollisionBox()) == true)
 		{
+			//did not place due to overlap
+			cout << "Collision" << endl;
 			return false;
+			
 		}
+		
 	}
 	
 	//if valid create road
-	
-		m_vRoads.push_back(tempRoad);
-		return true;
+	cout << " No Collision" << endl;
+	m_vRoads.push_back(tempRoad);
+	return true;
 
 }
 

@@ -43,3 +43,8 @@ void Road::update()
 	m_sfRoadSprite.setOrigin(m_sfSize / 2.0f);
 	m_sfRoadSprite.setRotation(m_fRotation);
 }
+
+RectangleShape Road::getCollisionBox()
+{
+	return m_sfRoadRect;
+}
