@@ -31,7 +31,7 @@ public:
 	// \param Texture of sceneObject
 	// \param Rotation of sceneObject
 	// \param Name the name of the texture (used for the saving)
-	SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rotation, char Name[]);
+	SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rotation);
 
 	// \breif Updates object
 	void update();
@@ -58,7 +58,7 @@ public:
 	Vector2f m_sfPosition; 	// \breif X Y coords of the object
 	Vector2f m_sfSize;// \breif Dimensions of the object
 	float m_fRotation;// \breif oreientation of the object
-	string *m_sName; // \breif the name of the texture (used for the saving)
+	
 
 	
 

@@ -40,6 +40,31 @@ void Road::update()
 	m_sfRoadSprite.setRotation(m_fRotation);
 }
 
+void Road::setType(string type)
+{
+	m_sType = type;
+}
+
+Vector2f Road::getPosition()
+{
+	return m_sfPosition;
+}
+
+String Road::getType()
+{
+	return m_sType;
+}
+
+float Road::getRotation()
+{
+	return m_fRotation;
+}
+
+Vector2f Road::getSize()
+{
+	return m_sfSize;
+}
+
 RectangleShape Road::getCollisionBox()
 {
 	return m_sfRoadRect;

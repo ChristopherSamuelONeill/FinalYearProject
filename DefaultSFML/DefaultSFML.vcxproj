@@ -146,7 +146,6 @@
     <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="src\TextBox.cpp" />
     <ClCompile Include="src\TextureObject.cpp" />
-    <ClCompile Include="src\tinyxml2.cpp" />
     <ClCompile Include="src\TrafficLight.cpp" />
   </ItemGroup>
   <ItemGroup>

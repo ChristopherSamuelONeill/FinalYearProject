@@ -3,13 +3,17 @@
 
 #include <iostream>
 #include <SFML\Graphics.hpp>
+#include <fstream>
+#include <sstream>
 
-#include "tinyxml2.h"
+
 #include "Car.h"
 #include "TextureObject.h"
 #include "SceneObject.h"
 #include "Road.h"
 #include "CollisionDetection.h"
+
+
 
 using namespace sf;
 using namespace std;
@@ -21,7 +25,7 @@ private:
 	
 	// \breif Function to load an xml file
 	// \param Path to the level
-	void loadLevel(const char dir[]);
+	void loadLevel(string dir);
 
 	vector<Car> m_vCars; // \breif list of cars for the scene
 	SceneObject m_Background; // \breif Background for the level
@@ -49,7 +53,7 @@ public:
 
 	// \breif Overloaded constructor of game object
 	// \param Path to the level
-	Game(const char dir[]);
+	Game(string dir);
 
 	// \breif function to spawn car objects
 	// \param path to car model
@@ -76,7 +80,7 @@ public:
 	void cycleLevelTime();
 
 	// \breif function to cycle Level time of day
-	void saveLevelToFile(const char dir[]);
+	void saveLevelToFile(string dir);
 
 	// \breif function to cycle Level time of day
 	void spawnTempObject(Vector2f position,float rot,string type);

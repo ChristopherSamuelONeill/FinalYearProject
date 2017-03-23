@@ -10,13 +10,12 @@ SceneObject::SceneObject(char Name[])
 {
 }
 
-SceneObject::SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rotation, char Name[])
+SceneObject::SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rotation)
 {
 	m_sfTexture = Texture;
 	m_sfPosition = Pos;
 	m_sfSize = Size;
 	m_fRotation = Rotation;
-	//m_cName = Name;
 
 	//set up drawbales
 	m_sfRect.setPosition(m_sfPosition);

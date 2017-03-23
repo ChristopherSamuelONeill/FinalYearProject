@@ -26,6 +26,29 @@ public:
 	// \breif Update function ,
 	void update();
 
+
+	//setters
+
+	// \breif void sets the type of road
+	// \param String type , the type of road e.g "T - Junction"
+	void setType(string type);	
+
+	//getters 
+
+	// \breif Vector 2f Returns the position of the road
+	Vector2f getPosition();
+
+	// \breif String Returns the type of the road
+	String getType();
+
+
+	// \breif Float Returns the roation of the road
+	float getRotation();
+
+	// \breif Vector 2f Returns the size of the road
+	Vector2f getSize();
+
+	// \breif Vector 2f Returns the rectangle for the road
 	RectangleShape getCollisionBox();
 
 private:
@@ -33,7 +56,9 @@ private:
 	//position data
 	Vector2f m_sfPosition; // \breif Position of the road
 	Vector2f m_sfSize; // \breif Size of the road
-	float m_fRotation; // \breif Rotation of the road in degrees 
+	float m_fRotation; // \breif Rotation of the road in degrees
+
+	string m_sType; // \breif Name of the raod type e.g "T - Junction" used for texturing and others
 
 	//drawbale data
 	Texture m_sfTexture; // \breif Texture of the road

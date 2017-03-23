@@ -75,9 +75,6 @@
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\tinyxml2.cpp">
-      <Filter>Source Files\Other</Filter>
-    </ClCompile>
     <ClCompile Include="src\TextureObject.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>

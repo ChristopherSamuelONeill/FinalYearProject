@@ -4,13 +4,13 @@ Game::Game()
 {
 }
 
-Game::Game(const char dir[])
+Game::Game(string dir)
 {
 		
 	m_Gametextures.loadTextures();
 	
 	//set up a blank senerio
-	if (dir == "./Assets/Levels/Editor.xml")
+	if (dir == "./Assets/Levels/Editor.txt")
 	{
 		cout << "Editor Mode" << endl;
 		m_iCurrentBackground = 0;
@@ -18,8 +18,8 @@ Game::Game(const char dir[])
 		m_sfLevelSize *= 2.0f;
 		m_iLevelSize = 0;
 		m_iLevelTime = 0;
-		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0] , 0.0f, "Background");
-		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[0], 0.0f, "Background");
+		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0] , 0.0f);
+		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[0], 0.0f);
 	}
 	else // load level
 	{
@@ -29,80 +29,77 @@ Game::Game(const char dir[])
 	generateSnapGrid();
 }
 
-void Game::loadLevel(const char dir[])
+void Game::loadLevel(string dir)
 {
-	tinyxml2::XMLDocument levelFile;
-	levelFile.LoadFile(dir);
+	fstream file;
+	string lineData;
+	string temp;
 
-	for (tinyxml2::XMLNode* child = levelFile.FirstChild(); child != NULL; child = child->NextSibling())
+	file.open("Assets/Levels/" + dir +".txt");
+	if (file.is_open())
 	{
-		const char* Value = child->Value();
-		
-		int model;
-		Vector2f pos;
-		Vector2f size;
-
-		if (strcmp(Value, "Car") == 0)
+		while (getline(file, lineData))
 		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
+			istringstream settings(lineData);
+			settings.str(lineData);
+			settings >> temp;
+			if (temp == "c")
 			{
-				Value = child2->Value();
-				if (strcmp(Value, "type") == 0)
-				{
-					string smodel = child2->ToElement()->GetText();
-					model = stoi(smodel);
-				}
+				//ingore . this line is a commen
+			}
+			else if (temp == "LevelSize")
+			{
+				float x;
+				float y;
+				settings >> x >> y;
+				m_sfLevelSize = Vector2f(x, y);
 
-				if (strcmp(Value, "x") == 0)
-				{
-					string posx = child2->ToElement()->GetText();
-					pos.x = stof(posx);
-				}
-				if (strcmp(Value, "y") == 0)
-				{
-					string posy = child2->ToElement()->GetText();
-					pos.y = stof(posy);
-				}
+			}
+			else if (temp == "Background")
+			{
+
+				int i;
+				settings >> i;
+				m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[i], 0.0f, "Background");
 				
-				if (strcmp(Value, "sx") == 0)
-				{
-					string posSx = child2->ToElement()->GetText();
-					size.x = stof(posSx);
-				}
-				if (strcmp(Value, "sy") == 0)
-				{
-					string posSy = child2->ToElement()->GetText();
-					size.y = stof(posSy);
-				}
-
 			}
-
-			spawnCar(model,pos,size);
-		}			
-
-		if (strcmp(Value, "Map") == 0)
-		{
-			for (tinyxml2::XMLNode* child2 = child->FirstChild(); child2 != NULL; child2 = child2->NextSiblingElement())
+			else if (temp == "Time")
 			{
-				Value = child2->Value();
-			
-
-				if (strcmp(Value, "x") == 0)
-				{
-					string posx = child2->ToElement()->GetText();
-					pos.x = stof(posx);
-				}
-				if (strcmp(Value, "y") == 0)
-				{
-					string posy = child2->ToElement()->GetText();
-					pos.y = stof(posy);
-				}
+				int i;
+				settings >> i;
+				m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[i], 0.0f);
 
 			}
+			else if (temp == "Road")
+			{
+				float px;
+				float py;
+				float sx;
+				float sy;
+				float rot;
+				string type;
 
-			//spawnCar(model, pos, size);
+				settings >> px >> py >> sx >> sy >> rot >> type;
+
+				Vector2f position(px, py);
+				Vector2f size(sx, sy);
+
+				Road tempRoad;
+				if (type == "T - Junction")tempRoad = Road(position, size, rot, m_Gametextures.m_vTJunctionTextures[1]);
+				if (type == "Normal Road")tempRoad = Road(position, size, rot, m_Gametextures.m_vTwoWayStreetTextures[1]);
+
+						
+
+			}
+			
 		}
-	}	
+	}
+	else
+	{
+		cout << "Couldnt Open file ... Assets/profiles/" << location << endl;
+	}
+
+	file.close();
 }
 
 void Game::spawnCar(int cartype, Vector2f pos, Vector2f size)
@@ -240,44 +237,73 @@ void Game::cycleLevelTime()
 	m_Time.setTexture(m_Gametextures.m_vTimeTextures[m_iLevelTime],"");
 }
 
-void Game::saveLevelToFile(const char dir[])
+void Game::saveLevelToFile(string dir)
 {
-	//create the file
-	tinyxml2::XMLDocument levelFile;
+	//load list list
+	vector<string> LevelNames;
+	fstream file;
+	ofstream ofile;
 
-	//Create a root node so that objects can easily be added
-	tinyxml2::XMLNode * pRoot = levelFile.NewElement("Level");
+	ofstream onewFile;
 
-	//add the root node to the document as a child
-	levelFile.InsertFirstChild(pRoot);
+	string tempLevel;
+	string lineData;
 
-	//creat child of root
-	tinyxml2::XMLElement * pRootChild = levelFile.NewElement("Scene Object");
+	file.open("Assets/Levels/LevelList.txt");
 
-	//loop the scene objects
-	for (int i = 0; i < m_vSceneObejcts.size(); i++)
+
+	if (file.is_open())
 	{
-		//add a scene object with the following attributes
-		pRoot->InsertEndChild(pRootChild);
-		pRootChild->SetAttribute("pos x", m_vSceneObejcts[i].m_sfPosition.x);
-		pRootChild->SetAttribute("pos y", m_vSceneObejcts[i].m_sfPosition.y);
-		pRootChild->SetAttribute("size x", m_vSceneObejcts[i].m_sfSize.x);
-		pRootChild->SetAttribute("size y", m_vSceneObejcts[i].m_sfSize.y);
-		pRootChild->SetAttribute("Rotation", m_vSceneObejcts[i].m_fRotation);
-		//tinyxml2::XMLText * text = m_vSceneObejcts[i].m_sName;
-		//pRootChild->SetAttribute("Name",text );
-		pRoot->InsertEndChild(pRootChild);
+		while (getline(file, lineData))
+		{
+			istringstream iss(lineData);
+			iss.str(lineData);
+			iss >> tempLevel;
+			LevelNames.push_back(tempLevel);
+		}
 
 	}
 
-	//add the cars
-	pRootChild = levelFile.NewElement("Cars");
-	pRoot->InsertEndChild(pRootChild);
-	pRootChild->SetAttribute("Number of cars", m_vCars.size());
+	file.close();
+
+	ofile.open("Assets/Levels/LevelList.txt");
+	// add new player to list
+	LevelNames.push_back(dir + ".txt");
+
+	for (int i = 0; i < LevelNames.size(); i++)
+	{
+		ofile << LevelNames[i] << endl;
+	}
+
+	//create name .txt file
+
+	onewFile.open("Assets/Levels/" + dir + ".txt");
+	if (onewFile.is_open())
+	{
+		//save the level Size
+		onewFile << "c" << "Scale X " << "Scale Y " << endl;
+		onewFile << "Level Size" << m_sfLevelSize.x << " " << m_sfLevelSize.y << endl;
+
+		//save the background
+		onewFile << "c" << "Texture Number" << endl;
+		onewFile << "Background" << m_iCurrentBackground << endl;
+
+		//save the time
+		onewFile << "c" << "Texture Number" << endl;
+		onewFile << "Time" << m_iLevelTime << endl;
 
 
-	pRoot->InsertEndChild(pRootChild);
-	//add the root node to the document as a child
+		//save the Roads
+		for (int i = 0; i < m_vRoads.size(); i++)
+		{
+			onewFile << "c" << "Pos X " << "Pos Y " << "Scale x " << "Scale y "<< "Rotation " << "Type " << endl;
+			onewFile << "Road" << m_vRoads[i].getPosition().x << " " << m_vRoads[i].getPosition().y << " " << m_vRoads[i].getSize().x << " " << m_vRoads[i].getSize().y << " " << m_vRoads[i].getRotation() << " " << m_vRoads[i].getType() <<  endl;
+		}
+	
+		
+	}
+	onewFile.close();
+	
 	
 
 
@@ -419,6 +445,7 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	
 	//if valid create road
 	m_vRoads.push_back(tempRoad);
+	m_vRoads[m_vRoads.size() - 1].setType(type);
 
 
 }
