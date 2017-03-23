@@ -39,7 +39,7 @@ public:
 	Vector2f getPosition();
 
 	// \breif String Returns the type of the road
-	String getType();
+	string getType();
 
 
 	// \breif Float Returns the roation of the road

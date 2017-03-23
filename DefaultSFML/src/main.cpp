@@ -17,6 +17,8 @@ using namespace sf;
 void mainMenu(bool tutorial);
 void profileMenu(bool tutorial);
 void settingsMenu(bool tutorial);
+void playMenu();
+void LoadLevel();
 void editor();
 
 void resetSelectors();
@@ -329,7 +331,7 @@ void mainMenu(bool tutorial)
 						if (play.m_bClicked(sfMousePos) && tutorialState == 11)
 						{
 							window.close();
-							editor();
+							playMenu();
 
 						}
 						if (settings.m_bClicked(sfMousePos) && tutorialState == 11)
@@ -646,6 +648,10 @@ void profileMenu(bool tutorial)
 		RenderWindow window(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
 		window.setFramerateLimit(60);
 
+		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 - (250 * resolutionScale.x), player.m_sfResolution.y / 2 - (250 * resolutionScale.y));
+		Overlay failedOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tThe Profile you entered does not exist \n\nPlease try again");
+		failedOverlayMessage.m_bDraw = false;
+
 		while (window.isOpen())
 		{
 
@@ -673,13 +679,29 @@ void profileMenu(bool tutorial)
 				{
 					if (event.mouseButton.button == sf::Mouse::Left)
 					{
+
+						if (failedOverlayMessage.m_bClicked(sfMousePos) && failedOverlayMessage.m_bDraw == true)
+						{
+							failedOverlayMessage.m_bDraw = false;
+						}
+
 						if (Select.m_bClicked(sfMousePos))
 						{
-							player.loadProfile(playerEnterNameBox.m_sText);
-							window.close();
-							mainMenu(false);
+							if (player.loadProfile(playerEnterNameBox.m_sText))
+							{
+								window.close();
+								mainMenu(false);
+							}
+							else
+							{
+								playerEnterNameBox.m_sText.clear();
+								failedOverlayMessage.m_bDraw = true;
+								if (DEBUGMODE) cout << "Failed to load profile" << endl;
+							}
+							
 							
 						}
+						
 
 						if (Delete.m_bClicked(sfMousePos))
 						{
@@ -766,6 +788,8 @@ void profileMenu(bool tutorial)
 			window.draw(New);
 			window.draw(Select);
 			window.draw(Delete);
+			window.draw(failedOverlayMessage);
+
 			window.display();
 		}
 
@@ -1383,10 +1407,138 @@ void settingsMenu(bool tutorial)
 
 }
 
+void playMenu()
+{
+
+	Texture mainMenuBackgroundTex;
+	if (!mainMenuBackgroundTex.loadFromFile("Assets/textures/menuScreen.png"))
+	{
+		cout << "Error: menuScreen.png was unable to load.";
+	};
+
+	//we now have a profile
+	//create main menu assets ......................
+	player.loadProfile(player.m_sProfileName);
+
+	//main menu background-------------------------
+	RectangleShape mainMenuBackgroundRect;
+	Sprite mainMenuBackgroundSprite;
+
+	mainMenuBackgroundRect.setPosition(0, 0);
+	mainMenuBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+	mainMenuBackgroundRect.setFillColor(Color::Blue);
+
+	mainMenuBackgroundSprite.setTexture(mainMenuBackgroundTex);
+	mainMenuBackgroundSprite.setScale(Vector2f(1, 1));
+	mainMenuBackgroundSprite.setPosition(mainMenuBackgroundRect.getPosition());
+
+
+	//Create Positioning variables-------------------------
+	Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+	Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
+	Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+
+	Text title;
+	Font font;
+
+	if (!font.loadFromFile("Assets/fonts/ariali.ttf"))
+	{
+		cout << "Error: Font ariali.ttf was unable to load.";
+	};
+
+	title.setFont(font);
+	title.setString("Play Menu");
+	title.setCharacterSize(50 * resolutionScale.x);
+	title.setFillColor(Color(0, 0, 0));
+	title.setPosition(Vector2f(middleOfScreen.x, 25 * resolutionScale.y));
+
+	Button EditorButton("Editor",	Vector2f( 50 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
+	Button LevelsButton("Play",		Vector2f( 350 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
+	Button LoadButton("Load",		Vector2f( 650 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
+	Button BackButton("Main Menu",	Vector2f( 950 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
+
+
+	RenderWindow window;
+	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu", Style::Fullscreen);
+	else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Play Menu");
+	window.setFramerateLimit(60);
+
+
+	while (window.isOpen())
+	{
+
+		//handle input
+		Event event;
+		Vector2f sfMousePos;
+		while (window.pollEvent(event))
+		{
+
+			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+
+			if (event.type == Event::Closed)
+			{
+				window.close(); // Allows window to close when 'X' is pressed
+				return;
+			}
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+
+					
+					if (EditorButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					{
+						window.close();
+						editor();
+
+					}
+					if (LevelsButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					{
+
+						window.close();
+
+					}
+					if (LoadButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					{
+						window.close();
+						LoadLevel();
+
+					}
+					if (BackButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					{
+						window.close(); // Allows window to close when 'X' is pressed
+						mainMenu(false);
+
+					}
+				}
+			}
+		}
+
+
+		window.clear(Color::Green);
+
+		window.draw(mainMenuBackgroundSprite);
+		window.draw(title);
+
+		// buttons
+		window.draw(EditorButton);
+		window.draw(LevelsButton);
+		window.draw(LoadButton);
+		window.draw(BackButton);
+
+		window.display();
+	}
+
+}
+
+void LoadLevel()
+{
+}
+
 void editor()
 {
 	//Game Object
-	Game Editor("./Assets/Levels/Editor.xml");
+	Game Editor("./Assets/Levels/Editor.txt");
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;

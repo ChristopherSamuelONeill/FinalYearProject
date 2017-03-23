@@ -9,7 +9,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "tinyxml2.h"
 
 using namespace std;
 using namespace sf;

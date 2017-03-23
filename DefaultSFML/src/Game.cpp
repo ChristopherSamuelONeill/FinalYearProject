@@ -60,7 +60,7 @@ void Game::loadLevel(string dir)
 
 				int i;
 				settings >> i;
-				m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[i], 0.0f, "Background");
+				m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[i], 0.0f);
 				
 			}
 			else if (temp == "Time")
@@ -87,7 +87,7 @@ void Game::loadLevel(string dir)
 				Road tempRoad;
 				if (type == "T - Junction")tempRoad = Road(position, size, rot, m_Gametextures.m_vTJunctionTextures[1]);
 				if (type == "Normal Road")tempRoad = Road(position, size, rot, m_Gametextures.m_vTwoWayStreetTextures[1]);
-
+				m_vRoads.push_back(tempRoad);
 						
 
 			}
@@ -96,7 +96,7 @@ void Game::loadLevel(string dir)
 	}
 	else
 	{
-		cout << "Couldnt Open file ... Assets/profiles/" << location << endl;
+		cout << "Couldnt Open file ... Assets/profiles/" << dir << ".txt" << endl;
 	}
 
 	file.close();

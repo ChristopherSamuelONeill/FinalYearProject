@@ -50,7 +50,7 @@ Vector2f Road::getPosition()
 	return m_sfPosition;
 }
 
-String Road::getType()
+string Road::getType()
 {
 	return m_sType;
 }

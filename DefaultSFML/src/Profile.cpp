@@ -114,7 +114,7 @@ void Profile::saveProfile()
 	ofile.close();
 }
 
-void Profile::loadProfile(string name)
+bool Profile::loadProfile(string name)
 {
 	fstream file;
 	string lineData;
@@ -145,7 +145,10 @@ void Profile::loadProfile(string name)
 	else
 	{
 		cout << "Couldnt Open file ... Assets/profiles/" << name + ".txt" << endl;
+		return false;
 	}
+
+	return true;
 
 	file.close();
 }
