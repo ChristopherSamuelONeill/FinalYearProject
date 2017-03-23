@@ -31,11 +31,17 @@ private:
 
 	TextureObject m_Gametextures;// \breif handle to all game textures
 
+	// \breif Function to generate a grid for the map
+	void generateSnapGrid();
+
+	vector<Vector2f> m_vGridSystem; // \breif Vector containing grid system for map
+
 
 	//editor objects
 	int m_iCurrentBackground;// \breif int of the current background (used for cycling)
 	int m_iLevelSize;// \breif int of the Level Size (used for cycling)
 	int m_iLevelTime;// \breif int of the Level time (used for cycling)
+	Vector2f m_sfSize; //breif Size of temp object
 
 public:
 
@@ -85,7 +91,7 @@ public:
 	// \breif function to attempt to place a road to the level
 	// \param Position , vector of the position the object
 	// \param Rotation , float of the orientation the object
-	bool placeRoad(Vector2f position, float rot);
+	bool placeRoad(Vector2f position, float rot, string type);
 
 	
 	

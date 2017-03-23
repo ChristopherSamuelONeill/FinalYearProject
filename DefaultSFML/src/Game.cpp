@@ -1,6 +1,5 @@
 #include "Game.h"
 
-
 Game::Game()
 {
 }
@@ -16,6 +15,7 @@ Game::Game(const char dir[])
 		cout << "Editor Mode" << endl;
 		m_iCurrentBackground = 0;
 		m_sfLevelSize = Vector2f(5333,3000);
+		m_sfLevelSize *= 2.0f;
 		m_iLevelSize = 0;
 		m_iLevelTime = 0;
 		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0] , 0.0f, "Background");
@@ -26,7 +26,7 @@ Game::Game(const char dir[])
 		loadLevel(dir);
 	}
 	
-
+	generateSnapGrid();
 }
 
 void Game::loadLevel(const char dir[])
@@ -105,7 +105,6 @@ void Game::loadLevel(const char dir[])
 	}	
 }
 
-
 void Game::spawnCar(int cartype, Vector2f pos, Vector2f size)
 {
 
@@ -142,6 +141,7 @@ void Game::updateScene(float dt)
 		m_vCars[i].update(dt);
 	}
 
+	
 	//update time
 	m_Time.setSize(m_sfLevelSize);
 	m_Time.update();
@@ -177,6 +177,8 @@ void Game::drawScene(RenderWindow & window)
 
 	//draw temp object
 	if (m_bPlacingObject)window.draw(m_sfTempSprite);
+	if (m_bPlacingObject)window.draw(m_sfTempRect);
+	
 
 	//draw time of day
 	window.draw(m_Time);
@@ -207,21 +209,15 @@ void Game::cycleBackground()
 {
 	m_iLevelSize++;
 
-	// 0 - 3000
-	// 1 - 5000
-	// 2 - 7000
-	// 3 - 9000
-	// 4 - 11000
-	// 5 - 13000
- 
-
 	if (m_iLevelSize == 6)
 	{
 		m_iLevelSize = 0;
 	}
 
-	m_sfLevelSize = Vector2f(5333 + m_iLevelSize * 3555, 3000 + m_iLevelSize * 2000);
+	m_sfLevelSize = Vector2f(5300 + m_iLevelSize * 3500, 3000 + m_iLevelSize * 2000);
+	m_sfLevelSize *= 2.0f;
 	m_Background.setSize(m_sfLevelSize);
+	generateSnapGrid();
 }
 
 void Game::cycleLevelTime()
@@ -289,57 +285,37 @@ void Game::saveLevelToFile(const char dir[])
 
 void Game::spawnTempObject(Vector2f position, float rot, string type)
 {
-	//set up drawbales
-	m_sfTempRect.setPosition(position);
-	m_sfTempRect.setFillColor(Color::Red);
-	m_sfTempRect.setRotation(rot);
 
-	Vector2f size;
-	if (type == "Traffic Light")
+	//snap to nearest grid
+	Vector2f sfSnappedPos;
+
+	for (int i = 0; i < m_vGridSystem.size(); i++)
 	{
-		size = Vector2f(800, 600);
-		m_sfTempRect.setSize(size);
-		m_sfTempRect.setOrigin(size/2.0f);
-		m_sfTempTexture = m_Gametextures.m_vTrafficLightTextures[0];
-		m_sfTempSprite.setOrigin(size / 2.0f);
+		//find the distance from nearest the road to every grid
+		Vector2f dist = m_vGridSystem[i] - position;
+		float mag = sqrt(dist.x * dist.x + dist.y * dist.y);
+		if (mag < 50)
+		{
+			sfSnappedPos = m_vGridSystem[i];
+			i = m_vGridSystem.size();
+		}
+
 	}
-	if (type == "Pedestrian Light")
-	{
-		size = Vector2f(800, 600);
-		m_sfTempRect.setSize(size);
-		m_sfTempRect.setOrigin(size / 2.0f);
-		m_sfTempTexture = m_Gametextures.m_vPedestrianLightTextures[0];
-		m_sfTempSprite.setOrigin(size / 2.0f);
-	}
-	if (type == "Normal Road")
-	{
-		size = Vector2f(512, 1024);
-		m_sfTempRect.setSize(size);
-		m_sfTempRect.setOrigin(size / 2.0f);
-		m_sfTempTexture = m_Gametextures.m_vTwoWayStreetTextures[0];
-		m_sfTempSprite.setOrigin(size / 2.0f);
-	}
-	
 
-	m_sfTempSprite.setPosition(m_sfTempRect.getPosition());
-	m_sfTempSprite.setTexture(m_sfTempTexture);
-	m_sfTempSprite.setRotation(rot);
+	Road tempRoad;
+	if (type == "T - Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures.m_vTJunctionTextures[0]);
+	if (type == "Normal Road")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures.m_vTwoWayStreetTextures[0]);
 
-}
+	bool valid = true;
 
-bool Game::placeRoad(Vector2f position, float rot)
-{
-	//check if temp object is in a valid location
-	Road tempRoad(position, Vector2f(512, 1024), rot, m_sfTempTexture);
+	//check if the new road is in the level
+	if (sfSnappedPos.x > m_sfLevelSize.x)valid = false;
+	else if (sfSnappedPos.x <= 0)valid = false;
+	else if (sfSnappedPos.y <= 0)valid = false;
+	else if (sfSnappedPos.y > m_sfLevelSize.y)valid = false;
 
-	////check if the new road is in the level
-	//if(position.x > m_sfLevelSize.x)return false;
-	//else if(position.x <= 0)return false;
-	//else if (position.y <= 0)return false;
-	//else if (position.y > m_sfLevelSize.y)return false;
-	//
 	CollisionDetection test;
-	
+
 
 	//check the road doesnt overlap with any other roads
 	for (int i = 0; i < m_vRoads.size(); i++)
@@ -347,17 +323,124 @@ bool Game::placeRoad(Vector2f position, float rot)
 		if (test(tempRoad.getCollisionBox(), m_vRoads[i].getCollisionBox()) == true)
 		{
 			//did not place due to overlap
-			cout << "Collision" << endl;
-			return false;
-			
+			valid = false;
 		}
+	}
+
+	//set up drawbales
+	m_sfTempRect.setPosition(sfSnappedPos);
+	if(valid)m_sfTempRect.setFillColor(Color(0,255,0,125));
+	if (!valid)m_sfTempRect.setFillColor(Color(255, 0, 0, 125));
+	m_sfTempRect.setSize(Vector2f(500,500));
+	m_sfTempRect.setRotation(rot);
+
+	
+	if (type == "Traffic Light")
+	{
+		m_sfSize = Vector2f(800, 600);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures.m_vTrafficLightTextures[0];
 		
 	}
+	if (type == "Pedestrian Light")
+	{
+		m_sfSize = Vector2f(800, 600);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures.m_vPedestrianLightTextures[0];
+		
+	}
+	if (type == "Normal Road")
+	{
+		
+		m_sfSize = Vector2f(500, 1000);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures.m_vTwoWayStreetTextures[1];
+
+		
+		
+	}
+	if (type == "T - Junction")
+	{
+		m_sfSize = Vector2f(2500, 1500);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures.m_vTJunctionTextures[1];
+
+	}
 	
-	//if valid create road
-	cout << " No Collision" << endl;
-	m_vRoads.push_back(tempRoad);
-	return true;
+	m_sfTempSprite.setPosition(sfSnappedPos);
+	m_sfTempSprite.setTexture(m_sfTempTexture);
+	m_sfTempSprite.setRotation(rot);
+	
 
 }
 
+bool Game::placeRoad(Vector2f position, float rot,string type)
+{
+	
+	//snap to nearest grid
+	Vector2f sfSnappedPos;
+
+	for (int i = 0; i < m_vGridSystem.size(); i++)
+	{
+		//find the distance from nearest the road to every grid
+		Vector2f dist = m_vGridSystem[i] - position;
+		float mag = sqrt(dist.x * dist.x + dist.y * dist.y);
+		if (mag < 50)
+		{
+			sfSnappedPos = m_vGridSystem[i];
+			i = m_vGridSystem.size();
+			
+		}
+	}
+
+
+	Road tempRoad;
+	if (type == "T - Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures.m_vTJunctionTextures[0]);
+	if (type == "Normal Road")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures.m_vTwoWayStreetTextures[0]);
+
+	//check if the new road is in the level
+	if (sfSnappedPos.x > m_sfLevelSize.x)return false;
+	else if (sfSnappedPos.x <= 0)return false;
+	else if (sfSnappedPos.y <= 0)return false;
+	else if (sfSnappedPos.y > m_sfLevelSize.y)return false;
+
+	CollisionDetection test;
+
+
+	//check the road doesnt overlap with any other roads
+	for (int i = 0; i < m_vRoads.size(); i++)
+	{
+		if (test(tempRoad.getCollisionBox(), m_vRoads[i].getCollisionBox()) == true)
+		{
+			//did not place due to overlap
+			return false;
+		}
+	}
+	
+	//if valid create road
+	m_vRoads.push_back(tempRoad);
+
+
+}
+
+void Game::generateSnapGrid()
+{
+	cout << "Generating Pathfinding ... ";
+	//clear grid (incase of resize)
+	m_vGridSystem.clear();
+
+	// loop from 0 to level size in steps of GRIDSIZE
+	float fGridSize = 50.0f;
+
+	for (int y = 0; y < m_sfLevelSize.y - fGridSize; y += fGridSize)
+	{
+		for (int x = 0; x < m_sfLevelSize.x - fGridSize; x += fGridSize)
+		{
+			m_vGridSystem.push_back(Vector2f(x, y));
+			
+		}
+
+	}
+	cout << "Finished" << endl;
+
+}

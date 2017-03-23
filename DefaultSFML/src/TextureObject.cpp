@@ -6,7 +6,7 @@ TextureObject::TextureObject()
 
 void TextureObject::loadTextures()
 {
-	cout << "Loading Textures" << endl;
+	cout << "Loading Textures... ";
 
 	Texture sfTempTexture;
 
@@ -218,12 +218,35 @@ void TextureObject::loadTextures()
 
 	//Road Textures---------------------------------------------------------------------
 
-	//normal2WayStreet.png.png
+	
+
+	//normal2WayStreet.png
 	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/normal2WayStreet.png"))
 	{
 		cout << "Error: normal2WayStreet.png was unable to load." << endl;
 	};
 	m_vTwoWayStreetTextures.push_back(sfTempTexture);
+
+	//normal2WayStreetWithDirections.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/normal2WayStreetWithDirections.png"))
+	{
+		cout << "Error: normal2WayStreetWithDirections.png was unable to load." << endl;
+	};
+	m_vTwoWayStreetTextures.push_back(sfTempTexture);
+
+	//T-Junction.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/T-Junction.png"))
+	{
+		cout << "Error: T-Junction.png was unable to load." << endl;
+	};
+	m_vTJunctionTextures.push_back(sfTempTexture);
+
+	//T-JunctionsWithDirections.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/T-JunctionsWithDirections.png"))
+	{
+		cout << "Error: T-JunctionsWithDirections.png was unable to load." << endl;
+	};
+	m_vTJunctionTextures.push_back(sfTempTexture);
 
 	//Traffic lights Textures--------------------------------------------------
 
@@ -266,6 +289,6 @@ void TextureObject::loadTextures()
 
 
 
-	cout << "Finished loading textures" << endl;
+	cout << "Finished" << endl;
 
 }

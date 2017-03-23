@@ -21,14 +21,14 @@ SceneObject::SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rot
 	//set up drawbales
 	m_sfRect.setPosition(m_sfPosition);
 	m_sfRect.setSize(m_sfSize);
-	m_sfRect.setOrigin(m_sfSize / 2.0f);
+	//m_sfRect.setOrigin(m_sfSize / 2.0f);
 	m_sfRect.setRotation(m_fRotation);
 	m_sfRect.setFillColor(Color::Red);
 
 	m_sfTexture.setRepeated(true);
 	m_sfSprite.setPosition(m_sfRect.getPosition());
 	m_sfSprite.setTexture(m_sfTexture);
-	m_sfSprite.setOrigin(m_sfSize / 2.0f);
+	//m_sfSprite.setOrigin(m_sfSize / 2.0f);
 	m_sfSprite.setRotation(m_fRotation);
 }
 
@@ -46,7 +46,7 @@ void SceneObject::update()
 
 	m_sfSprite.setPosition(m_sfRect.getPosition());
 	m_sfSprite.setTexture(m_sfTexture);
-	m_sfSprite.setOrigin(m_sfSize / 2.0f);
+	//m_sfSprite.setOrigin(m_sfSize / 2.0f);
 	m_sfSprite.setRotation(m_fRotation);
 	
 	

@@ -1397,7 +1397,7 @@ void editor()
 	//create a view to fill the windowfor game render
 	View gameView;
 	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-	gameView.setCenter(Vector2f(0,0));
+	gameView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
 	gameView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
 
 	//create a view to fill the windowfor game render
@@ -1439,7 +1439,13 @@ void editor()
 
 	Button twoWayButton
 	("Two Way Road",
-		Vector2f(300, 270 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 270 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button TJunctionButton
+	("T - Junction",
+		Vector2f(300 * resolutionScale.x, 360 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
@@ -1453,21 +1459,24 @@ void editor()
 
 	Button normalLightButton
 	("Traffic Lights",
-		Vector2f(300, 315 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 315 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
 	Button pedLightButton
 	("Pedestrian Lights",
-		Vector2f(300, 405 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 405 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
 
-	
+	float fRotation = 0;
 
 	//selection string
 	string sType; // type of object been placed by the editor
+
+	//input delay
+	Clock inputDelay;
 
 	while (window.isOpen())
 	{
@@ -1476,6 +1485,23 @@ void editor()
 		Vector2f sfMousePos;
 		Vector2f sfPlacingPos;
 		int iMouseWheel;
+
+		Time elapsedTime = inputDelay.getElapsedTime();
+
+		if (elapsedTime.asMilliseconds() >= 100.0f)
+		{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+			{
+				fRotation += 90;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+			{
+				fRotation -= 90;
+			}
+			inputDelay.restart();
+			
+		}
+		
 
 		//move camera
 		float fMoveSpeed = 10;
@@ -1500,26 +1526,38 @@ void editor()
 		{
 			gameView.move(Vector2f(fMoveSpeed, 0.0f));
 		}
+		
 
 		//move the editor objects
 		sfPlacingPos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
 
 		if (placingBool)
 		{
-			Editor.spawnTempObject(sfPlacingPos, 0.0f, sType);
+			Editor.spawnTempObject(sfPlacingPos, fRotation, sType);
 			Editor.m_bPlacingObject = true;
 			if (Keyboard::isKeyPressed(Keyboard::Return))
 			{
 				if (sType == "Normal Road")
 				{
-					
-					if (Editor.placeRoad(sfPlacingPos, 0.0f))
+
+					if (Editor.placeRoad(sfPlacingPos, fRotation, sType))
 					{
 						Editor.m_bPlacingObject = false;
-						resetSelectors();					
+						resetSelectors();
 					}
-					
-					
+
+
+				}
+				if (sType == "T - Junction")
+				{
+
+					if (Editor.placeRoad(sfPlacingPos, fRotation, sType))
+					{
+						Editor.m_bPlacingObject = false;
+						resetSelectors();
+					}
+
+
 				}
 			}
 		}
@@ -1527,6 +1565,7 @@ void editor()
 		{
 			Editor.m_bPlacingObject = false;
 		}
+
 
 		while (window.pollEvent(event))
 		{
@@ -1548,17 +1587,23 @@ void editor()
 				}
 			}
 
-			if (event.type == sf::Event::MouseButtonPressed)
+			if (event.type == Event::Closed)
 			{
-				if (event.mouseButton.button == sf::Mouse::Right)
+				window.close(); // Allows window to close when 'X' is pressed
+				return;
+			}
+
+			if (sf::Event::MouseButtonPressed)
+			{
+				if (Mouse::isButtonPressed(sf::Mouse::Right))
 				{
 					//cancel all placement
 					Editor.m_bPlacingObject = false;
 					resetSelectors();
-			
+
 				}
 
-				if (event.mouseButton.button == sf::Mouse::Left)
+				if (Mouse::isButtonPressed(sf::Mouse::Left))
 				{
 					sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
 
@@ -1610,7 +1655,16 @@ void editor()
 						sType = "Normal Road";
 
 					}
-		
+					//check if TJunction Button has been clicked
+					else if (TJunctionButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
+					{
+						placingBool = true;
+						LightSelectorBool = false;
+						RoadSelectorBool = false;
+						sType = "T - Junction";
+
+					}
+
 					//check if traffic selector Button has been clicked
 					else if (trafficLightButton.m_bClicked(sfMousePos))
 					{
@@ -1627,12 +1681,12 @@ void editor()
 						placingBool = false;
 					}
 					//check if to spawn a traffic light
-					else if (normalLightButton.m_bClicked(sfMousePos) && LightSelectorBool == true )
+					else if (normalLightButton.m_bClicked(sfMousePos) && LightSelectorBool == true)
 					{
 						placingBool = true;
 						LightSelectorBool = false;
 						sType = "Traffic Light";
-						
+
 					}
 					//check if to spawn a pedestrian light
 					else if (pedLightButton.m_bClicked(sfMousePos) && LightSelectorBool == true)
@@ -1648,18 +1702,10 @@ void editor()
 						//reset all selectors
 						resetSelectors();
 						Editor.m_bPlacingObject = false;
-						
+
 					}
 				}
 			}
-
-			if (event.type == Event::Closed)
-			{
-				window.close(); // Allows window to close when 'X' is pressed
-				return;
-			}
-
-		
 
 		}
 
@@ -1681,6 +1727,7 @@ void editor()
 		if (RoadSelectorBool)
 		{
 			window.draw(twoWayButton);
+			window.draw(TJunctionButton);
 		}
 		if (LightSelectorBool)
 		{
@@ -1690,6 +1737,7 @@ void editor()
 
 		//show the window
 		window.display();
+		
 	}
 
 }
