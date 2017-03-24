@@ -1,0 +1,8 @@
+c Scale X Scale Y 
+LevelSize 17600 10000
+c Texture Number
+Background 1
+c Texture Number
+Time 3
+c Pos X Pos Y Scale x Scale y Rotation Type 
+Road 1550 1150 2500 1500 0 T-Junction

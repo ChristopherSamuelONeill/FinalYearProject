@@ -45,7 +45,6 @@ void SceneObject::update()
 
 	m_sfSprite.setPosition(m_sfRect.getPosition());
 	m_sfSprite.setTexture(m_sfTexture);
-	//m_sfSprite.setOrigin(m_sfSize / 2.0f);
 	m_sfSprite.setRotation(m_fRotation);
 	
 	

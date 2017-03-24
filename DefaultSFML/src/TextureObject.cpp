@@ -170,6 +170,13 @@ void TextureObject::loadTextures()
 	};
 	m_vBackgroundTextures.push_back(sfTempTexture);
 
+	//Ice
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Backgrounds/Ice.png"))
+	{
+		cout << "Error: Ice.png was unable to load." << endl;
+	};
+	m_vBackgroundTextures.push_back(sfTempTexture);
+
 
 	//Time Textures---------------------------------------------------------------------
 

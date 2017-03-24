@@ -1,4 +1,4 @@
-#include "..\include\Button.h"
+#include "Button.h"
 
 Button::Button()
 {
@@ -20,7 +20,7 @@ Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
 	};
 
 	//load font
-	if (!m_sfFont.loadFromFile("Assets/fonts/ariali.ttf"))
+	if (!m_sfFont.loadFromFile("Assets/fonts/ARIALN.ttf"))
 	{
 		cout << "Error: Font ariali.ttf was unable to load.";
 	};

@@ -20,7 +20,7 @@ TextBox::TextBox(string text, Vector2f pos, Vector2f size, string textureName)
 	};
 
 	//load font
-	if (!m_sfFont.loadFromFile("Assets/fonts/ariali.ttf"))
+	if (!m_sfFont.loadFromFile("Assets/fonts/arial.ttf"))
 	{
 		cout << "Error: Font ariali.ttf was unable to load.";
 	};
@@ -35,9 +35,9 @@ TextBox::TextBox(string text, Vector2f pos, Vector2f size, string textureName)
 
 	m_sfButtonText.setFont(m_sfFont);
 	m_sfButtonText.setString(text);
-	m_sfButtonText.setCharacterSize(35);
+	m_sfButtonText.setCharacterSize(30);
 	m_sfButtonText.setFillColor(Color(0, 0, 0));
-	m_sfButtonText.setPosition(Vector2f(pos.x , pos.y ));
+	m_sfButtonText.setPosition(Vector2f(pos.x + 10 , pos.y ));
 	
 }
 

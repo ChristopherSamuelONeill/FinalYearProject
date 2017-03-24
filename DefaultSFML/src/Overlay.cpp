@@ -15,7 +15,7 @@ Overlay::Overlay(Vector2f position, Vector2f size, string text)
 	};
 	
 	//load font
-	if (!m_sfFont.loadFromFile("Assets/fonts/ariali.ttf"))
+	if (!m_sfFont.loadFromFile("Assets/fonts/arialbd.ttf"))
 	{
 		cout << "Error: Font ariali.ttf was unable to load.";
 	};
@@ -33,7 +33,7 @@ Overlay::Overlay(Vector2f position, Vector2f size, string text)
 	m_sfText.setString(text);
 	m_sfText.setCharacterSize(22);
 	m_sfText.setFillColor(Color(0, 0, 0));
-	m_sfText.setPosition(Vector2f(position.x + size.x/8, position.y + size.y / 8));
+	m_sfText.setPosition(Vector2f(position.x + 25 , position.y + 25 ));
 }
 
 void Overlay::draw(RenderTarget & target, RenderStates states) const
