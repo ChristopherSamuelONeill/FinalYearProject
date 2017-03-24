@@ -9,6 +9,8 @@
 #define CLICKABLE_H
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Sound.h"
+#include "Profile.h"
 
 using namespace std;
 using namespace sf;
@@ -39,6 +41,7 @@ protected:
 	////////////////////////////////////////////////////////////
 	Vector2f m_sfVSize;
 
+private:
 
 };
 #endif

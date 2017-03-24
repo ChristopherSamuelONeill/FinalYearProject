@@ -6,8 +6,12 @@ Game::Game()
 
 Game::Game(string dir)
 {
-		
-	m_Gametextures.loadTextures();
+	m_Gametextures = TextureObject::getInstance();
+	m_Gametextures->loadTextures();
+
+	m_Sound = SoundObject::getInstance();
+	
+
 	
 	//set up a blank senerio
 	if (dir == "./Assets/Levels/Editor.txt")
@@ -18,8 +22,8 @@ Game::Game(string dir)
 		m_sfLevelSize *= 2.0f;
 		m_iLevelSize = 0;
 		m_iLevelTime = 0;
-		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0] , 0.0f);
-		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[0], 0.0f);
+		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vBackgroundTextures[0] , 0.0f);
+		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vTimeTextures[0], 0.0f);
 	}
 	else // load level
 	{
@@ -63,14 +67,14 @@ void Game::loadLevel(string dir)
 
 				int i;
 				settings >> i;
-				m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[i], 0.0f);
+				m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vBackgroundTextures[i], 0.0f);
 				
 			}
 			else if (temp == "Time")
 			{
 				int i;
 				settings >> i;
-				m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[i], 0.0f);
+				m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vTimeTextures[i], 0.0f);
 
 			}
 			else if (temp == "Road")
@@ -88,8 +92,8 @@ void Game::loadLevel(string dir)
 				Vector2f size(sx, sy);
 
 				Road tempRoad;
-				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures.m_vTJunctionTextures[1]);
-				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures.m_vTwoWayStreetTextures[1]);
+				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures->m_vTJunctionTextures[1]);
+				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures->m_vTwoWayStreetTextures[1]);
 				m_vRoads.push_back(tempRoad);
 						
 
@@ -108,8 +112,8 @@ void Game::loadLevel(string dir)
 		m_sfLevelSize *= 2.0f;
 		m_iLevelSize = 0;
 		m_iLevelTime = 0;
-		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vBackgroundTextures[0], 0.0f);
-		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures.m_vTimeTextures[0], 0.0f);
+		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vBackgroundTextures[0], 0.0f);
+		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vTimeTextures[0], 0.0f);
 		
 	}
 
@@ -120,14 +124,14 @@ void Game::spawnCar(int cartype, Vector2f pos, Vector2f size)
 {
 
 	Texture tempTexture[8] = { 
-		m_Gametextures.m_vCarColourTextures[cartype] ,
-		m_Gametextures.m_vCarLights[0],
-		m_Gametextures.m_vCarLights[1],
-		m_Gametextures.m_vCarLights[2],
-		m_Gametextures.m_vCarLights[3],
-		m_Gametextures.m_vCarWheels[0],
-		m_Gametextures.m_vCarWheels[1],
-		m_Gametextures.m_vCarWheels[2]
+		m_Gametextures->m_vCarColourTextures[cartype] ,
+		m_Gametextures->m_vCarLights[0],
+		m_Gametextures->m_vCarLights[1],
+		m_Gametextures->m_vCarLights[2],
+		m_Gametextures->m_vCarLights[3],
+		m_Gametextures->m_vCarWheels[0],
+		m_Gametextures->m_vCarWheels[1],
+		m_Gametextures->m_vCarWheels[2]
 	};
 	m_vCars.push_back(Car(pos, size, tempTexture));
 		
@@ -199,7 +203,7 @@ void Game::cycleBackground()
 {
 
 	m_iCurrentBackground++;
-	if (m_iCurrentBackground == m_Gametextures.m_vBackgroundTextures.size())
+	if (m_iCurrentBackground == m_Gametextures->m_vBackgroundTextures.size())
 	{
 		m_iCurrentBackground = 0;
 	}
@@ -213,9 +217,9 @@ void Game::cycleBackground()
 	//if (m_iLevelTime == 4)sName = "Concrete";
 	//if (m_iLevelTime == 5)sName = "Dirt";
 	//if (m_iLevelTime == 6)sName = "ice";
-	cout << m_Gametextures.m_vBackgroundTextures.size() << endl;
+	cout << m_Gametextures->m_vBackgroundTextures.size() << endl;
 
-	m_Background.setTexture(m_Gametextures.m_vBackgroundTextures[m_iCurrentBackground], "");
+	m_Background.setTexture(m_Gametextures->m_vBackgroundTextures[m_iCurrentBackground], "");
 }
 
  void Game::cycleLevelSize()
@@ -236,7 +240,7 @@ void Game::cycleBackground()
 void Game::cycleLevelTime()
 {
 	m_iLevelTime++;
-	if (m_iLevelTime == m_Gametextures.m_vTimeTextures.size() )
+	if (m_iLevelTime == m_Gametextures->m_vTimeTextures.size() )
 	{
 		m_iLevelTime = 0;
 	}
@@ -250,7 +254,7 @@ void Game::cycleLevelTime()
 	if (m_iLevelTime == 5)sName = "Winter";*/
 
 
-	m_Time.setTexture(m_Gametextures.m_vTimeTextures[m_iLevelTime],"");
+	m_Time.setTexture(m_Gametextures->m_vTimeTextures[m_iLevelTime],"");
 }
 
 void Game::saveLevelToFile(string dir)
@@ -345,8 +349,8 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	}
 
 	Road tempRoad;
-	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures.m_vTJunctionTextures[0]);
-	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures.m_vTwoWayStreetTextures[0]);
+	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures->m_vTJunctionTextures[0]);
+	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures->m_vTwoWayStreetTextures[0]);
 
 	bool valid = true;
 
@@ -381,14 +385,14 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	{
 		m_sfSize = Vector2f(800, 600);
 		m_sfTempRect.setSize(m_sfSize);
-		m_sfTempTexture = m_Gametextures.m_vTrafficLightTextures[0];
+		m_sfTempTexture = m_Gametextures->m_vTrafficLightTextures[0];
 		
 	}
 	if (type == "Pedestrian Light")
 	{
 		m_sfSize = Vector2f(800, 600);
 		m_sfTempRect.setSize(m_sfSize);
-		m_sfTempTexture = m_Gametextures.m_vPedestrianLightTextures[0];
+		m_sfTempTexture = m_Gametextures->m_vPedestrianLightTextures[0];
 		
 	}
 	if (type == "NormalRoad")
@@ -396,7 +400,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 		
 		m_sfSize = Vector2f(500, 1000);
 		m_sfTempRect.setSize(m_sfSize);
-		m_sfTempTexture = m_Gametextures.m_vTwoWayStreetTextures[1];
+		m_sfTempTexture = m_Gametextures->m_vTwoWayStreetTextures[1];
 
 		
 		
@@ -405,7 +409,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	{
 		m_sfSize = Vector2f(2500, 1500);
 		m_sfTempRect.setSize(m_sfSize);
-		m_sfTempTexture = m_Gametextures.m_vTJunctionTextures[1];
+		m_sfTempTexture = m_Gametextures->m_vTJunctionTextures[1];
 
 	}
 	
@@ -437,8 +441,8 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 
 
 	Road tempRoad;
-	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures.m_vTJunctionTextures[0]);
-	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures.m_vTwoWayStreetTextures[0]);
+	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures->m_vTJunctionTextures[0]);
+	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures->m_vTwoWayStreetTextures[0]);
 
 	//check if the new road is in the level
 	if (sfSnappedPos.x > m_sfLevelSize.x)return false;

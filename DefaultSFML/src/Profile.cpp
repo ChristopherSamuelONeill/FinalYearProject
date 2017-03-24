@@ -1,8 +1,24 @@
 #include "Profile.h"
 
-Profile::Profile()
+bool Profile::bInstanceFlag = false;
+Profile* Profile::profile = nullptr;
+
+
+Profile * Profile::getInstance()
 {
+	if (!bInstanceFlag) // return the singleton window class
+	{
+		profile = new Profile();
+		bInstanceFlag = true;
+		return profile;
+	}
+	else
+	{
+		
+		return profile;
+	}
 }
+
 
 Profile::Profile(string location)
 {
@@ -31,6 +47,7 @@ Profile::Profile(string location)
 				settings >> m_sProfileName >> m_uilevel >> m_fXP >> m_uiPedestriansTotal >> m_uiCarsTotal >> m_uiCrashesTotal >> m_uiFatalitiesTotal >> m_fFlowRate;
 			}
 		}
+		m_sProfile = m_sProfileName;
 	}
 	else
 	{

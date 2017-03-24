@@ -144,6 +144,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Overlay.cpp" />
     <ClCompile Include="src\Profile.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\TextBox.cpp" />
     <ClCompile Include="src\TextureObject.cpp" />
     <ClCompile Include="src\TrafficLight.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="include\Profile.h" />
     <ClInclude Include="include\Road.h" />
     <ClInclude Include="include\SceneObject.h" />
+    <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\TextBox.h" />
     <ClInclude Include="include\TextureObject.h" />
     <ClInclude Include="include\tinyxml2.h" />

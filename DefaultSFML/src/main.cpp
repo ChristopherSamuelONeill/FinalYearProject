@@ -10,6 +10,7 @@
 #include "Overlay.h"
 #include "TextBox.h"
 #include "Game.h"
+#include "Sound.h"
 
 using namespace std;
 using namespace sf;
@@ -24,7 +25,8 @@ void editor();
 void resetSelectors();
 
 bool DEBUGMODE = true;
-Profile player;
+Profile *player;
+SoundObject *sound;
 
 //selections bools
 bool RoadSelectorBool = false; // true while choosing road
@@ -36,6 +38,14 @@ int tutorialState = 0;
 
 int main()
 {
+	player = Profile::getInstance();
+	sound = SoundObject::getInstance();
+	player->loadProfile("default");
+	sound->loadSounds();
+
+	
+
+
 	//luanch game
 	if (DEBUGMODE) cout << "Luanching Game" << endl;
 
@@ -69,7 +79,7 @@ int main()
 	if (profileNames.size() > 0)
 	{
 		// luanch profileMenu in normal mode
-		player = Profile("default.txt");
+		player->loadProfile("default");
 		tutorialState = 11;
 		profileMenu(false);
 	}
@@ -77,7 +87,7 @@ int main()
 	{
 		if (DEBUGMODE) cout << "Tutorial mode" << endl;
 		if (DEBUGMODE) cout << "Loading Default profile" << endl;
-		player = Profile("default.txt");
+		player->loadProfile("default");
 		if (DEBUGMODE) cout << "Default profile loaded" << endl;
 		// luanch menu in tutorial mode
 		
@@ -106,7 +116,7 @@ void mainMenu(bool tutorial)
 		Sprite mainMenuBackgroundSprite;
 		
 		mainMenuBackgroundRect.setPosition(0, 0);
-		mainMenuBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+		mainMenuBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 		mainMenuBackgroundRect.setFillColor(Color::Blue);
 
 		mainMenuBackgroundSprite.setTexture(mainMenuBackgroundTex);
@@ -115,9 +125,9 @@ void mainMenu(bool tutorial)
 
 
 		//Create buttons-------------------------
-		Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+		Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-		Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 		Text title;
 		Font font;
@@ -142,7 +152,7 @@ void mainMenu(bool tutorial)
 		Button profileGrey("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, "Button_Grey");
 		Button settingsGreen ("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
 		
-		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 -  (250 * resolutionScale.x), player.m_sfResolution.y / 2 - (250 * resolutionScale.y));
+		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 -  (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tWelcome to Traffic Management !\n\t Please click on Profiles\n\n\n(Click on messages like this to close them)");
 		Overlay secondOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tYou have now created your profile!\n\t Please click on settings\n\n\n");
@@ -150,7 +160,7 @@ void mainMenu(bool tutorial)
 		secondOverlayMessage.m_bDraw = false;
 		if (tutorialState == 6)secondOverlayMessage.m_bDraw = true;
 
-		RenderWindow window(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
+		RenderWindow window(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu");
 		window.setFramerateLimit(60);
 
 
@@ -248,14 +258,14 @@ void mainMenu(bool tutorial)
 	{
 		//we now have a profile
 		//create main menu assets ......................
-		player.loadProfile(player.m_sProfileName);
+		player->loadProfile(player->m_sProfileName);
 
 		//main menu background-------------------------
 		RectangleShape mainMenuBackgroundRect;
 		Sprite mainMenuBackgroundSprite;
 	
 		mainMenuBackgroundRect.setPosition(0, 0);
-		mainMenuBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+		mainMenuBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 		mainMenuBackgroundRect.setFillColor(Color::Blue);
 
 		mainMenuBackgroundSprite.setTexture(mainMenuBackgroundTex);
@@ -264,9 +274,9 @@ void mainMenu(bool tutorial)
 
 
 		//Create buttons-------------------------
-		Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+		Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-		Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 		Text title;
 		Font font;
@@ -287,13 +297,13 @@ void mainMenu(bool tutorial)
 		Button settings("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
 		Button quit("Quit", Vector2f(middleOfScreen.x, 550 * resolutionScale.y), buttonSize, "Button_Green");
 
-		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 - (250 * resolutionScale.x), player.m_sfResolution.y / 2 - (250 * resolutionScale.y));
+		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tYou have now finished the tutorial! \n\nClick play to start playing");
 		if (tutorialState == 11)firstOverlayMessage.m_bDraw = false;
 
 		RenderWindow window;
-		if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu", Style::Fullscreen);
-		else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
+		if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu", Style::Fullscreen);
+		else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu");
 
 		
 
@@ -401,7 +411,7 @@ void profileMenu(bool tutorial)
 
 
 		profileBackgroundRect.setPosition(0, 0);
-		profileBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+		profileBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 		profileBackgroundRect.setFillColor(Color::Blue);
 
 		profileBackgroundSprite.setTexture(profileBackgroundTex);
@@ -411,9 +421,9 @@ void profileMenu(bool tutorial)
 
 
 		//Create buttons-------------------------
-		Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+		Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-		Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 		Button New("New", Vector2f(middleOfScreen.x - buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, "Button_Green");
 		Button Select("Select", Vector2f(middleOfScreen.x , 100 + middleOfScreen.y *resolutionScale.y), buttonSize, "Button_Grey");
@@ -458,7 +468,7 @@ void profileMenu(bool tutorial)
 		{
 			cout << "Error: ProfileEnterBackground.png was unable to load.";
 		};
-		nameEntryRect.setPosition((player.m_sfResolution.x /2) - (579 /2 * resolutionScale.x), (player.m_sfResolution.y / 2) - (144 / 2 * resolutionScale.y));
+		nameEntryRect.setPosition((player->m_sfResolution.x /2) - (579 /2 * resolutionScale.x), (player->m_sfResolution.y / 2) - (144 / 2 * resolutionScale.y));
 		nameEntryRect.setSize(Vector2f(579 * resolutionScale.x, 144*resolutionScale.y));
 		nameEntryRect.setFillColor(Color::Blue);
 
@@ -472,7 +482,7 @@ void profileMenu(bool tutorial)
 		Button Submit("Submit", Vector2f(edgeOfTextBox.x + 343 * resolutionScale.x, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 
 		//create overlays
-		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 - (300 * resolutionScale.x), player.m_sfResolution.y / 2 - (300 * resolutionScale.y));
+		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (300 * resolutionScale.x), player->m_sfResolution.y / 2 - (300 * resolutionScale.y));
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tWelcome to the Profile Menu !\n\t There are currently no profiles available.\n\n\n Please click New to create a profile.");
 		Overlay secondOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tPlease enter your name into the box !\n\t And click submit when your finished.");
 		
@@ -480,7 +490,7 @@ void profileMenu(bool tutorial)
 		firstOverlayMessage.m_bDraw = true;
 		secondOverlayMessage.m_bDraw = false;
 		
-		RenderWindow window(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
+		RenderWindow window(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu");
 		window.setFramerateLimit(60);
 
 		while (window.isOpen())
@@ -514,9 +524,9 @@ void profileMenu(bool tutorial)
 						{
 							tutorialState = 6;
 							//create a new profile with there name
-							player = Profile(playerEnterNameBox.m_sText,true);
+							player->loadProfile(playerEnterNameBox.m_sText);
 
-							player.loadProfile(playerEnterNameBox.m_sText);
+							player->loadProfile(playerEnterNameBox.m_sText);
 							window.close();
 							mainMenu(true);
 						}
@@ -590,7 +600,7 @@ void profileMenu(bool tutorial)
 		Sprite profileBackgroundSprite;
 		
 		profileBackgroundRect.setPosition(0, 0);
-		profileBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+		profileBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 		profileBackgroundRect.setFillColor(Color::Blue);
 
 		profileBackgroundSprite.setTexture(profileBackgroundTex);
@@ -600,9 +610,9 @@ void profileMenu(bool tutorial)
 
 
 		//Create buttons-------------------------
-		Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+		Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-		Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 		Button New("New", Vector2f(middleOfScreen.x - buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, "Button_Green");
 		Button Select("Select", Vector2f(middleOfScreen.x, 100 + middleOfScreen.y *resolutionScale.y), buttonSize, "Button_Green");
@@ -645,10 +655,10 @@ void profileMenu(bool tutorial)
 		TextBox playerEnterNameBox("Enter profile name", edgeOfTextBox, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 	
 
-		RenderWindow window(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Profiles Menu");
+		RenderWindow window(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Profiles Menu");
 		window.setFramerateLimit(60);
 
-		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 - (250 * resolutionScale.x), player.m_sfResolution.y / 2 - (250 * resolutionScale.y));
+		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 		Overlay failedOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tThe Profile you entered does not exist \n\nPlease try again");
 		failedOverlayMessage.m_bDraw = false;
 
@@ -687,7 +697,7 @@ void profileMenu(bool tutorial)
 
 						if (Select.m_bClicked(sfMousePos))
 						{
-							if (player.loadProfile(playerEnterNameBox.m_sText))
+							if (player->loadProfile(playerEnterNameBox.m_sText))
 							{
 								window.close();
 								mainMenu(false);
@@ -764,9 +774,9 @@ void profileMenu(bool tutorial)
 						if (New.m_bClicked(sfMousePos))
 						{
 							//create a new profile with there name
-							player = Profile(playerEnterNameBox.m_sText, true);
+							player->loadProfile(playerEnterNameBox.m_sText);
 
-							player.loadProfile(playerEnterNameBox.m_sText);
+							player->loadProfile(playerEnterNameBox.m_sText);
 							window.close();
 							mainMenu(false);
 						
@@ -810,22 +820,22 @@ void settingsMenu(bool tutorial)
 			cout << "Error: settingsWindow.png was unable to load.";
 		};
 		settingsBackgroundRect.setPosition(0, 0);
-		settingsBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+		settingsBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 		settingsBackgroundRect.setFillColor(Color::Blue);
 
-		//settingsBackgroundSprite.setTextureRect({ 0,0,(int)player.m_sfResolution.x,(int)player.m_sfResolution.y });
-		settingsBackgroundSprite.setScale(Vector2f(player.m_sfResolution.x / 3840, player.m_sfResolution.y / 2160));
+		//settingsBackgroundSprite.setTextureRect({ 0,0,(int)player->m_sfResolution.x,(int)player->m_sfResolution.y });
+		settingsBackgroundSprite.setScale(Vector2f(player->m_sfResolution.x / 3840, player->m_sfResolution.y / 2160));
 		settingsBackgroundSprite.setTexture(settingsBackgroundTex);
 		settingsBackgroundSprite.setPosition(settingsBackgroundRect.getPosition());
 
 		RectangleShape settingsRect;
-		settingsRect.setPosition(player.m_sfResolution.x / 8, player.m_sfResolution.y / 8);
+		settingsRect.setPosition(player->m_sfResolution.x / 8, player->m_sfResolution.y / 8);
 
 
 		//Create buttons-------------------------
-		Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+		Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-		Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 		Text title;
 		Font font;
@@ -841,29 +851,29 @@ void settingsMenu(bool tutorial)
 		title.setFillColor(Color(0, 0, 0));
 		title.setPosition(Vector2f(middleOfScreen.x, 25 * resolutionScale.y));
 
-		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 - (250 * resolutionScale.x), player.m_sfResolution.y / 2 - (250 * resolutionScale.y));
+		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 
 		//create text box 
 		Vector2f TextBoxStart(180 * resolutionScale.x, 300 * resolutionScale.y);
 		string s;
-		s = to_string(player.m_iGameAudioVolume);
+		s = to_string(player->m_iGameAudioVolume);
 
 		TextBox gameVolume("Game Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
-		s = to_string(player.m_iMusicAudioVolume);
+		s = to_string(player->m_iMusicAudioVolume);
 
 		TextBox musicVolume("Music Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
-		s = to_string(player.m_iInterfaceAudioVolume);
+		s = to_string(player->m_iInterfaceAudioVolume);
 
 
 		TextBox interfaceVolume("Interface Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 
 
-		s = to_string(player.m_sfResolution.x);
+		s = to_string(player->m_sfResolution.x);
 
 		TextBoxStart = Vector2f(700 * resolutionScale.x, 300 * resolutionScale.y);
 
@@ -871,26 +881,26 @@ void settingsMenu(bool tutorial)
 		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;;
 
-		s = to_string(player.m_sfResolution.y);
+		s = to_string(player->m_sfResolution.y);
 		TextBox resolutionY("Resolution : y " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 
 
-		if (player.m_bFullscreen == true) s = "Yes";
-		if (player.m_bFullscreen == false) s = "No";
+		if (player->m_bFullscreen == true) s = "Yes";
+		if (player->m_bFullscreen == false) s = "No";
 
 		TextBox fullScreen("Fullscreen Mode " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 
 
-		Button Save("Save", Vector2f(settingsRect.getPosition().x, player.m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player.m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player.m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
 
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tWelcome to the settings screen !\n\t Here you can alter any settings you wish\n\n\n Click save when your done.");
 
-		RenderWindow window(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu");
+		RenderWindow window(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu");
 		window.setFramerateLimit(60);
 
 
@@ -929,7 +939,7 @@ void settingsMenu(bool tutorial)
 					{
 						if (tutorialState == 9 && Save.m_bClicked(sfMousePos))
 						{
-							player.saveProfile();
+							player->saveProfile();
 							window.close();
 							tutorialState = 10;
 							mainMenu(false);
@@ -996,9 +1006,9 @@ void settingsMenu(bool tutorial)
 
 						if (tutorialState == 9 && fullScreenSubmit.m_bClicked(sfMousePos))
 						{
-							if (fullScreen.m_sText == "yes")	player.m_bFullscreen = true;
-							else if (fullScreen.m_sText == "no")	player.m_bFullscreen = false;
-							else player.m_bFullscreen = false;
+							if (fullScreen.m_sText == "yes")	player->m_bFullscreen = true;
+							else if (fullScreen.m_sText == "no")	player->m_bFullscreen = false;
+							else player->m_bFullscreen = false;
 							
 							
 						}
@@ -1006,9 +1016,9 @@ void settingsMenu(bool tutorial)
 						{
 							string input = gameVolume.m_sText;
 							int value = atoi(input.c_str());
-							if (value >= 0 && value <= 10)
+							if (value >= 0 && value <= 100)
 							{
-								player.m_iGameAudioVolume = value;
+								player->m_iGameAudioVolume = value;
 							}
 						}
 						
@@ -1016,9 +1026,9 @@ void settingsMenu(bool tutorial)
 						{
 							string input = musicVolume.m_sText;
 							int value = atoi(input.c_str());
-							if (value >= 0 && value <= 10)
+							if (value >= 0 && value <= 100)
 							{
-								player.m_iMusicAudioVolume = value;
+								player->m_iMusicAudioVolume = value;
 							}
 
 						}
@@ -1027,9 +1037,9 @@ void settingsMenu(bool tutorial)
 						{
 							string input = interfaceVolume.m_sText;
 							int value = atoi(input.c_str());
-							if (value >= 0 && value <= 10)
+							if (value >= 0 && value <= 100)
 							{
-								player.m_iInterfaceAudioVolume = value;
+								player->m_iInterfaceAudioVolume = value;
 							}
 
 						}
@@ -1039,7 +1049,7 @@ void settingsMenu(bool tutorial)
 							int value = atoi(input.c_str()); 
 							if (value >= 800 && value <= 3840)
 							{
-								player.m_sfResolution.x = value;
+								player->m_sfResolution.x = value;
 							}
 						}
 						if (tutorialState == 9 && resolutionYSubmit.m_bClicked(sfMousePos))
@@ -1048,7 +1058,7 @@ void settingsMenu(bool tutorial)
 							int value = atoi(input.c_str());
 							if (value >= 600 && value <= 2160)
 							{
-								player.m_sfResolution.y = value;
+								player->m_sfResolution.y = value;
 							}
 						}
 
@@ -1109,22 +1119,22 @@ void settingsMenu(bool tutorial)
 			cout << "Error: settingsWindow.png was unable to load.";
 		};
 		settingsBackgroundRect.setPosition(0, 0);
-		settingsBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+		settingsBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 		settingsBackgroundRect.setFillColor(Color::Blue);
 
-		//settingsBackgroundSprite.setTextureRect({ 0,0,(int)player.m_sfResolution.x,(int)player.m_sfResolution.y });
-		settingsBackgroundSprite.setScale(Vector2f(player.m_sfResolution.x / 3840, player.m_sfResolution.y / 2160));
+		//settingsBackgroundSprite.setTextureRect({ 0,0,(int)player->m_sfResolution.x,(int)player->m_sfResolution.y });
+		settingsBackgroundSprite.setScale(Vector2f(player->m_sfResolution.x / 3840, player->m_sfResolution.y / 2160));
 		settingsBackgroundSprite.setTexture(settingsBackgroundTex);
 		settingsBackgroundSprite.setPosition(settingsBackgroundRect.getPosition());
 
 		RectangleShape settingsRect;
-		settingsRect.setPosition(player.m_sfResolution.x / 8, player.m_sfResolution.y / 8);
+		settingsRect.setPosition(player->m_sfResolution.x / 8, player->m_sfResolution.y / 8);
 	
 
 		//Create buttons-------------------------
-		Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+		Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-		Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 		Text title;
 		Font font;
@@ -1140,29 +1150,29 @@ void settingsMenu(bool tutorial)
 		title.setFillColor(Color(0, 0, 0));
 		title.setPosition(Vector2f(middleOfScreen.x, 25 * resolutionScale.y));
 
-		Vector2f middleOfScreenOverlay(player.m_sfResolution.x / 2 - (250 * resolutionScale.x), player.m_sfResolution.y / 2 - (250 * resolutionScale.y));
+		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 
 		//create text box 
 		Vector2f TextBoxStart(180 * resolutionScale.x, 300 * resolutionScale.y);
 		string s;
-		s = to_string(player.m_iGameAudioVolume);
+		s = to_string(player->m_iGameAudioVolume);
 
 		TextBox gameVolume("Game Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
-		s = to_string(player.m_iMusicAudioVolume);
+		s = to_string(player->m_iMusicAudioVolume);
 
 		TextBox musicVolume("Music Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
-		s = to_string(player.m_iInterfaceAudioVolume);
+		s = to_string(player->m_iInterfaceAudioVolume);
 
 
 		TextBox interfaceVolume("Interface Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 
 
-		s = to_string(player.m_sfResolution.x);
+		s = to_string(player->m_sfResolution.x);
 
 		TextBoxStart = Vector2f(700 * resolutionScale.x, 300 * resolutionScale.y);
 
@@ -1170,27 +1180,27 @@ void settingsMenu(bool tutorial)
 		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;;
 
-		s = to_string(player.m_sfResolution.y);
+		s = to_string(player->m_sfResolution.y);
 		TextBox resolutionY("Resolution : y " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 
 
-		if (player.m_bFullscreen == true) s = "Yes";
-		if (player.m_bFullscreen == false) s = "No";
+		if (player->m_bFullscreen == true) s = "Yes";
+		if (player->m_bFullscreen == false) s = "No";
 
 		TextBox fullScreen("Fullscreen Mode " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
 	
 
-		Button Save("Save", Vector2f(settingsRect.getPosition().x, player.m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player.m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player.m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
 
 
 		RenderWindow window;
-		if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu", Style::Fullscreen);
-		else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Settings");
+		if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu", Style::Fullscreen);
+		else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Settings");
 
 		window.setFramerateLimit(60);
 
@@ -1230,7 +1240,7 @@ void settingsMenu(bool tutorial)
 					{
 						if (Save.m_bClicked(sfMousePos))
 						{
-							player.saveProfile();
+							player->saveProfile();
 							window.close();
 							mainMenu(false);
 
@@ -1294,9 +1304,9 @@ void settingsMenu(bool tutorial)
 
 						if ( fullScreenSubmit.m_bClicked(sfMousePos))
 						{
-							if (fullScreen.m_sText == "yes")	player.m_bFullscreen = true;
-							else if (fullScreen.m_sText == "no")	player.m_bFullscreen = false;
-							else player.m_bFullscreen = false;
+							if (fullScreen.m_sText == "yes")	player->m_bFullscreen = true;
+							else if (fullScreen.m_sText == "no")	player->m_bFullscreen = false;
+							else player->m_bFullscreen = false;
 
 
 						}
@@ -1304,9 +1314,9 @@ void settingsMenu(bool tutorial)
 						{
 							string input = gameVolume.m_sText;
 							int value = atoi(input.c_str());
-							if (value >= 0 && value <= 10)
+							if (value >= 0 && value <= 100)
 							{
-								player.m_iGameAudioVolume = value;
+								player->m_iGameAudioVolume = value;
 							}
 						}
 
@@ -1314,9 +1324,9 @@ void settingsMenu(bool tutorial)
 						{
 							string input = musicVolume.m_sText;
 							int value = atoi(input.c_str());
-							if (value >= 0 && value <= 10)
+							if (value >= 0 && value <= 100)
 							{
-								player.m_iMusicAudioVolume = value;
+								player->m_iMusicAudioVolume = value;
 							}
 
 						}
@@ -1325,9 +1335,9 @@ void settingsMenu(bool tutorial)
 						{
 							string input = interfaceVolume.m_sText;
 							int value = atoi(input.c_str());
-							if (value >= 0 && value <= 10)
+							if (value >= 0 && value <= 100)
 							{
-								player.m_iInterfaceAudioVolume = value;
+								player->m_iInterfaceAudioVolume = value;
 							}
 
 						}
@@ -1337,7 +1347,7 @@ void settingsMenu(bool tutorial)
 							int value = atoi(input.c_str());
 							if (value >= 800 && value <= 3840)
 							{
-								player.m_sfResolution.x = value;
+								player->m_sfResolution.x = value;
 							}
 						}
 						if ( resolutionYSubmit.m_bClicked(sfMousePos))
@@ -1346,7 +1356,7 @@ void settingsMenu(bool tutorial)
 							int value = atoi(input.c_str());
 							if (value >= 600 && value <= 2160)
 							{
-								player.m_sfResolution.y = value;
+								player->m_sfResolution.y = value;
 							}
 						}
 
@@ -1399,14 +1409,14 @@ void playMenu()
 
 	//we now have a profile
 	//create main menu assets ......................
-	player.loadProfile(player.m_sProfileName);
+	player->loadProfile(player->m_sProfileName);
 
 	//main menu background-------------------------
 	RectangleShape mainMenuBackgroundRect;
 	Sprite mainMenuBackgroundSprite;
 
 	mainMenuBackgroundRect.setPosition(0, 0);
-	mainMenuBackgroundRect.setSize(Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+	mainMenuBackgroundRect.setSize(Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 	mainMenuBackgroundRect.setFillColor(Color::Blue);
 
 	mainMenuBackgroundSprite.setTexture(mainMenuBackgroundTex);
@@ -1415,9 +1425,9 @@ void playMenu()
 
 
 	//Create Positioning variables-------------------------
-	Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+	Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 	Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-	Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+	Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 	Text title;
 	Font font;
@@ -1440,8 +1450,8 @@ void playMenu()
 
 
 	RenderWindow window;
-	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Main Menu", Style::Fullscreen);
-	else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Play Menu");
+	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Main Menu", Style::Fullscreen);
+	else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Play Menu");
 	window.setFramerateLimit(60);
 
 
@@ -1523,26 +1533,26 @@ void editor()
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;
-	if (player.m_bFullscreen == true) window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Editor", Style::Fullscreen);
-	else window.create(VideoMode(player.m_sfResolution.x, player.m_sfResolution.y), "Editor");
+	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor", Style::Fullscreen);
+	else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor");
 	window.setFramerateLimit(60);
 
 	//create a view to fill the windowfor game render
 	View gameView;
 	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-	gameView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
-	gameView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+	gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+	gameView.setSize(sf::Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 
 	//create a view to fill the windowfor game render
 	View hudView;
 	hudView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
-	hudView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
-	hudView.setSize(sf::Vector2f(player.m_sfResolution.x, player.m_sfResolution.y));
+	hudView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+	hudView.setSize(sf::Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
 
 	//helps scale hud elements
-	Vector2f resolutionScale(player.m_sfResolution.x / 1280, player.m_sfResolution.y / 720);
+	Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
 	Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
-	Vector2f middleOfScreen((player.m_sfResolution.x / 2) - (buttonSize.x / 2), (player.m_sfResolution.y / 2) - (buttonSize.y / 2));
+	Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
 	//create Buttons for the editor---------------------------------
 	Button BackgroundButton
@@ -1608,25 +1618,25 @@ void editor()
 	//Menu Buttons-------------------------------------------------
 	Button newButton
 	("New",
-		Vector2f(player.m_sfResolution.x - 300 * resolutionScale.x, 0),
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 0),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
 	Button saveButton
 	("Save",
-		Vector2f( player.m_sfResolution.x - 300 * resolutionScale.x, 90 * resolutionScale.y),
+		Vector2f( player->m_sfResolution.x - 300 * resolutionScale.x, 90 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
 	Button loudButton
 	("Load",
-		Vector2f(player.m_sfResolution.x - 300 * resolutionScale.x, 180 * resolutionScale.y),
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 180 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
 	Button helpButton
 	("Help",
-		Vector2f(player.m_sfResolution.x - 300 * resolutionScale.x, 270 * resolutionScale.y),
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 270 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
@@ -1634,7 +1644,7 @@ void editor()
 
 	Button QuitButton
 	("Exit",
-		Vector2f(player.m_sfResolution.x - 300 * resolutionScale.x, player.m_sfResolution.y - 90 * resolutionScale.y),
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, player->m_sfResolution.y - 90 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Green"
 	);
@@ -1926,7 +1936,7 @@ void editor()
 					else if (newButton.m_bClicked(sfMousePos))
 					{
 						Editor = Game("./Assets/Levels/Editor.txt");
-						gameView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
+						gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
 					}
 					//check if save Button has been clicked
 					else if (saveButton.m_bClicked(sfMousePos))
@@ -1961,7 +1971,7 @@ void editor()
 						usingMenu = false;
 						saveLevelEntryName.m_bIsEntering = false;
 						Editor = Game(loadLevelEntryName.m_sText);
-						gameView.setCenter(sf::Vector2f(player.m_sfResolution.x / 2, player.m_sfResolution.y / 2));
+						gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
 					}
 					else
 					{

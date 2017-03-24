@@ -90,6 +90,9 @@
     <ClCompile Include="src\CollisionDetection.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sound.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -135,6 +138,9 @@
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="include\CollisionDetection.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sound.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

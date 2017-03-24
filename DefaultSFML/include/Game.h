@@ -12,7 +12,7 @@
 #include "SceneObject.h"
 #include "Road.h"
 #include "CollisionDetection.h"
-
+#include "Sound.h"
 
 
 using namespace sf;
@@ -33,12 +33,14 @@ private:
 	vector<SceneObject> m_vSceneObejcts; // \breif list of SceneObjects for the Scene
 	vector<Road> m_vRoads; // \breif list of the roads
 
-	TextureObject m_Gametextures;// \breif handle to all game textures
+	TextureObject *m_Gametextures;// \breif handle to all game textures
 
 	// \breif Function to generate a grid for the map
 	void generateSnapGrid();
 
 	vector<Vector2f> m_vGridSystem; // \breif Vector containing grid system for map
+
+	SoundObject *m_Sound;// \breif Sound object
 
 
 	//editor objects

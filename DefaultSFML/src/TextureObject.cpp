@@ -1,7 +1,26 @@
 #include "TextureObject.h"
 
+bool TextureObject::bInstanceFlag = false;
+TextureObject* TextureObject::textureObject = nullptr;
+
+
 TextureObject::TextureObject()
 {
+}
+
+TextureObject * TextureObject::getInstance()
+{
+
+	if (!bInstanceFlag) // return the singleton window class
+	{
+		textureObject = new TextureObject();
+		bInstanceFlag = true;
+		return textureObject;
+	}
+	else
+	{
+		return textureObject;
+	}
 }
 
 void TextureObject::loadTextures()

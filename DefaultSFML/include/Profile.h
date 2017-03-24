@@ -18,6 +18,7 @@
 #include <iostream>
 
 
+
 using namespace std;
 using namespace sf;
 
@@ -26,13 +27,21 @@ class Profile
 {
 public:
 
+	static bool bInstanceFlag;
+	static Profile *profile;
+	static Profile* getInstance();
+
+
 	////////////////////////////////////////////////////////////
 	/// \brief Default Constructor
 	///
 	/// Creates an empty Profile
 	///
 	////////////////////////////////////////////////////////////
-	Profile();
+	Profile()
+	{
+		
+	}
 
 	////////////////////////////////////////////////////////////
 	/// \brief Overloaded Constructor
@@ -141,6 +150,11 @@ public:
 
 	
 	
+	private:
+		////////////////////////////////////////////////////////////
+		/// \brief Name of current profile used for singleton
+		////////////////////////////////////////////////////////////
+		string m_sProfile;
 
 
 

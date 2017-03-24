@@ -12,6 +12,11 @@ class TextureObject
 public:
 	TextureObject(); // \breif Default constructor of Texture Obejct
 
+	static bool bInstanceFlag;
+	static TextureObject *textureObject;
+	static TextureObject* getInstance();
+
+
 	void loadTextures(); // \breif Loads all of the textures needed for game just once
 
 	//car textures
