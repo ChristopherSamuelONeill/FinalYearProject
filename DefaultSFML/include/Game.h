@@ -49,6 +49,8 @@ private:
 	int m_iLevelTime;// \breif int of the Level time (used for cycling)
 	Vector2f m_sfSize; //breif Size of temp object
 
+
+
 public:
 
 	Game(); // \breif Default constructor of game object
@@ -90,6 +92,7 @@ public:
 	RectangleShape m_sfTempRect; // \breif Temp Rect for editor 
 	Sprite m_sfTempSprite; // \breif Temp Rect for editor 
 	Texture m_sfTempTexture; // \breif Temp Texture for editor 
+	
 	bool m_bPlacingObject = false; // \breif True while placing an object
 
 	void placeTrafficLights();

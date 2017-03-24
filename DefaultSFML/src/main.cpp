@@ -1584,13 +1584,25 @@ void editor()
 
 	Button twoWayButton
 	("Two Way Road",
-		Vector2f(300 * resolutionScale.x, 270 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 120 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
 	Button TJunctionButton
 	("T - Junction",
-		Vector2f(300 * resolutionScale.x, 360 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 210 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button CrossRoadsButton
+	("Cross Roads",
+		Vector2f(300 * resolutionScale.x, 300 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button CornerButton
+	("Corner",
+		Vector2f(300 * resolutionScale.x, 390 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		"Button_Yellow"
 	);
@@ -1752,7 +1764,7 @@ void editor()
 				Editor.m_bPlacingObject = true;
 				if (Keyboard::isKeyPressed(Keyboard::Return))
 				{
-					if (sType == "NormalRoad")
+					if (sType == "NormalRoad" || sType == "T-Junction" || sType == "CrossRoads" || sType == "Corner")
 					{
 
 						if (Editor.placeRoad(sfPlacingPos, fRotation, sType))
@@ -1763,17 +1775,8 @@ void editor()
 
 
 					}
-					if (sType == "T-Junction")
-					{
-
-						if (Editor.placeRoad(sfPlacingPos, fRotation, sType))
-						{
-							Editor.m_bPlacingObject = false;
-							resetSelectors();
-						}
-
-
-					}
+					
+					
 				}
 			}
 			else
@@ -1830,7 +1833,7 @@ void editor()
 				if (Mouse::isButtonPressed(sf::Mouse::Left))
 				{
 					sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
-
+					
 					//check if background Button has been clicked
 					if (BackgroundButton.m_bClicked(sfMousePos))
 					{
@@ -1888,17 +1891,23 @@ void editor()
 						sType = "T-Junction";
 
 					}
-					//check if to show help
-					else if (helpButton.m_bClicked(sfMousePos))
+					//check if CrossRoads Button has been clicked
+					else if (CrossRoadsButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
 					{
-						helpOverlayMessage.m_bDraw = true;
-						usingMenu = true;
+						placingBool = true;
+						LightSelectorBool = false;
+						RoadSelectorBool = false;
+						sType = "CrossRoads";
+
 					}
-					//check if to close help overlay
-					else if (helpOverlayMessage.m_bClicked(sfMousePos)&& helpOverlayMessage.m_bDraw == true)
+					//check if Corner Button has been clicked
+					else if (CornerButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
 					{
-						helpOverlayMessage.m_bDraw = false;
-						usingMenu = false;
+						placingBool = true;
+						LightSelectorBool = false;
+						RoadSelectorBool = false;
+						sType = "Corner";
+
 					}
 					//check if traffic selector Button has been clicked
 					else if (trafficLightButton.m_bClicked(sfMousePos))
@@ -1932,6 +1941,22 @@ void editor()
 						sType = "Pedestrian Light";
 
 					}
+						
+					
+					
+					//check if to show help
+					else if (helpButton.m_bClicked(sfMousePos))
+					{
+						helpOverlayMessage.m_bDraw = true;
+						usingMenu = true;
+					}
+					//check if to close help overlay
+					else if (helpOverlayMessage.m_bClicked(sfMousePos)&& helpOverlayMessage.m_bDraw == true)
+					{
+						helpOverlayMessage.m_bDraw = false;
+						usingMenu = false;
+					}
+
 					//check if new Button has been clicked
 					else if (newButton.m_bClicked(sfMousePos))
 					{
@@ -1975,11 +2000,10 @@ void editor()
 					}
 					else
 					{
+						usingMenu = false;
 						//reset all selectors
 						resetSelectors();
 						Editor.m_bPlacingObject = false;
-						usingMenu = false;
-
 					}
 				}
 			}
@@ -2009,6 +2033,8 @@ void editor()
 			{
 				window.draw(twoWayButton);
 				window.draw(TJunctionButton);
+				window.draw(CrossRoadsButton);
+				window.draw(CornerButton);
 			}
 			if (LightSelectorBool)
 			{

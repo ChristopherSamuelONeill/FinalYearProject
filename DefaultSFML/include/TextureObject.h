@@ -33,6 +33,11 @@ public:
 
 	vector<Texture> m_vTJunctionTextures; // \breif Texture for cars going either way
 
+	vector<Texture> m_vCornerTextures; // \breif Texture for cars going either way
+	
+	vector<Texture> m_vCrossRoadsTextures; // \breif Texture for cars going either way
+
+
 
 	//Traffic Textures
 	vector<Texture> m_vTrafficLightTextures; // \breif Texture traffic lights  0 red , 1 yellow, 2 green

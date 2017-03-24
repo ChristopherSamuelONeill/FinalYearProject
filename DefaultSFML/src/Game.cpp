@@ -217,7 +217,6 @@ void Game::cycleBackground()
 	//if (m_iLevelTime == 4)sName = "Concrete";
 	//if (m_iLevelTime == 5)sName = "Dirt";
 	//if (m_iLevelTime == 6)sName = "ice";
-	cout << m_Gametextures->m_vBackgroundTextures.size() << endl;
 
 	m_Background.setTexture(m_Gametextures->m_vBackgroundTextures[m_iCurrentBackground], "");
 }
@@ -348,9 +347,15 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 
 	}
 
-	Road tempRoad;
-	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures->m_vTJunctionTextures[0]);
-	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures->m_vTwoWayStreetTextures[0]);
+	RectangleShape tempRoad;
+
+	tempRoad.setPosition(sfSnappedPos);
+	tempRoad.setRotation(rot);
+
+	if (type == "T-Junction")tempRoad.setSize(Vector2f(2500, 1500));
+	if (type == "NormalRoad")tempRoad.setSize(Vector2f(500, 1000));
+	if (type == "CrossRoads")tempRoad.setSize(Vector2f(2500, 2500));
+	if (type == "Corner")tempRoad.setSize(Vector2f(1000, 1000));
 
 	bool valid = true;
 
@@ -366,7 +371,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	//check the road doesnt overlap with any other roads
 	for (int i = 0; i < m_vRoads.size(); i++)
 	{
-		if (test(tempRoad.getCollisionBox(), m_vRoads[i].getCollisionBox()) == true)
+		if (test(tempRoad, m_vRoads[i].getCollisionBox()) == true)
 		{
 			//did not place due to overlap
 			valid = false;
@@ -412,9 +417,29 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 		m_sfTempTexture = m_Gametextures->m_vTJunctionTextures[1];
 
 	}
+	if (type == "CrossRoads")
+	{
+
+		m_sfSize = Vector2f(2500, 2500);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures->m_vCrossRoadsTextures[1];
+
+
+
+	}
+	if (type == "Corner")
+	{
+		m_sfSize = Vector2f(1000, 1000);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures->m_vCornerTextures[1];
+
+	}
+
+	m_sfTempSprite.setTexture(m_sfTempTexture);
+	m_sfTempSprite.setTextureRect(IntRect(0, 0, m_sfTempTexture.getSize().x, m_sfTempTexture.getSize().y));
 	
 	m_sfTempSprite.setPosition(sfSnappedPos);
-	m_sfTempSprite.setTexture(m_sfTempTexture);
+	
 	m_sfTempSprite.setRotation(rot);
 	
 
@@ -441,8 +466,10 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 
 
 	Road tempRoad;
-	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures->m_vTJunctionTextures[0]);
-	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures->m_vTwoWayStreetTextures[0]);
+	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures->m_vTJunctionTextures[1]);
+	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures->m_vTwoWayStreetTextures[1]);
+	if (type == "CrossRoads")tempRoad = Road(sfSnappedPos, Vector2f(2500, 2500), rot, m_Gametextures->m_vCrossRoadsTextures[1]);
+	if (type == "Corner")tempRoad	= Road(sfSnappedPos, Vector2f(1000, 1000), rot, m_Gametextures->m_vCornerTextures[1]);
 
 	//check if the new road is in the level
 	if (sfSnappedPos.x > m_sfLevelSize.x)return false;

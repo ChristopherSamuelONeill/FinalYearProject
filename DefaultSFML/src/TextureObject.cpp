@@ -274,6 +274,34 @@ void TextureObject::loadTextures()
 	};
 	m_vTJunctionTextures.push_back(sfTempTexture);
 
+	//Corner.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/Corner.png"))
+	{
+		cout << "Error: Corner.png was unable to load." << endl;
+	};
+	m_vCornerTextures.push_back(sfTempTexture);
+
+	//CornerWithDirections.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/CornerWithDirections.png"))
+	{
+		cout << "Error: CornerWithDirections.png was unable to load." << endl;
+	};
+	m_vCornerTextures.push_back(sfTempTexture);
+
+	//Cross Roads.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/Cross Roads.png"))
+	{
+		cout << "Error: Cross Roads.png was unable to load." << endl;
+	};
+	m_vCrossRoadsTextures.push_back(sfTempTexture);
+
+	//CornerWithDirections.png
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Roads/Cross RoadsWithDirections.png"))
+	{
+		cout << "Error: Cross RoadsWithDirections.png was unable to load." << endl;
+	};
+	m_vCrossRoadsTextures.push_back(sfTempTexture);
+
 	//Traffic lights Textures--------------------------------------------------
 
 	//red.pmg
