@@ -23,81 +23,86 @@ class Game
 
 private:
 	
-	// \breif Function to load an xml file
+	// \brief Function to load an xml file
 	// \param Path to the level
 	void loadLevel(string dir);
 
-	vector<Car> m_vCars; // \breif list of cars for the scene
-	SceneObject m_Background; // \breif Background for the level
-	SceneObject m_Time; // \breif time of day overlay for level
-	vector<SceneObject> m_vSceneObejcts; // \breif list of SceneObjects for the Scene
-	vector<Road> m_vRoads; // \breif list of the roads
+	vector<Car> m_vCars; // \brief list of cars for the scene
+	SceneObject m_Background; // \brief Background for the level
+	SceneObject m_Time; // \brief time of day overlay for level
+	vector<SceneObject> m_vSceneObejcts; // \brief list of SceneObjects for the Scene
+	vector<Road> m_vRoads; // \brief list of the roads
 
-	TextureObject *m_Gametextures;// \breif handle to all game textures
+	TextureObject *m_Gametextures;// \brief handle to all game textures
 
-	// \breif Function to generate a grid for the map
+	// \brief Function to generate a grid for the map
 	void generateSnapGrid();
 
-	vector<Vector2f> m_vGridSystem; // \breif Vector containing grid system for map
+	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 
-	SoundObject *m_Sound;// \breif Sound object
+	SoundObject *m_Sound;// \brief Sound object
 
 
 	//editor objects
-	int m_iCurrentBackground;// \breif int of the current background (used for cycling)
-	int m_iLevelSize;// \breif int of the Level Size (used for cycling)
-	int m_iLevelTime;// \breif int of the Level time (used for cycling)
-	Vector2f m_sfSize; //breif Size of temp object
+	int m_iCurrentBackground;// \brief int of the current background (used for cycling)
+	int m_iLevelSize;// \brief int of the Level Size (used for cycling)
+	int m_iLevelTime;// \brief int of the Level time (used for cycling)
+	Vector2f m_sfSize; //brief Size of temp object
 
 
 
 public:
 
-	Game(); // \breif Default constructor of game object
+	Game(); // \brief Default constructor of game object
 
-	// \breif Overloaded constructor of game object
+	// \brief Overloaded constructor of game object
 	// \param Path to the level
 	Game(string dir);
 
-	// \breif function to spawn car objects
+	// \brief function to spawn car objects
 	// \param path to car model
 	void spawnCar(int cartype,Vector2f pos , Vector2f size);
 
-	// \breif function to update scene
+	// \brief function to update scene
 	// \param time change
 	void updateScene(float dt);
 
-	// \breif function to update scene
+	// \brief function to update scene
 	// \param time change
 	void drawScene(RenderWindow& window);
 
-	Vector2f m_sfLevelSize;// \breif The dimensions of the level
+	Vector2f m_sfLevelSize;// \brief The dimensions of the level
+
 	//editor functions-----------------------------
 
-	// \breif function to cycle scene background
+	// \brief function to cycle scene background
 	void cycleBackground();
 	
-	// \breif function to cycle Level Size
+	// \brief function to cycle Level Size
 	void cycleLevelSize();
 
-	// \breif function to cycle Level time of day
+	// \brief function to cycle Level time of day
 	void cycleLevelTime();
 
-	// \breif function to cycle Level time of day
+	// \brief function to save the current scene to a file
+	// \param dir , string location of the map file
 	void saveLevelToFile(string dir);
 
-	// \breif function to cycle Level time of day
+	// \brief function to spawn a temporary object (rendered in the editor)
+	// \param Position , vector of the position the object
+	// \param Rot , float of the orientation the object
+	// \param type , string of the type of temp object
 	void spawnTempObject(Vector2f position,float rot,string type);
 
-	RectangleShape m_sfTempRect; // \breif Temp Rect for editor 
-	Sprite m_sfTempSprite; // \breif Temp Rect for editor 
-	Texture m_sfTempTexture; // \breif Temp Texture for editor 
+	RectangleShape m_sfTempRect; // \brief Temp Rect for editor 
+	Sprite m_sfTempSprite; // \brief Temp Sprite for editor 
+	Texture m_sfTempTexture; // \brief Temp Texture for editor 
 	
-	bool m_bPlacingObject = false; // \breif True while placing an object
+	bool m_bPlacingObject = false; // \brief True while placing an object
 
 	void placeTrafficLights();
 
-	// \breif function to attempt to place a road to the level
+	// \brief function to attempt to place a road to the level
 	// \param Position , vector of the position the object
 	// \param Rotation , float of the orientation the object
 	bool placeRoad(Vector2f position, float rot, string type);

@@ -19,16 +19,16 @@ private:
 
 	Vector2f m_sfSize; // \brief X Y size of car
 	Vector2f m_sfPosition; // \brief X Y position of car
-	Vector2f m_sfVelocity; // \breif X Y speed of car
+	Vector2f m_sfVelocity; // \brief X Y speed of car
 
 	void turnWheels(); // \brief sets the angle of the car wheels
 	float m_fRotation; // \brief Orientation of car
-	float m_iSteerDirection; // \breif 0 for straight -1 for left , 1 fo right
-	int m_iMaxTurnAngle; // \breif Maximum angle the cars can turn
-	float m_fSteerOrientation; // \breif Orientation of wheels
+	float m_iSteerDirection; // \brief 0 for straight -1 for left , 1 fo right
+	int m_iMaxTurnAngle; // \brief Maximum angle the cars can turn
+	float m_fSteerOrientation; // \brief Orientation of wheels
 
-	bool m_bBraking = true;// \breif True when braking
-	bool m_bLights = true;// \breif True when lights on
+	bool m_bBraking = true;// \brief True when braking
+	bool m_bLights = true;// \brief True when lights on
 
 	Texture m_sfTexture[8];
 

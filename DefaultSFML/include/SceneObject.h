@@ -18,14 +18,14 @@ private :
 
 public:
 
-	// \breif Default constructor of scene object
+	// \brief Default constructor of scene object
 	SceneObject();
 
-	// \breif Default constructor of scene object
+	// \brief Default constructor of scene object
 	// \param Name the name of the texture (used for the saving)
 	SceneObject(char Name[]);
 
-	// \breif Default constructor of scene object
+	// \brief Default constructor of scene object
 	// \param Postion of sceneObject
 	// \param Size sceneObject
 	// \param Texture of sceneObject
@@ -33,31 +33,31 @@ public:
 	// \param Name the name of the texture (used for the saving)
 	SceneObject(Vector2f Pos, Vector2f Size, Texture Texture, float Rotation);
 
-	// \breif Updates object
+	// \brief Updates object
 	void update();
 
-	// \breif Render function , draws object
+	// \brief Render function , draws object
 	void draw(RenderTarget& target, RenderStates states) const;
 
-	// \breif function to update objects texture
+	// \brief function to update objects texture
 	// \param Texture of sceneObject
 	void setTexture(Texture newTexture, char Name[]);
 
-	// \breif function to update objects postion
+	// \brief function to update objects postion
 	// \param Postion of sceneObject
 	void setPosistion(Vector2f newPos);
 
-	// \breif function to update objects size
+	// \brief function to update objects size
 	// \param Size sceneObject
 	void setSize(Vector2f newSize);
 
-	// \breif function to change objects rotation
+	// \brief function to change objects rotation
 	// \param Rotation , amount to change rotation by
 	void incrementRotation(float increment);
 
-	Vector2f m_sfPosition; 	// \breif X Y coords of the object
-	Vector2f m_sfSize;// \breif Dimensions of the object
-	float m_fRotation;// \breif oreientation of the object
+	Vector2f m_sfPosition; 	// \brief X Y coords of the object
+	Vector2f m_sfSize;// \brief Dimensions of the object
+	float m_fRotation;// \brief oreientation of the object
 	
 
 	
