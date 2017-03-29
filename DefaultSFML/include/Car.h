@@ -55,11 +55,12 @@ public:
 	///
 	/// Creates the car with its parameteres
 	///
-	/// \param Position Vector2f Posituon of car
+	/// \param Position Vector2f Position of car
+	/// \param Goal Vector2f Poistion the car wants to reach
 	/// \param size sVector2f size of the button
 	/// \param Textures String Locations of the textures
 	////////////////////////////////////////////////////////////
-	Car(Vector2f Position, Vector2f Size, Texture textures[8]);
+	Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8]);
 
 
 

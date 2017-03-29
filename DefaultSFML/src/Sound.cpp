@@ -20,9 +20,10 @@ SoundObject * SoundObject::getInstance()
 
 void SoundObject::loadSounds()
 {
-	cout << "Loading sounds ...";
+	cout << "Loading interface sounds ...";
 	SoundBuffer temp;
 	Sound stemp;
+
 	//Interface Sounds -----------------------
 	if (!temp.loadFromFile("./Assets/sounds/Ui/button.wav"))
 	{
@@ -30,7 +31,12 @@ void SoundObject::loadSounds()
 	}
 	m_vBufferInterfaceSounds.push_back(temp);
 	m_vInterfaceSounds.push_back(stemp);
+	cout << "Finished" << endl;
 
 
-	cout << "Finished" <<endl;
+	cout << "Loading FX ...";
+
+	cout << "Finished" << endl;
+
+	
 }

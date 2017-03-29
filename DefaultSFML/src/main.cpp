@@ -258,7 +258,7 @@ void mainMenu(bool tutorial)
 	{
 		//we now have a profile
 		//create main menu assets ......................
-		player->loadProfile(player->m_sProfileName);
+		
 
 		//main menu background-------------------------
 		RectangleShape mainMenuBackgroundRect;
@@ -524,7 +524,6 @@ void profileMenu(bool tutorial)
 						{
 							tutorialState = 6;
 							//create a new profile with there name
-							player->loadProfile(playerEnterNameBox.m_sText);
 
 							player->loadProfile(playerEnterNameBox.m_sText);
 							window.close();
@@ -774,7 +773,6 @@ void profileMenu(bool tutorial)
 						if (New.m_bClicked(sfMousePos))
 						{
 							//create a new profile with there name
-							player->loadProfile(playerEnterNameBox.m_sText);
 
 							player->loadProfile(playerEnterNameBox.m_sText);
 							window.close();
@@ -1245,6 +1243,18 @@ void settingsMenu(bool tutorial)
 							mainMenu(false);
 
 						}
+
+						if (Reset.m_bClicked(sfMousePos))
+						{
+							player->loadProfile("default");
+					
+
+						}
+						if (Cancel.m_bClicked(sfMousePos))
+						{
+							window.close();
+							mainMenu(false);
+						}
 						
 						if (gameVolume.m_bClicked(sfMousePos))
 						{
@@ -1409,7 +1419,7 @@ void playMenu()
 
 	//we now have a profile
 	//create main menu assets ......................
-	player->loadProfile(player->m_sProfileName);
+	
 
 	//main menu background-------------------------
 	RectangleShape mainMenuBackgroundRect;
@@ -1980,6 +1990,7 @@ void editor()
 					//check if quit Button has been clicked
 					else if (QuitButton.m_bClicked(sfMousePos))
 					{
+						Editor.closeGame();
 						window.close();
 						playMenu();
 					}

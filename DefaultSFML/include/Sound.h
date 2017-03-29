@@ -26,6 +26,9 @@ public:
 
 	vector<SoundBuffer> m_vBufferInterfaceSounds;
 	vector<Sound> m_vInterfaceSounds;
+	
+	Music m_locMusic;
+	Music m_timeMusic;
 
 
 	~SoundObject()

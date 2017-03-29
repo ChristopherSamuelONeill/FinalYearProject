@@ -57,60 +57,6 @@ Profile::Profile(string location)
 	file.close();
 }
 
-Profile::Profile(string nameOfPlayer, bool create)
-{
-	//create not used
-
-	//load profile list
-	vector<string> profileNames;
-	fstream file;
-	ofstream ofile;
-	
-	ofstream onewFile;
-
-	string tempProfile;
-	string lineData;
-
-	file.open("Assets/profiles/profileList.txt");
-	
-
-	if (file.is_open())
-	{
-		while (getline(file, lineData))
-		{
-			istringstream iss(lineData);
-			iss.str(lineData);
-			iss >> tempProfile;
-			profileNames.push_back(tempProfile);
-		}
-	
-	}
-	
-	file.close();
-
-	ofile.open("Assets/profiles/profileList.txt");
-	// add new player to list
-	profileNames.push_back(nameOfPlayer + ".txt");
-
-	for (int i = 0; i < profileNames.size(); i++)
-	{
-		ofile << profileNames[i] << endl;
-	}
-	
-	//create name .txt file
-
-	onewFile.open("Assets/profiles/" + nameOfPlayer + ".txt");
-	if (onewFile.is_open())
-	{
-		
-		onewFile << "c " << "x res " << "y res " << "full " << "texures " << "gme vl " << "ivl " << "mvl " << endl;
-		onewFile << "s " << "1280 " << "720 " << "0 " << "1 " << "10 " << "5 " << "5 " << endl;
-		onewFile << "c " << "name " << "level " << "xp " << "tPed " << "tCar " << "cTot " << "fTot " << "fRat " << endl;
-		onewFile << "d " << nameOfPlayer << " " << 0 << " " << 0 << " " << 0 << " " << 0 << " " << 0 << " " << 0 << " " << 0 << " " << endl;
-	}
-	onewFile.close();
-
-}
 
 Profile::~Profile()
 {

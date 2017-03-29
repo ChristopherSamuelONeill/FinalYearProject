@@ -13,6 +13,7 @@
 #include "Road.h"
 #include "CollisionDetection.h"
 #include "Sound.h"
+#include "Profile.h"
 
 
 using namespace sf;
@@ -23,9 +24,19 @@ class Game
 
 private:
 	
+	// \brief Function that creates "m_uiNumbofCars" number of cars 
+	void generateCars();
+
+	// \brief Function that creates "m_uiNumbofPed" number of pedestrians 
+	void generatePedestrians();
+
+
 	// \brief Function to load an xml file
 	// \param Path to the level
 	void loadLevel(string dir);
+
+	unsigned int m_uiNumbofCars; // \brief Number of cars that will spawn for the level
+	unsigned int m_uiNumbofPed; // \brief Number of pedestrians that will spawn for the level
 
 	vector<Car> m_vCars; // \brief list of cars for the scene
 	SceneObject m_Background; // \brief Background for the level
@@ -41,6 +52,7 @@ private:
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 
 	SoundObject *m_Sound;// \brief Sound object
+	Profile *m_Player;// \brief Sound object
 
 
 	//editor objects
@@ -70,6 +82,10 @@ public:
 	// \brief function to update scene
 	// \param time change
 	void drawScene(RenderWindow& window);
+
+	// \brief function to clear scene
+	void closeGame();
+
 
 	Vector2f m_sfLevelSize;// \brief The dimensions of the level
 
