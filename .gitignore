@@ -31,3 +31,6 @@
 #others
 *.VC.db
 *.opendb
+
+
+/Doc/*
