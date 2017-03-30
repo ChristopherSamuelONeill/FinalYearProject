@@ -4,7 +4,7 @@ Car::Car()
 {
 }
 
-Car::Car(Vector2f Position, Vector2f Size, Texture textures[8])
+Car::Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8])
 {
 	
 	

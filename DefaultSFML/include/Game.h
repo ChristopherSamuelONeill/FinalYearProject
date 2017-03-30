@@ -14,6 +14,7 @@
 #include "CollisionDetection.h"
 #include "Sound.h"
 #include "Profile.h"
+#include "Pedestrian.h"
 
 
 using namespace sf;
@@ -35,14 +36,15 @@ private:
 	// \param Path to the level
 	void loadLevel(string dir);
 
-	unsigned int m_uiNumbofCars; // \brief Number of cars that will spawn for the level
-	unsigned int m_uiNumbofPed; // \brief Number of pedestrians that will spawn for the level
-
+	
 	vector<Car> m_vCars; // \brief list of cars for the scene
+	vector<Pedestrian> m_vPedestrians;// \brief list of pedestrians for the scene
 	SceneObject m_Background; // \brief Background for the level
 	SceneObject m_Time; // \brief time of day overlay for level
 	vector<SceneObject> m_vSceneObejcts; // \brief list of SceneObjects for the Scene
 	vector<Road> m_vRoads; // \brief list of the roads
+	vector<RectangleShape> m_vCarsStartPostions;// \brief vector of all the start positions
+	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the start positions
 
 	TextureObject *m_Gametextures;// \brief handle to all game textures
 
@@ -60,6 +62,7 @@ private:
 	int m_iLevelSize;// \brief int of the Level Size (used for cycling)
 	int m_iLevelTime;// \brief int of the Level time (used for cycling)
 	Vector2f m_sfSize; //brief Size of temp object
+	bool m_bEditorMode; //brief bool of wetaher game is in editor mode or not (false for not)
 
 
 
@@ -86,6 +89,8 @@ public:
 	// \brief function to clear scene
 	void closeGame();
 
+	unsigned int m_uiNumbofCars; // \brief Number of cars that will spawn for the level
+	unsigned int m_uiNumbofPed; // \brief Number of pedestrians that will spawn for the level
 
 	Vector2f m_sfLevelSize;// \brief The dimensions of the level
 

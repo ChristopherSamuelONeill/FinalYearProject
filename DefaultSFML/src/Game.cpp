@@ -2,6 +2,7 @@
 
 Game::Game()
 {
+	m_bEditorMode = false;
 }
 
 Game::Game(string dir)
@@ -26,6 +27,7 @@ Game::Game(string dir)
 		m_iLevelTime = 0;
 		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vBackgroundTextures[0] , 0.0f);
 		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vTimeTextures[0], 0.0f);
+		m_bEditorMode = true;
 	}
 	else // load level
 	{
@@ -128,6 +130,7 @@ void Game::loadLevel(string dir)
 				Road tempRoad;
 				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures->m_vTJunctionTextures[1]);
 				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures->m_vTwoWayStreetTextures[1]);
+				if (type == "CrossRoads")tempRoad = Road(position, size, rot, m_Gametextures->m_vCrossRoadsTextures[1]);
 				m_vRoads.push_back(tempRoad);
 						
 
@@ -151,10 +154,11 @@ void Game::loadLevel(string dir)
 	}
 	else
 	{
-		cout << "Couldnt Open file ... Assets/profiles/" << dir << ".txt" << endl;
+		cout << "Couldnt Open file ... Assets/levels/" << dir << ".txt" << endl;
 		//set up a blank senerio
 		
 		cout << "Editor Mode" << endl;
+		m_bEditorMode = true;
 		m_iCurrentBackground = 0;
 		m_sfLevelSize = Vector2f(5333, 3000);
 		m_sfLevelSize *= 2.0f;
@@ -267,7 +271,7 @@ void Game::spawnCar(int cartype, Vector2f pos, Vector2f size)
 		m_Gametextures->m_vCarWheels[1],
 		m_Gametextures->m_vCarWheels[2]
 	};
-	m_vCars.push_back(Car(pos, size, tempTexture));
+	m_vCars.push_back(Car(pos,pos, size, tempTexture));
 		
 	
 }
@@ -316,14 +320,26 @@ void Game::drawScene(RenderWindow & window)
 	}
 
 
-
 	//draw cars
 	for (int i = 0; i < m_vCars.size(); i++)
 	{
 		window.draw(m_vCars[i]);
 	}
 
-	
+	if (m_bEditorMode)
+	{
+		//draw car start positions
+		for (int i = 0; i < m_vCarsStartPostions.size(); i++)
+		{
+			window.draw(m_vCarsStartPostions[i]);
+		}
+		//draw car start positions
+		for (int i = 0; i < m_vCarsEndPostions.size(); i++)
+		{
+			window.draw(m_vCarsEndPostions[i]);
+		}
+
+	}
 
 	//draw temp object
 	if (m_bPlacingObject)window.draw(m_sfTempSprite);
@@ -339,6 +355,12 @@ void Game::closeGame()
 	loadLevel("Editor");
 	m_Sound->m_locMusic.stop();
 	m_Sound->m_timeMusic.stop();
+	m_vCars.clear();
+	m_vSceneObejcts.clear();
+	m_vRoads.clear();
+	m_vCarsStartPostions.clear();
+	m_vCarsEndPostions.clear();
+
 
 }
 
@@ -534,6 +556,13 @@ void Game::saveLevelToFile(string dir)
 		onewFile << "c " << "Texture Number" << endl;
 		onewFile << "Time " << m_iLevelTime << endl;
 
+		//save the number of cars
+		onewFile << "c " << "Cars" << endl;
+		onewFile << "Cars " << m_uiNumbofCars << endl;
+
+		//save the number of pedestrians
+		onewFile << "c " << "Pedestrians" << endl;
+		onewFile << "Pedestrians " << m_uiNumbofPed << endl;
 
 		//save the Roads
 		for (int i = 0; i < m_vRoads.size(); i++)

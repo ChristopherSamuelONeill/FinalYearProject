@@ -37,6 +37,9 @@ public:
 	Button(string text,Vector2f pos, Vector2f size, string textureName);
 
 
+	// \brief Updates text on button
+	// \param text string of the new text
+	void setText(string text);
 
 	////////////////////////////////////////////////////////////
 	/// \brief draw function

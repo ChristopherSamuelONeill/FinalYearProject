@@ -31,10 +31,24 @@ void SoundObject::loadSounds()
 	}
 	m_vBufferInterfaceSounds.push_back(temp);
 	m_vInterfaceSounds.push_back(stemp);
+
+	if (!temp.loadFromFile("./Assets/sounds/Ui/failedClick.wav"))
+	{
+		cout << "Error : failedClick.wav failed to load" << endl;
+	}
+	m_vBufferInterfaceSounds.push_back(temp);
+	m_vInterfaceSounds.push_back(stemp);
+
 	cout << "Finished" << endl;
 
-
+	//FX Sounds -----------------------
 	cout << "Loading FX ...";
+	if (!temp.loadFromFile("./Assets/sounds/Fx/Construction.wav"))
+	{
+		cout << "Error : Construction.wav failed to load" << endl;
+	}
+	m_vBufferFX.push_back(temp);
+	m_vFXSounds.push_back(stemp);
 
 	cout << "Finished" << endl;
 

@@ -1,4 +1,4 @@
 c x res y res full texures gme vl ivl mvl 
-s 1280 720 0 1 100 100 50
+s 1280 720 0 1 100 100 25
 c name level xp tPed tCar cTot fTot fRat 
 d NoProfileSelected 0 0 0 0 0 0 0 

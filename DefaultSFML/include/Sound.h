@@ -26,6 +26,9 @@ public:
 
 	vector<SoundBuffer> m_vBufferInterfaceSounds;
 	vector<Sound> m_vInterfaceSounds;
+
+	vector<SoundBuffer> m_vBufferFX;
+	vector<Sound> m_vFXSounds;
 	
 	Music m_locMusic;
 	Music m_timeMusic;

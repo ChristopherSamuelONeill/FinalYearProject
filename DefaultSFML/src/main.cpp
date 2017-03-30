@@ -31,6 +31,7 @@ SoundObject *sound;
 //selections bools
 bool RoadSelectorBool = false; // true while choosing road
 bool LightSelectorBool = false; // true while choosing roads
+bool CarsSelectorBool = false; // true while altering cars
 
 bool placingBool = false; // true while placing roads
 
@@ -359,6 +360,7 @@ void mainMenu(bool tutorial)
 						if (quit.m_bClicked(sfMousePos) && tutorialState == 11)
 						{
 							window.close(); // Allows window to close when 'X' is pressed
+							player->saveProfile();
 							return;
 
 						}
@@ -1192,7 +1194,6 @@ void settingsMenu(bool tutorial)
 	
 
 		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
 		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
 
 
@@ -1244,12 +1245,7 @@ void settingsMenu(bool tutorial)
 
 						}
 
-						if (Reset.m_bClicked(sfMousePos))
-						{
-							player->loadProfile("default");
-					
-
-						}
+						
 						if (Cancel.m_bClicked(sfMousePos))
 						{
 							window.close();
@@ -1399,7 +1395,6 @@ void settingsMenu(bool tutorial)
 			window.draw(fullScreenSubmit);
 
 			window.draw(Save);
-			window.draw(Reset);
 			window.draw(Cancel);
 
 			window.display();
@@ -1637,6 +1632,55 @@ void editor()
 		"Button_Yellow"
 	);
 
+	Button carsButton
+	("Cars",
+		Vector2f(0, 450 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button lessCarsButton
+	("-",
+		Vector2f(300 * resolutionScale.x, 450 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Green"
+	);
+	Button numberCarsButton
+	(" ",
+		Vector2f(550 * resolutionScale.x, 450 * resolutionScale.y),
+		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button moreCarsButton
+	("+",
+		Vector2f(800 * resolutionScale.x, 450 * resolutionScale.y),
+		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Green"
+	);
+	Button pedsButton
+	("Pedestrians",
+		Vector2f(0, 540 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button lessPedsButton
+	("-",
+		Vector2f(300 * resolutionScale.x, 540 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Green"
+	);
+	Button numberPedsButton
+	(" ",
+		Vector2f(550 * resolutionScale.x, 540 * resolutionScale.y),
+		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Yellow"
+	);
+	Button morePedsButton
+	("+",
+		Vector2f(800 * resolutionScale.x, 540 * resolutionScale.y),
+		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		"Button_Green"
+	);
+
 	//Menu Buttons-------------------------------------------------
 	Button newButton
 	("New",
@@ -1702,7 +1746,7 @@ void editor()
 
 	helpOverlayMessage.m_bDraw = true;
 	
-
+	numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
 	float fRotation = 0;
 
 	//selection string
@@ -1781,6 +1825,15 @@ void editor()
 						{
 							Editor.m_bPlacingObject = false;
 							resetSelectors();
+							sound->m_vFXSounds[0].setBuffer(sound->m_vBufferFX[0]);
+							sound->m_vFXSounds[0].setVolume(player->m_iGameAudioVolume);
+							sound->m_vFXSounds[0].play();
+						}
+						else
+						{
+							sound->m_vInterfaceSounds[1].setBuffer(sound->m_vBufferInterfaceSounds[1]);
+							sound->m_vInterfaceSounds[1].setVolume(player->m_iInterfaceAudioVolume);
+							sound->m_vInterfaceSounds[1].play();
 						}
 
 
@@ -1835,8 +1888,15 @@ void editor()
 				if (Mouse::isButtonPressed(sf::Mouse::Right))
 				{
 					//cancel all placement
+					if (Editor.m_bPlacingObject == true)
+					{
+						sound->m_vInterfaceSounds[1].setBuffer(sound->m_vBufferInterfaceSounds[1]);
+						sound->m_vInterfaceSounds[1].setVolume(player->m_iInterfaceAudioVolume);
+						sound->m_vInterfaceSounds[1].play();
+					}
 					Editor.m_bPlacingObject = false;
 					resetSelectors();
+					
 
 				}
 
@@ -1851,7 +1911,6 @@ void editor()
 						RoadSelectorBool = false;
 						LightSelectorBool = false;
 					}
-
 					//check if size Button has been clicked
 					else if (SizeButton.m_bClicked(sfMousePos))
 					{
@@ -1859,7 +1918,6 @@ void editor()
 						RoadSelectorBool = false;
 						LightSelectorBool = false;
 					}
-
 					//check if time Button has been clicked
 					else if (TimeButton.m_bClicked(sfMousePos))
 					{
@@ -1867,7 +1925,53 @@ void editor()
 						RoadSelectorBool = false;
 						LightSelectorBool = false;
 					}
+					//check if car selector Button has been clicked
+					else if (carsButton.m_bClicked(sfMousePos))
+					{
+						if (CarsSelectorBool == false)
+						{
+							CarsSelectorBool = true;
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+						}
+						else if (CarsSelectorBool == true)
+						{
+							CarsSelectorBool = false;
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+						}
+						placingBool = false;
+					}
+					//check if 2 way road Button has been clicked
+					else if (lessCarsButton.m_bClicked(sfMousePos) && CarsSelectorBool == true)
+					{
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+						{
+							if(Editor.m_uiNumbofCars  <= 10) Editor.m_uiNumbofCars = 1;
+							else Editor.m_uiNumbofCars -= 10;
+						}
+						else
+						{
+							if (Editor.m_uiNumbofCars <= 2) Editor.m_uiNumbofCars = 1;
+							else Editor.m_uiNumbofCars -= 1;
+						}
+						numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
 
+					}
+					//check if 2 way road Button has been clicked
+					else if (moreCarsButton.m_bClicked(sfMousePos) && CarsSelectorBool == true)
+					{
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+						{
+							Editor.m_uiNumbofCars += 10;
+						}
+						else
+						{
+							Editor.m_uiNumbofCars += 1;
+						}
+						numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
+
+					}
 					//check if road selector Button has been clicked
 					else if (RoadSelectorButton.m_bClicked(sfMousePos))
 					{
@@ -1875,11 +1979,13 @@ void editor()
 						{
 							RoadSelectorBool = true;
 							LightSelectorBool = false;
+							CarsSelectorBool = false;
 						}
 						else if (RoadSelectorBool == true)
 						{
 							RoadSelectorBool = false;
 							LightSelectorBool = false;
+							CarsSelectorBool = false;
 						}
 						placingBool = false;
 					}
@@ -1926,11 +2032,13 @@ void editor()
 						{
 							LightSelectorBool = true;
 							RoadSelectorBool = false;
+							CarsSelectorBool = false;
 						}
 						else if (LightSelectorBool == true)
 						{
 							LightSelectorBool = false;
 							RoadSelectorBool = false;
+							CarsSelectorBool = false;
 						}
 						placingBool = false;
 					}
@@ -1951,9 +2059,6 @@ void editor()
 						sType = "Pedestrian Light";
 
 					}
-						
-					
-					
 					//check if to show help
 					else if (helpButton.m_bClicked(sfMousePos))
 					{
@@ -1966,7 +2071,6 @@ void editor()
 						helpOverlayMessage.m_bDraw = false;
 						usingMenu = false;
 					}
-
 					//check if new Button has been clicked
 					else if (newButton.m_bClicked(sfMousePos))
 					{
@@ -2007,6 +2111,7 @@ void editor()
 						usingMenu = false;
 						saveLevelEntryName.m_bIsEntering = false;
 						Editor = Game(loadLevelEntryName.m_sText);
+						numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
 						gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
 					}
 					else
@@ -2040,6 +2145,8 @@ void editor()
 			window.draw(TimeButton);
 			window.draw(RoadSelectorButton);
 			window.draw(trafficLightButton);
+			window.draw(carsButton);
+
 			if (RoadSelectorBool)
 			{
 				window.draw(twoWayButton);
@@ -2052,6 +2159,13 @@ void editor()
 				window.draw(normalLightButton);
 				window.draw(pedLightButton);
 			}
+			if (CarsSelectorBool)
+			{
+				window.draw(lessCarsButton);
+				window.draw(numberCarsButton);
+				window.draw(moreCarsButton);
+			}
+
 			window.draw(newButton);
 			window.draw(saveButton);
 			window.draw(loudButton);
@@ -2091,6 +2205,7 @@ void resetSelectors()
 {
 	RoadSelectorBool = false;
 	LightSelectorBool = false;
+	CarsSelectorBool = false;
 
 	placingBool = false; 
 }
