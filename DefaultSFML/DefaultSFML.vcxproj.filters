@@ -37,17 +37,17 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{47501929-b910-4a60-935b-178c4a57b14a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Other">
-      <UniqueIdentifier>{28855405-878c-47bd-af0f-0909ace0ee49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Other">
       <UniqueIdentifier>{541888be-c3eb-4fc3-be80-bde36450b21b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Ai">
+      <UniqueIdentifier>{2a175107-69e3-49be-8365-f0bbfc56a300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Ai">
+      <UniqueIdentifier>{e955e084-eb15-42f2-b83b-80256b903704}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Achievement.cpp">
       <Filter>Source Files\Profiles</Filter>
     </ClCompile>
@@ -96,6 +96,18 @@
     <ClCompile Include="src\Pedestrian.cpp">
       <Filter>Source Files\Game Obejcts</Filter>
     </ClCompile>
+    <ClCompile Include="src\Controller.cpp">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node.cpp">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pathfinding.cpp">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files\Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -125,9 +137,6 @@
     <ClInclude Include="include\Game.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="include\tinyxml2.h">
-      <Filter>Header Files\Other</Filter>
-    </ClInclude>
     <ClInclude Include="include\TextureObject.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
@@ -148,6 +157,15 @@
     </ClInclude>
     <ClInclude Include="include\Pedestrian.h">
       <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Node.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Controller.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pathfinding.h">
+      <Filter>Header Files\Ai</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

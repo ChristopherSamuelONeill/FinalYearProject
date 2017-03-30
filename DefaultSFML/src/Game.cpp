@@ -7,34 +7,7 @@ Game::Game()
 
 Game::Game(string dir)
 {
-	m_Player = Profile::getInstance();
-
-	m_Gametextures = TextureObject::getInstance();
-	m_Gametextures->loadTextures();
-
-	m_Sound = SoundObject::getInstance();
-
-
-	
-	//set up a blank senerio
-	if (dir == "./Assets/Levels/Editor.txt")
-	{
-		cout << "Editor Mode" << endl;
-		m_iCurrentBackground = 0;
-		m_sfLevelSize = Vector2f(5333,3000);
-		m_sfLevelSize *= 2.0f;
-		m_iLevelSize = 0;
-		m_iLevelTime = 0;
-		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vBackgroundTextures[0] , 0.0f);
-		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vTimeTextures[0], 0.0f);
-		m_bEditorMode = true;
-	}
-	else // load level
-	{
-		loadLevel(dir);
-	}
-	
-	generateSnapGrid();
+	startGame(dir);
 }
 
 void Game::generateCars()
@@ -65,6 +38,125 @@ void Game::generatePedestrians()
 		
 	}
 	cout << "Finished" << endl;
+}
+
+void Game::startGame(string dir)
+{
+
+	//get singletons
+	m_Player = Profile::getInstance();
+	m_Gametextures = TextureObject::getInstance();
+	m_Gametextures->loadTextures();
+	m_Sound = SoundObject::getInstance();
+
+	//ensure last game is wiped
+	closeGame();
+
+	//set up a blank senerio
+	if (dir == "./Assets/Levels/Editor.txt")
+	{
+		cout << "Editor Mode" << endl;
+		m_iCurrentBackground = 0;
+		m_sfLevelSize = Vector2f(5333, 3000);
+		m_sfLevelSize *= 2.0f;
+		m_iLevelSize = 0;
+		m_iLevelTime = 0;
+		m_Background = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vBackgroundTextures[0], 0.0f);
+		m_Time = SceneObject(Vector2f(0, 0), m_sfLevelSize, m_Gametextures->m_vTimeTextures[0], 0.0f);
+		m_bEditorMode = true;
+	}
+	else // load level
+	{
+		loadLevel(dir);
+	}
+
+	//generate path finding
+	generateGrid();
+
+	//set up music
+	//get the volume settings
+	Profile *player;
+	player = Profile::getInstance();
+
+	//get the sound
+	m_Sound = SoundObject::getInstance();
+
+
+	//play the time sound
+	if (m_iLevelTime == 0 || m_iLevelTime == 1 || m_iLevelTime == 2)
+	{
+
+		if (!m_Sound->m_timeMusic.openFromFile("./Assets/sounds/Ambience/Summer Normal Day.wav"))
+		{
+			cout << "Error : Summer Normal Day.wav failed to load" << endl;
+		}
+		m_Sound->m_timeMusic.setVolume(player->m_iMusicAudioVolume);
+		m_Sound->m_timeMusic.setLoop(true);
+		m_Sound->m_timeMusic.play();
+
+	}
+	if (m_iLevelTime == 3 || m_iLevelTime == 4)
+	{
+		if (!m_Sound->m_timeMusic.openFromFile("./Assets/sounds/Ambience/Night.wav"))
+		{
+			cout << "Error :  Night.wav failed to load" << endl;
+		}
+		m_Sound->m_timeMusic.setVolume(player->m_iMusicAudioVolume);
+		m_Sound->m_timeMusic.setLoop(true);
+		m_Sound->m_timeMusic.play();
+
+	}
+	if (m_iLevelTime == 5)
+	{
+		if (!m_Sound->m_timeMusic.openFromFile("./Assets/sounds/Ambience/Winter.wav"))
+		{
+			cout << "Error :  Winter.wav failed to load" << endl;
+		}
+		m_Sound->m_timeMusic.setVolume(player->m_iMusicAudioVolume);
+		m_Sound->m_timeMusic.setLoop(true);
+		m_Sound->m_timeMusic.play();
+
+
+	}
+	//play the background sound
+	if (m_iCurrentBackground == 0 || m_iCurrentBackground == 1 || m_iCurrentBackground == 2 || m_iCurrentBackground == 3 || m_iCurrentBackground == 5)
+	{
+		if (!m_Sound->m_locMusic.openFromFile("./Assets/sounds/Ambience/Rural.wav"))
+		{
+			cout << "Error : Rural.wav failed to load" << endl;
+		}
+		m_Sound->m_locMusic.setVolume(player->m_iMusicAudioVolume);
+		m_Sound->m_locMusic.setLoop(true);
+		m_Sound->m_locMusic.play();
+
+	}
+	else if (m_iCurrentBackground == 4)
+	{
+		if (!m_Sound->m_locMusic.openFromFile("./Assets/sounds/Ambience/City.wav"))
+		{
+			cout << "Error : City.wav failed to load" << endl;
+		}
+		m_Sound->m_locMusic.setVolume(player->m_iMusicAudioVolume);
+		m_Sound->m_locMusic.setLoop(true);
+		m_Sound->m_locMusic.play();
+	}
+	else if (m_iCurrentBackground == 6)
+	{
+		m_Sound->m_timeMusic.stop();
+		if (!m_Sound->m_locMusic.openFromFile("./Assets/sounds/Ambience/Winter.wav"))
+		{
+			cout << "Error :  Winter.wav failed to load" << endl;
+		}
+		m_Sound->m_locMusic.setVolume(player->m_iMusicAudioVolume);
+		m_Sound->m_locMusic.setLoop(true);
+		m_Sound->m_locMusic.play();
+
+	}
+	else
+	{
+		m_Sound->m_locMusic.stop();
+
+	}
 }
 
 void Game::loadLevel(string dir)
@@ -169,91 +261,6 @@ void Game::loadLevel(string dir)
 		
 	}
 
-
-
-	//get the volume settings
-	Profile *player;
-	player = Profile::getInstance();
-
-	//get the sound
-	m_Sound = SoundObject::getInstance();
-
-
-	//play the time sound
-	if (m_iLevelTime == 0 || m_iLevelTime == 1 || m_iLevelTime == 2)
-	{
-
-		if (!m_Sound->m_timeMusic.openFromFile("./Assets/sounds/Ambience/Summer Normal Day.wav"))
-		{
-			cout << "Error : Summer Normal Day.wav failed to load" << endl;
-		}
-		m_Sound->m_timeMusic.setVolume(player->m_iMusicAudioVolume);
-		m_Sound->m_timeMusic.setLoop(true);
-		m_Sound->m_timeMusic.play();
-
-	}
-	if (m_iLevelTime == 3 || m_iLevelTime == 4)
-	{
-		if (!m_Sound->m_timeMusic.openFromFile("./Assets/sounds/Ambience/Night.wav"))
-		{
-			cout << "Error :  Night.wav failed to load" << endl;
-		}
-		m_Sound->m_timeMusic.setVolume(player->m_iMusicAudioVolume);
-		m_Sound->m_timeMusic.setLoop(true);
-		m_Sound->m_timeMusic.play();
-
-	}
-	if (m_iLevelTime == 5)
-	{
-		if (!m_Sound->m_timeMusic.openFromFile("./Assets/sounds/Ambience/Winter.wav"))
-		{
-			cout << "Error :  Winter.wav failed to load" << endl;
-		}
-		m_Sound->m_timeMusic.setVolume(player->m_iMusicAudioVolume);
-		m_Sound->m_timeMusic.setLoop(true);
-		m_Sound->m_timeMusic.play();
-
-
-	}
-	//play the background sound
-	if (m_iCurrentBackground == 0 || m_iCurrentBackground == 1 || m_iCurrentBackground == 2 || m_iCurrentBackground == 3 || m_iCurrentBackground == 5)
-	{
-		if (!m_Sound->m_locMusic.openFromFile("./Assets/sounds/Ambience/Rural.wav"))
-		{
-			cout << "Error : Rural.wav failed to load" << endl;
-		}
-		m_Sound->m_locMusic.setVolume(player->m_iMusicAudioVolume);
-		m_Sound->m_locMusic.setLoop(true);
-		m_Sound->m_locMusic.play();
-
-	}
-	else if (m_iCurrentBackground == 4)
-	{
-		if (!m_Sound->m_locMusic.openFromFile("./Assets/sounds/Ambience/City.wav"))
-		{
-			cout << "Error : City.wav failed to load" << endl;
-		}
-		m_Sound->m_locMusic.setVolume(player->m_iMusicAudioVolume);
-		m_Sound->m_locMusic.setLoop(true);
-		m_Sound->m_locMusic.play();
-	}
-	else if (m_iCurrentBackground == 6 )
-	{
-		m_Sound->m_timeMusic.stop();
-		if (!m_Sound->m_locMusic.openFromFile("./Assets/sounds/Ambience/Winter.wav"))
-		{
-			cout << "Error :  Winter.wav failed to load" << endl;
-		}
-		m_Sound->m_locMusic.setVolume(player->m_iMusicAudioVolume);
-		m_Sound->m_locMusic.setLoop(true);
-		m_Sound->m_locMusic.play();
-
-	}
-	else
-	{
-		m_Sound->m_locMusic.stop();
-
-	}
 
 	file.close();
 }
@@ -360,6 +367,7 @@ void Game::closeGame()
 	m_vRoads.clear();
 	m_vCarsStartPostions.clear();
 	m_vCarsEndPostions.clear();
+	m_pathfinderData->clearNodes();
 
 
 }
@@ -435,7 +443,7 @@ void Game::cycleBackground()
 	m_sfLevelSize = Vector2f(5300 + m_iLevelSize * 3500, 3000 + m_iLevelSize * 2000);
 	m_sfLevelSize *= 2.0f;
 	m_Background.setSize(m_sfLevelSize);
-	generateSnapGrid();
+	generateGrid();
 }
 
 void Game::cycleLevelTime()
@@ -749,14 +757,14 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 
 }
 
-void Game::generateSnapGrid()
+void Game::generateGrid()
 {
-	cout << "Generating Pathfinding ... ";
+	cout << "Generating Grid ... ";
 	//clear grid (incase of resize)
 	m_vGridSystem.clear();
 
 	// loop from 0 to level size in steps of GRIDSIZE
-	float fGridSize = 50.0f;
+	float fGridSize = 200.0f;
 
 	for (int y = 0; y < m_sfLevelSize.y - fGridSize; y += fGridSize)
 	{
@@ -768,5 +776,15 @@ void Game::generateSnapGrid()
 
 	}
 	cout << "Finished" << endl;
+	cout << "Generating Pathfinding ... ";
+	for (int i = 0; i < m_vGridSystem.size(); i++)
+	{
+		
+
+	}
+
+
+	cout << "Finished" << endl;
+	
 
 }

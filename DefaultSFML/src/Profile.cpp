@@ -115,3 +115,71 @@ bool Profile::loadProfile(string name)
 
 	file.close();
 }
+
+void Profile::newProfile(string name)
+{
+	fstream file;
+	string lineData;
+	string temp;
+	// load a deafualt profile
+	file.open("Assets/profiles/default.txt");
+	if (file.is_open())
+	{
+		while (getline(file, lineData))
+		{
+			istringstream settings(lineData);
+			settings.str(lineData);
+			settings >> temp;
+			if (temp == "c")
+			{
+				//ingore
+			}
+			else if (temp == "s")
+			{
+				settings >> m_sfResolution.x >> m_sfResolution.y >> m_bFullscreen >> m_bTextures >> m_iGameAudioVolume >> m_iInterfaceAudioVolume >> m_iMusicAudioVolume;
+			}
+			else if (temp == "d")
+			{
+				settings >> m_sProfileName >> m_uilevel >> m_fXP >> m_uiPedestriansTotal >> m_uiCarsTotal >> m_uiCrashesTotal >> m_uiFatalitiesTotal >> m_fFlowRate;
+			}
+		}
+	}
+
+	// set the name
+	m_sProfileName = name;
+	//and save
+	saveProfile();
+
+	//add to profile list
+	vector<string> names;
+
+
+	//read in existing names
+	file.open("Assets/profiles/profileList.txt");
+	if (file.is_open())
+	{
+		while (getline(file, lineData))
+		{
+			istringstream settings(lineData);
+			settings.str(lineData);
+			settings >> temp;
+			names.push_back(temp);
+		}
+	}
+
+	//add names back the the file
+	ofstream ofile;
+	
+	ofile.open("Assets/profiles/profileList.txt");
+	if (ofile.is_open())
+	{
+		for (int i = 0; i < names.size(); i++)
+		{
+			ofile << names[i] << endl;
+		}
+
+		//add the newest name
+		ofile << m_sProfileName << endl;
+	}
+
+}

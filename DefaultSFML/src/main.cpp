@@ -260,6 +260,7 @@ void mainMenu(bool tutorial)
 		//we now have a profile
 		//create main menu assets ......................
 		
+		player->m_sProfileName;
 
 		//main menu background-------------------------
 		RectangleShape mainMenuBackgroundRect;
@@ -527,7 +528,7 @@ void profileMenu(bool tutorial)
 							tutorialState = 6;
 							//create a new profile with there name
 
-							player->loadProfile(playerEnterNameBox.m_sText);
+							player->newProfile(playerEnterNameBox.m_sText);
 							window.close();
 							mainMenu(true);
 						}
@@ -776,7 +777,7 @@ void profileMenu(bool tutorial)
 						{
 							//create a new profile with there name
 
-							player->loadProfile(playerEnterNameBox.m_sText);
+							player->newProfile(playerEnterNameBox.m_sText);
 							window.close();
 							mainMenu(false);
 						
@@ -895,8 +896,7 @@ void settingsMenu(bool tutorial)
 
 
 		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
-		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
-		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
+		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Grey");
 
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tWelcome to the settings screen !\n\t Here you can alter any settings you wish\n\n\n Click save when your done.");
 
@@ -945,6 +945,8 @@ void settingsMenu(bool tutorial)
 							mainMenu(false);
 
 						}
+
+					
 						if (tutorialState == 9  );
 						{
 							if (gameVolume.m_bClicked(sfMousePos))
@@ -1098,7 +1100,6 @@ void settingsMenu(bool tutorial)
 			window.draw(fullScreenSubmit);
 
 			window.draw(Save);
-			window.draw(Reset);
 			window.draw(Cancel);
 
 			// first overlay
@@ -1110,6 +1111,8 @@ void settingsMenu(bool tutorial)
 	}
 	else
 	{
+		player = Profile::getInstance();
+
 		//main menu background-------------------------
 		RectangleShape settingsBackgroundRect;
 		Sprite settingsBackgroundSprite;
@@ -1203,6 +1206,7 @@ void settingsMenu(bool tutorial)
 
 		window.setFramerateLimit(60);
 
+	
 
 		while (window.isOpen())
 		{

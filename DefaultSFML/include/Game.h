@@ -15,6 +15,7 @@
 #include "Sound.h"
 #include "Profile.h"
 #include "Pedestrian.h"
+#include "Pathfinding.h"
 
 
 using namespace sf;
@@ -31,11 +32,13 @@ private:
 	// \brief Function that creates "m_uiNumbofPed" number of pedestrians 
 	void generatePedestrians();
 
+	// \brief Function that ensure the game is set up correctly 
+	// \param dir string , Location of level file
+	void startGame(string dir);
 
 	// \brief Function to load an xml file
 	// \param Path to the level
 	void loadLevel(string dir);
-
 	
 	vector<Car> m_vCars; // \brief list of cars for the scene
 	vector<Pedestrian> m_vPedestrians;// \brief list of pedestrians for the scene
@@ -49,9 +52,9 @@ private:
 	TextureObject *m_Gametextures;// \brief handle to all game textures
 
 	// \brief Function to generate a grid for the map
-	void generateSnapGrid();
-
+	void generateGrid();
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
+	Pathfinding *m_pathfinderData;   // \brief contains nodes for map
 
 	SoundObject *m_Sound;// \brief Sound object
 	Profile *m_Player;// \brief Sound object

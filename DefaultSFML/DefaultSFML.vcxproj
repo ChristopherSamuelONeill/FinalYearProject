@@ -136,6 +136,9 @@
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Car.cpp" />
     <ClCompile Include="src\CollisionDetection.cpp" />
+    <ClCompile Include="src\Controller.cpp" />
+    <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\Pathfinding.cpp" />
     <ClCompile Include="src\Pedestrian.cpp" />
     <ClCompile Include="src\Road.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
@@ -156,9 +159,12 @@
     <ClInclude Include="include\Car.h" />
     <ClInclude Include="include\Clickable.h" />
     <ClInclude Include="include\CollisionDetection.h" />
+    <ClInclude Include="include\Controller.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Hoverable.h" />
+    <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Overlay.h" />
+    <ClInclude Include="include\Pathfinding.h" />
     <ClInclude Include="include\Pedestrian.h" />
     <ClInclude Include="include\Profile.h" />
     <ClInclude Include="include\Road.h" />
@@ -166,7 +172,6 @@
     <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\TextBox.h" />
     <ClInclude Include="include\TextureObject.h" />
-    <ClInclude Include="include\tinyxml2.h" />
     <ClInclude Include="include\TrafficLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
