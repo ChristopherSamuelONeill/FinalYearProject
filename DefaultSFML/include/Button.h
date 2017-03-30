@@ -33,8 +33,10 @@ public:
 	/// \param text string Text that is displayed on the button
 	/// \param pos sVector2f position of the button
 	/// \param size sVector2f size of the button
+	/// \param resolutionScale sVector2f size of button relative to the screen
+	/// \param textureName string name of the button texture
 	////////////////////////////////////////////////////////////
-	Button(string text,Vector2f pos, Vector2f size, string textureName);
+	Button(string text,Vector2f pos, Vector2f size,Vector2f resolutionScale, string textureName);
 
 
 	// \brief Updates text on button
@@ -80,7 +82,12 @@ protected:
 	////////////////////////////////////////////////////////////
 	Font m_sfFont;
 
+private:
 
+	///////////////////////////////////////////////////////////
+	/// \brief Size of button relative to the screen
+	////////////////////////////////////////////////////////////
+	Vector2f m_sfResolutionScale;
 
 };
 #endif

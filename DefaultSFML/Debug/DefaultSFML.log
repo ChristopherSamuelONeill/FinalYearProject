@@ -1,72 +1,9 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DefaultSFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
+  Button.cpp
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\profile.h(110): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(143): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(164): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(292): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(306): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(307): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(445): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(484): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(495): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(633): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(659): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(745): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(760): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(850): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(862): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(867): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(873): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(881): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(886): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(894): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(898): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(903): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1052): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1061): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1149): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1161): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1166): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1172): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1180): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1185): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1193): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1201): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1202): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1356): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1365): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(948): warning C4390: ';': empty controlled statement found; is this the intent?
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1447): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1458): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1459): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1541): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1542): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1566): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1572): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1579): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1586): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1593): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1599): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1605): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1611): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1618): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1625): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1631): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1638): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1644): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1650): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1656): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1664): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1670): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1676): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1682): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1690): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1716): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1717): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1805): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1811): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1839): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1844): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\main.cpp(1870): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(37): warning C4244: 'initializing': conversion from 'std::size_t' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(43): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(57): warning C4244: 'initializing': conversion from 'std::size_t' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\button.cpp(63): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)

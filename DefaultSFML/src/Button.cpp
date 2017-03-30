@@ -4,13 +4,14 @@ Button::Button()
 {
 }
 
-Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
+Button::Button(string text, Vector2f pos, Vector2f size, Vector2f resolutionScale, string textureName)
 {
 
 	m_sButtonText = text;
 	float scalex = size.x / 400 ;
 	float scaley = size.y / 118 ;
 	float textScale = scalex / scaley;
+	m_sfResolutionScale = resolutionScale;
 
 	m_sfVTopLeftPos = pos;
 	m_sfVSize = size;
@@ -34,11 +35,12 @@ Button::Button(string text, Vector2f pos, Vector2f size, string textureName)
 	m_sfSprite.setPosition(m_sfRect.getPosition().x , m_sfRect.getPosition().y );
 	
 	float numChar = m_sButtonText.getSize();
-	float xpos = (m_sfVTopLeftPos.x + (m_sfVSize.x / 2) - numChar * 7 *textScale);
-	float ypos = (m_sfVTopLeftPos.y + m_sfVSize.y / 2) - 30 * textScale;
+	float xpos = (m_sfVTopLeftPos.x + (m_sfVSize.x / 2) - numChar * 7 *textScale * m_sfResolutionScale.x);
+	float ypos = (m_sfVTopLeftPos.y + m_sfVSize.y / 2) - 30 * textScale  * m_sfResolutionScale.y;
+
 	// Create a text
 	m_sfButtonText = Text(m_sButtonText, m_sfFont);
-	m_sfButtonText.setCharacterSize(30 * textScale);
+	m_sfButtonText.setCharacterSize(30 * textScale * m_sfResolutionScale.x);
 	m_sfButtonText.setStyle(Text::Bold);
 	m_sfButtonText.setFillColor(Color(0, 0, 0));
 	m_sfButtonText.setPosition(Vector2f(xpos, ypos));
@@ -53,12 +55,12 @@ void Button::setText(string text)
 	float textScale = scalex / scaley;
 
 	float numChar = m_sButtonText.getSize();
-	float xpos = (m_sfVTopLeftPos.x + (m_sfVSize.x / 2) - numChar * 7 * textScale);
-	float ypos = (m_sfVTopLeftPos.y + m_sfVSize.y / 2) - 30 * textScale;
+	float xpos = ((m_sfVTopLeftPos.x + (m_sfVSize.x / 2) - numChar * 7 * textScale ) * m_sfResolutionScale.x);
+	float ypos = ((m_sfVTopLeftPos.y + m_sfVSize.y / 2) - 30 * textScale ) * m_sfResolutionScale.y;
 
 	// Create a text
 	m_sfButtonText = Text(m_sButtonText, m_sfFont);
-	m_sfButtonText.setCharacterSize(30 * textScale);
+	m_sfButtonText.setCharacterSize(30 * textScale * m_sfResolutionScale.x);
 	m_sfButtonText.setStyle(Text::Bold);
 	m_sfButtonText.setFillColor(Color(0, 0, 0));
 	m_sfButtonText.setPosition(Vector2f(xpos, ypos));

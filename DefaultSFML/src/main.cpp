@@ -144,14 +144,14 @@ void mainMenu(bool tutorial)
 		title.setFillColor(Color(0, 0, 0));
 		title.setPosition(Vector2f(middleOfScreen.x, 25 * resolutionScale.y));
 
-		Button play("Play", Vector2f(middleOfScreen.x, 100 * resolutionScale.y), buttonSize, "Button_Grey");
-		Button profile("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, "Button_Green");
-		Button settings("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, "Button_Grey");
-		Button quit("Quit", Vector2f(middleOfScreen.x, 550 * resolutionScale.y), buttonSize, "Button_Grey");
+		Button play("Play", Vector2f(middleOfScreen.x, 100 * resolutionScale.y), buttonSize, resolutionScale, "Button_Grey");
+		Button profile("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button settings("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Grey");
+		Button quit("Quit", Vector2f(middleOfScreen.x, 550 * resolutionScale.y), buttonSize, resolutionScale, "Button_Grey");
 	
 		
-		Button profileGrey("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, "Button_Grey");
-		Button settingsGreen ("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
+		Button profileGrey("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, resolutionScale, "Button_Grey");
+		Button settingsGreen ("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
 		
 		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 -  (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 
@@ -293,10 +293,10 @@ void mainMenu(bool tutorial)
 		title.setFillColor(Color(0, 0, 0));
 		title.setPosition(Vector2f(middleOfScreen.x, 25 * resolutionScale.y));
 
-		Button play("Play", Vector2f(middleOfScreen.x, 100 * resolutionScale.y), buttonSize, "Button_Green");
-		Button profile("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, "Button_Green");
-		Button settings("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
-		Button quit("Quit", Vector2f(middleOfScreen.x, 550 * resolutionScale.y), buttonSize, "Button_Green");
+		Button play("Play", Vector2f(middleOfScreen.x, 100 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button profile("Profile", Vector2f(middleOfScreen.x, 250 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button settings("Settings", Vector2f(middleOfScreen.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button quit("Quit", Vector2f(middleOfScreen.x, 550 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
 
 		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (250 * resolutionScale.x), player->m_sfResolution.y / 2 - (250 * resolutionScale.y));
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tYou have now finished the tutorial! \n\nClick play to start playing");
@@ -427,9 +427,9 @@ void profileMenu(bool tutorial)
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
 		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
-		Button New("New", Vector2f(middleOfScreen.x - buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, "Button_Green");
-		Button Select("Select", Vector2f(middleOfScreen.x , 100 + middleOfScreen.y *resolutionScale.y), buttonSize, "Button_Grey");
-		Button Delete("Delete", Vector2f(middleOfScreen.x + buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, "Button_Grey");
+		Button New("New", Vector2f(middleOfScreen.x - buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button Select("Select", Vector2f(middleOfScreen.x , 100 + middleOfScreen.y *resolutionScale.y), buttonSize, resolutionScale, "Button_Grey");
+		Button Delete("Delete", Vector2f(middleOfScreen.x + buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, resolutionScale, "Button_Grey");
 
 
 		Text title;
@@ -481,7 +481,7 @@ void profileMenu(bool tutorial)
 		//create text box 
 		Vector2f edgeOfTextBox(nameEntryRect.getPosition().x + (579 * resolutionScale.x) / 8, nameEntryRect.getPosition().y + (144 * resolutionScale.y) / 2);
 		TextBox playerEnterNameBox("", edgeOfTextBox , Vector2f(343*resolutionScale.x, 37*resolutionScale.y), "Textbox");
-		Button Submit("Submit", Vector2f(edgeOfTextBox.x + 343 * resolutionScale.x, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button Submit("Submit", Vector2f(edgeOfTextBox.x + 343 * resolutionScale.x, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale,  "Button_Green");
 
 		//create overlays
 		Vector2f middleOfScreenOverlay(player->m_sfResolution.x / 2 - (300 * resolutionScale.x), player->m_sfResolution.y / 2 - (300 * resolutionScale.y));
@@ -615,9 +615,9 @@ void profileMenu(bool tutorial)
 		Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
 		Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
 
-		Button New("New", Vector2f(middleOfScreen.x - buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, "Button_Green");
-		Button Select("Select", Vector2f(middleOfScreen.x, 100 + middleOfScreen.y *resolutionScale.y), buttonSize, "Button_Green");
-		Button Delete("Delete", Vector2f(middleOfScreen.x + buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, "Button_Green");
+		Button New("New", Vector2f(middleOfScreen.x - buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button Select("Select", Vector2f(middleOfScreen.x, 100 + middleOfScreen.y *resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+		Button Delete("Delete", Vector2f(middleOfScreen.x + buttonSize.x, 100 + middleOfScreen.y * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
 
 
 		Text title;
@@ -859,18 +859,18 @@ void settingsMenu(bool tutorial)
 		s = to_string(player->m_iGameAudioVolume);
 
 		TextBox gameVolume("Game Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 		s = to_string(player->m_iMusicAudioVolume);
 
 		TextBox musicVolume("Music Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 		s = to_string(player->m_iInterfaceAudioVolume);
 
 
 		TextBox interfaceVolume("Interface Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 
 
 		s = to_string(player->m_sfResolution.x);
@@ -878,12 +878,12 @@ void settingsMenu(bool tutorial)
 		TextBoxStart = Vector2f(700 * resolutionScale.x, 300 * resolutionScale.y);
 
 		TextBox resolutionX("Resolution : x " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;;
 
 		s = to_string(player->m_sfResolution.y);
 		TextBox resolutionY("Resolution : y " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 
 
@@ -891,12 +891,12 @@ void settingsMenu(bool tutorial)
 		if (player->m_bFullscreen == false) s = "No";
 
 		TextBox fullScreen("Fullscreen Mode " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 
 
-		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
+		Button Reset("Reset", Vector2f(settingsRect.getPosition().x + 1.5 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
+		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
 
 		Overlay firstOverlayMessage(middleOfScreenOverlay, Vector2f(500 * resolutionScale.x, 500 * resolutionScale.y), "\tWelcome to the settings screen !\n\t Here you can alter any settings you wish\n\n\n Click save when your done.");
 
@@ -1158,18 +1158,18 @@ void settingsMenu(bool tutorial)
 		s = to_string(player->m_iGameAudioVolume);
 
 		TextBox gameVolume("Game Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 		s = to_string(player->m_iMusicAudioVolume);
 
 		TextBox musicVolume("Music Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 		s = to_string(player->m_iInterfaceAudioVolume);
 
 
 		TextBox interfaceVolume("Interface Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 
 
 		s = to_string(player->m_sfResolution.x);
@@ -1177,12 +1177,12 @@ void settingsMenu(bool tutorial)
 		TextBoxStart = Vector2f(700 * resolutionScale.x, 300 * resolutionScale.y);
 
 		TextBox resolutionX("Resolution : x " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;;
 
 		s = to_string(player->m_sfResolution.y);
 		TextBox resolutionY("Resolution : y " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 
 
@@ -1190,11 +1190,11 @@ void settingsMenu(bool tutorial)
 		if (player->m_bFullscreen == false) s = "No";
 
 		TextBox fullScreen("Fullscreen Mode " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
-		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 	
 
-		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
-		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, "Button_Green");
+		Button Save("Save", Vector2f(settingsRect.getPosition().x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
+		Button Cancel("Cancel", Vector2f(settingsRect.getPosition().x + 3 * buttonSize.x, player->m_sfResolution.y - buttonSize.y), buttonSize, resolutionScale, "Button_Green");
 
 
 		RenderWindow window;
@@ -1448,10 +1448,10 @@ void playMenu()
 	title.setFillColor(Color(0, 0, 0));
 	title.setPosition(Vector2f(middleOfScreen.x, 25 * resolutionScale.y));
 
-	Button LevelsButton("Play", Vector2f(50 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
-	Button LoadButton("Load", Vector2f(350 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
-	Button EditorButton("Editor",	Vector2f( 650  * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
-	Button BackButton("Main Menu",	Vector2f( 950 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, "Button_Green");
+	Button LevelsButton("Play", Vector2f(50 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+	Button LoadButton("Load", Vector2f(350 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+	Button EditorButton("Editor",	Vector2f( 650  * resolutionScale.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
+	Button BackButton("Main Menu",	Vector2f( 950 * resolutionScale.x, 400 * resolutionScale.y), buttonSize, resolutionScale, "Button_Green");
 
 
 	RenderWindow window;
@@ -1564,12 +1564,14 @@ void editor()
 	("Background",
 		Vector2f(0, 0),
 		Vector2f(300 * resolutionScale.x , 88.5 * resolutionScale.y) ,
+		resolutionScale,
 		"Button_Green"
 		);
 	Button SizeButton
 	("Level Size",
 		Vector2f(0, 90 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 
@@ -1577,6 +1579,7 @@ void editor()
 	("Time of Day",
 		Vector2f(0, 180 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 
@@ -1584,6 +1587,7 @@ void editor()
 	("Roads",
 		Vector2f(0, 270 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 
@@ -1591,24 +1595,28 @@ void editor()
 	("Two Way Road",
 		Vector2f(300 * resolutionScale.x, 120 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button TJunctionButton
 	("T - Junction",
 		Vector2f(300 * resolutionScale.x, 210 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button CrossRoadsButton
 	("Cross Roads",
 		Vector2f(300 * resolutionScale.x, 300 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button CornerButton
 	("Corner",
 		Vector2f(300 * resolutionScale.x, 390 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 
@@ -1616,6 +1624,7 @@ void editor()
 	("Lights",
 		Vector2f(0, 360 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 
@@ -1623,12 +1632,14 @@ void editor()
 	("Traffic Lights",
 		Vector2f(300 * resolutionScale.x, 315 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button pedLightButton
 	("Pedestrian Lights",
 		Vector2f(300 * resolutionScale.x, 405 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 
@@ -1636,48 +1647,56 @@ void editor()
 	("Cars",
 		Vector2f(0, 450 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button lessCarsButton
 	("-",
 		Vector2f(300 * resolutionScale.x, 450 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 	Button numberCarsButton
 	(" ",
 		Vector2f(550 * resolutionScale.x, 450 * resolutionScale.y),
 		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button moreCarsButton
 	("+",
 		Vector2f(800 * resolutionScale.x, 450 * resolutionScale.y),
 		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 	Button pedsButton
 	("Pedestrians",
 		Vector2f(0, 540 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button lessPedsButton
 	("-",
 		Vector2f(300 * resolutionScale.x, 540 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 	Button numberPedsButton
 	(" ",
 		Vector2f(550 * resolutionScale.x, 540 * resolutionScale.y),
 		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Yellow"
 	);
 	Button morePedsButton
 	("+",
 		Vector2f(800 * resolutionScale.x, 540 * resolutionScale.y),
 		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 
@@ -1686,24 +1705,28 @@ void editor()
 	("New",
 		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 0),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 	Button saveButton
 	("Save",
 		Vector2f( player->m_sfResolution.x - 300 * resolutionScale.x, 90 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 	Button loudButton
 	("Load",
 		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 180 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 	Button helpButton
 	("Help",
 		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 270 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 
@@ -1712,6 +1735,7 @@ void editor()
 	("Exit",
 		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, player->m_sfResolution.y - 90 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
 		"Button_Green"
 	);
 
@@ -1737,8 +1761,8 @@ void editor()
 	TextBox saveLevelEntryName("Enter level name", edgeOfTextBox, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 	TextBox loadLevelEntryName("Enter level name", edgeOfTextBox, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 
-	Button saveSubmitButton("Submit", Vector2f(edgeOfTextBox.x + 343, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
-	Button loadSubmitButton("Submit", Vector2f(edgeOfTextBox.x + 343, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), "Button_Green");
+	Button saveSubmitButton("Submit", Vector2f(edgeOfTextBox.x + 343, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5),  resolutionScale, "Button_Green");
+	Button loadSubmitButton("Submit", Vector2f(edgeOfTextBox.x + 343, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5),  resolutionScale, "Button_Green");
 	
 	//help screen
 	Overlay helpOverlayMessage(Vector2f(200 * resolutionScale.x,150 * resolutionScale.y), Vector2f(888 * resolutionScale.x, 500 * resolutionScale.y),
