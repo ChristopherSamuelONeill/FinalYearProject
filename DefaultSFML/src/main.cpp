@@ -1593,6 +1593,12 @@ void LoadLevel(string path)
 		}
 		while (window.pollEvent(event))
 		{
+			if (event.type == Event::Closed)
+			{
+				window.close(); // Allows window to close when 'X' is pressed
+				return;
+			}
+
 			if (event.type == Event::MouseWheelMoved)
 			{
 				iMouseWheel = event.mouseWheel.delta;

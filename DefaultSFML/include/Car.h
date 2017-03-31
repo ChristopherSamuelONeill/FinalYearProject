@@ -66,7 +66,7 @@ public:
 
 	void draw(RenderTarget& target, RenderStates states) const;
 	void update(float dt);
-
+	void setTimeOfDay(int time);
 	void SetTurning(int iDirection);
 };
 

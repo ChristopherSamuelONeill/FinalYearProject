@@ -148,6 +148,19 @@ void Car::update(float dt)
 	}
 }
 
+void Car::setTimeOfDay(int time)
+{
+	//lights on
+	if (time == 3 || time == 4 || time == 5)
+	{
+		m_bLights = true;
+	}
+	else // lights off
+	{
+		m_bLights = false;
+	}
+}
+
 void Car::SetTurning(int iDirection)
 {
 	m_iSteerDirection = iDirection;

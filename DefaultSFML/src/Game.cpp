@@ -19,11 +19,21 @@ void Game::generateCars()
 	cout << "Generating "<< m_uiNumbofCars << " cars ... ";
 	for (int i = 0; i < m_uiNumbofCars; i++)
 	{
-		//Texture[8]
+		Texture tempTexture[8] =
+		{
+			m_Gametextures->m_vCarColourTextures[0],
+			m_Gametextures->m_vCarLights[0],
+			m_Gametextures->m_vCarLights[1],
+			m_Gametextures->m_vCarLights[2],
+			m_Gametextures->m_vCarLights[3],
+			m_Gametextures->m_vCarWheels[0],
+			m_Gametextures->m_vCarWheels[1],
+			m_Gametextures->m_vCarWheels[2]
 
-		//Car tempCar(m_vCarsStartPostions[0],m_vCarsEndPostions[0],Vector2f(100,250),);
-		
-		//m_vCars.push_back(tempCar);
+		};
+
+		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(100, 250), tempTexture);
+		m_vCars.push_back(tempCar);
 	}
 	cout << "Finished" << endl;
 }
@@ -325,7 +335,9 @@ void Game::updateScene(float dt)
 	//update cars
 	for (int i = 0; i < m_vCars.size(); i++)
 	{
+		m_vCars[i].setTimeOfDay(m_iLevelTime);
 		m_vCars[i].update(dt);
+
 	}
 
 	

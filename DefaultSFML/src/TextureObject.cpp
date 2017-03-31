@@ -143,6 +143,31 @@ void TextureObject::loadTextures()
 
 	m_vCarLights.push_back(sfTempTexture);
 
+	//Wheels
+
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Cars/FrontWheel_left.png"))
+	{
+		cout << "Error: FrontWheel_left.png was unable to load." << endl;
+	};
+
+	m_vCarWheels.push_back(sfTempTexture);
+
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Cars/FrontWheel_right.png"))
+	{
+		cout << "Error: FrontWheel_right.png was unable to load." << endl;
+	};
+
+	m_vCarWheels.push_back(sfTempTexture);
+
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Cars/RearWheels.png"))
+	{
+		cout << "Error: RearWheels.png was unable to load." << endl;
+	};
+
+	m_vCarWheels.push_back(sfTempTexture);
+
+	
+
 
 	//Background Textures---------------------------------------------------------------------
 
