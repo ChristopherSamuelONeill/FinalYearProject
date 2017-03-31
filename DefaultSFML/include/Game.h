@@ -51,8 +51,10 @@ private:
 
 	TextureObject *m_Gametextures;// \brief handle to all game textures
 
-	// \brief Function to generate a grid for the map
-	void generateGrid();
+	
+	void generateGrid();// \brief Function to generate a grid for the map
+	void chooseNodes();// \brief Function to decide which nodes are open and wich are closed
+
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 	Pathfinding *m_pathfinderData;   // \brief contains nodes for map
 
@@ -61,12 +63,13 @@ private:
 
 
 	//editor objects
+	vector<RectangleShape> rectsForTesting;
 	int m_iCurrentBackground;// \brief int of the current background (used for cycling)
 	int m_iLevelSize;// \brief int of the Level Size (used for cycling)
 	int m_iLevelTime;// \brief int of the Level time (used for cycling)
 	Vector2f m_sfSize; //brief Size of temp object
 	bool m_bEditorMode; //brief bool of wetaher game is in editor mode or not (false for not)
-
+	float fGridSize = 100.0f;
 
 
 public:

@@ -2,27 +2,19 @@
 
 Pathfinding::Pathfinding()
 {
-	clearNodes();
 }
 
-void Pathfinding::addNode(bool open, float hValue, float gValue, int index)
+void Pathfinding::addNode( float hValue, float gValue, int index, Vector2f pos)
 {
-	if (open)
-	{
-		m_openList->push_back(Node(hValue, gValue, index));
-	}
-	else
-	{
-		m_closedList->push_back(Node(hValue, gValue, index));
-	}
+	pair< Node*, Vector2f> tempNode;
+	tempNode.first = new Node(hValue, gValue, index);
+	tempNode.second = pos;
+	m_nodes.push_back(tempNode);
 }
 
 void Pathfinding::clearNodes()
 {
-	delete(m_openList);
-	m_openList = NULL;
-
-	delete(m_closedList);
-	m_closedList = NULL;
-
+	m_openList.clear();
+	m_closedList.clear();
+	m_nodes.clear();
 }

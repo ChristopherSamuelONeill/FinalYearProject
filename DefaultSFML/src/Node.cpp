@@ -10,4 +10,5 @@ Node::Node(float hValue, float gValue, int index)
 	m_fHValue = hValue;
 	m_fGValue = gValue;
 	m_fFValue = m_fHValue + m_fGValue;
+	parentNode = NULL;
 }

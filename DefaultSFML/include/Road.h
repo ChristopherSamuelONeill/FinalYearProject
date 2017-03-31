@@ -3,6 +3,7 @@
 
 #include <SFML\Graphics.hpp>
 #include <iostream>
+#include "Pathfinding.h"
 
 
 using namespace std;
@@ -28,6 +29,9 @@ public:
 
 
 	//setters
+	// \brief void sets the type of road
+	// \param Pathfinding pathData , pointer to the path finding data
+	void passPathfinding(Pathfinding &pathData);
 
 	// \brief void sets the type of road
 	// \param String type , the type of road e.g "T - Junction"

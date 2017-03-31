@@ -44,56 +44,62 @@ int main()
 	player->loadProfile("default");
 	sound->loadSounds();
 
-	
-
-
-	//luanch game
-	if (DEBUGMODE) cout << "Luanching Game" << endl;
-
-	//open profile list
-	fstream file;
-	string lineData;
-	string tempProfile;
-	vector<string> profileNames;
-
-	file.open("Assets/profiles/profileList.txt");
-	if (DEBUGMODE) cout << "opening Profile list" << endl;
-	if (file.is_open())
+	if (DEBUGMODE)
 	{
-		while (getline(file, lineData))
+		editor();
+	}
+	else
+	{
+		//luanch game
+		if (DEBUGMODE) cout << "Luanching Game" << endl;
+
+		//open profile list
+		fstream file;
+		string lineData;
+		string tempProfile;
+		vector<string> profileNames;
+
+		file.open("Assets/profiles/profileList.txt");
+		if (DEBUGMODE) cout << "opening Profile list" << endl;
+		if (file.is_open())
 		{
-			istringstream iss(lineData);
-			iss.str(lineData);
-			iss >> tempProfile;
-			profileNames.push_back(tempProfile);
+			while (getline(file, lineData))
+			{
+				istringstream iss(lineData);
+				iss.str(lineData);
+				iss >> tempProfile;
+				profileNames.push_back(tempProfile);
+			}
 		}
-	}
-	else
-	{
-		cout << "Couldnt Open file ... Assets/profiles/profileList.txt" << endl;
+		else
+		{
+			cout << "Couldnt Open file ... Assets/profiles/profileList.txt" << endl;
+		}
+
+		file.close();
+		if (DEBUGMODE) cout << "Profile list closed" << endl;
+		if (DEBUGMODE) cout << "Profiles present : " << profileNames.size() << endl;
+		//check to see if any profiles were present
+		if (profileNames.size() > 0)
+		{
+			// luanch profileMenu in normal mode
+			player->loadProfile("default");
+			tutorialState = 11;
+			profileMenu(false);
+		}
+		else
+		{
+			if (DEBUGMODE) cout << "Tutorial mode" << endl;
+			if (DEBUGMODE) cout << "Loading Default profile" << endl;
+			player->loadProfile("default");
+			if (DEBUGMODE) cout << "Default profile loaded" << endl;
+			// luanch menu in tutorial mode
+
+			mainMenu(true);
+		}
+
 	}
 
-	file.close();
-	if (DEBUGMODE) cout << "Profile list closed" << endl;
-	if (DEBUGMODE) cout << "Profiles present : " << profileNames.size() << endl;
-	//check to see if any profiles were present
-	if (profileNames.size() > 0)
-	{
-		// luanch profileMenu in normal mode
-		player->loadProfile("default");
-		tutorialState = 11;
-		profileMenu(false);
-	}
-	else
-	{
-		if (DEBUGMODE) cout << "Tutorial mode" << endl;
-		if (DEBUGMODE) cout << "Loading Default profile" << endl;
-		player->loadProfile("default");
-		if (DEBUGMODE) cout << "Default profile loaded" << endl;
-		// luanch menu in tutorial mode
-		
-		mainMenu(true);
-	}
 	
 	return 0;
 }
@@ -1538,7 +1544,11 @@ void LoadLevel()
 void editor()
 {
 	//Game Object
-	Game Editor("./Assets/Levels/Editor.txt");
+
+
+	Game Editor;
+	//Editor = Game("./Assets/Levels/Editor.txt");
+	Editor = Game("test");
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;
@@ -1801,11 +1811,15 @@ void editor()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
 				fRotation += 90;
+				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
 				fRotation -= 90;
 			}
+
+			if (fRotation >= 360)fRotation = 0;
+			if (fRotation < 0)fRotation = 270;
 			inputDelay.restart();
 			
 		}
@@ -1842,12 +1856,14 @@ void editor()
 
 			if (placingBool)
 			{
+				if (sType == "CrossRoads")fRotation = 0;
 				Editor.spawnTempObject(sfPlacingPos, fRotation, sType);
 				Editor.m_bPlacingObject = true;
 				if (Keyboard::isKeyPressed(Keyboard::Return))
 				{
 					if (sType == "NormalRoad" || sType == "T-Junction" || sType == "CrossRoads" || sType == "Corner")
 					{
+
 
 						if (Editor.placeRoad(sfPlacingPos, fRotation, sType))
 						{
@@ -2131,6 +2147,7 @@ void editor()
 						Editor.saveLevelToFile(saveLevelEntryName.m_sText);
 						usingMenu = false;
 						saveLevelEntryName.m_bIsEntering = false;
+						Editor.closeGame();
 						window.close();
 						playMenu();
 					}

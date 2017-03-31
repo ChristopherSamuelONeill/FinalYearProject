@@ -1,0 +1,12 @@
+c Scale X Scale Y 
+LevelSize 10666 6000
+c Texture Number
+Background 0
+c Texture Number
+Time 0
+c Cars
+Cars 3435973836
+c Pedestrians
+Pedestrians 3435973836
+c Pos X Pos Y Scale x Scale y Rotation Type 
+Road 1700 900 2500 2500 0 CrossRoads

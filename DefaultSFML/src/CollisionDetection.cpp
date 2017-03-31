@@ -3,6 +3,13 @@
 bool CollisionDetection::operator()(RectangleShape A, RectangleShape B)
 {
 
+
+	FloatRect FA = A.getGlobalBounds();
+	FloatRect FB = B.getGlobalBounds();
+
+	if (FA.intersects(FB))return true;
+	else return false;
+
 	//Collision detection variables
 	Vector2f obb1LocalPoints[4];
 	Vector2f obb2LocalPoints[4];
@@ -35,15 +42,15 @@ bool CollisionDetection::operator()(RectangleShape A, RectangleShape B)
 	float vdRotationMatrix1[2][2];
 	float vdRotationMatrix2[2][2];
 
-	vdRotationMatrix1[0][0] = cos(A.getRotation());
-	vdRotationMatrix1[0][1] = sin(A.getRotation());
-	vdRotationMatrix1[1][0] = -sin(A.getRotation());
-	vdRotationMatrix1[1][1] = cos(A.getRotation());
+	vdRotationMatrix1[0][0] = cos(A.getRotation()* (3.14 / 180));
+	vdRotationMatrix1[0][1] = sin(A.getRotation()* (3.14 / 180));
+	vdRotationMatrix1[1][0] = -sin(A.getRotation()* (3.14 / 180));
+	vdRotationMatrix1[1][1] = cos(A.getRotation()* (3.14 / 180));
 
-	vdRotationMatrix2[0][0] = cos(B.getRotation());
-	vdRotationMatrix2[0][1] = sin(B.getRotation());
-	vdRotationMatrix2[1][0] = -sin(B.getRotation());
-	vdRotationMatrix2[1][1] = cos(B.getRotation());
+	vdRotationMatrix2[0][0] = cos(B.getRotation()* (180 / 3.14));
+	vdRotationMatrix2[0][1] = sin(B.getRotation()* (180 / 3.14));
+	vdRotationMatrix2[1][0] = -sin(B.getRotation() * (180 / 3.14));
+	vdRotationMatrix2[1][1] = cos(B.getRotation() * (180 / 3.14));
 
 	//translate local coords by rotation matrix
 	obb1LocalPoints[0] = Vector2f(obb1LocalPoints[0].x * vdRotationMatrix1[0][0] + obb1LocalPoints[0].x * vdRotationMatrix1[0][1],
@@ -115,16 +122,18 @@ bool CollisionDetection::operator()(RectangleShape A, RectangleShape B)
 	);
 
 
-	//values used for holding min , max
-	float OBB1Min = 9999999999;
-	float OBB1Max = -9999999999;
-	float OBB2Min = 9999999999;
-	float OBB2Max = -9999999999;
+	//edge counter
+	int iEdgesTouching = 0; // allow one edge to touch (for snapping)
 
 	//project each point onto each axis
 
 	for (int axisTestNum = 0; axisTestNum < 4; axisTestNum++)
 	{
+		//values used for holding min , max
+		float OBB1Min = 9999999999;
+		float OBB1Max = -9999999999;
+		float OBB2Min = 9999999999;
+		float OBB2Max = -9999999999;
 
 		// check each vertex on box 1 to get min and max
 		for (int vertexNum = 0; vertexNum < 4; vertexNum++)
@@ -156,14 +165,19 @@ bool CollisionDetection::operator()(RectangleShape A, RectangleShape B)
 			}
 
 		}
+		//alow one edge
+		if (OBB2Min == OBB1Max || OBB2Min == OBB1Min || OBB2Max == OBB1Min || OBB2Max == OBB1Max)
+		{
+			iEdgesTouching++;
+		}
 
 		//check each box min and max for over lap
-		if (OBB2Min < OBB1Max && OBB2Min > OBB1Min)
+		if (OBB2Min <= OBB1Max && OBB2Min >= OBB1Min)
 		{
 			testAxis[axisTestNum] = true; // There is a collision along this axis
 			
 		}
-		else if (OBB2Max > OBB1Min && OBB2Max < OBB1Max)
+		else if (OBB2Max >= OBB1Min && OBB2Max <= OBB1Max)
 		{
 			testAxis[axisTestNum] = true; // There is a collision along this axis
 			
@@ -178,6 +192,8 @@ bool CollisionDetection::operator()(RectangleShape A, RectangleShape B)
 
 
 	//there was a collision
+	if (iEdgesTouching == 4) return false;
+	
 	return true;
 	
 

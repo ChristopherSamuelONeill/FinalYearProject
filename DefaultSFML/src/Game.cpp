@@ -3,10 +3,14 @@
 Game::Game()
 {
 	m_bEditorMode = false;
+	m_pathfinderData = new Pathfinding;
+	m_Gametextures = TextureObject::getInstance();
+	m_Gametextures->loadTextures();
 }
 
 Game::Game(string dir)
 {
+	m_pathfinderData = new Pathfinding;
 	startGame(dir);
 }
 
@@ -46,11 +50,8 @@ void Game::startGame(string dir)
 	//get singletons
 	m_Player = Profile::getInstance();
 	m_Gametextures = TextureObject::getInstance();
-	m_Gametextures->loadTextures();
+	//m_Gametextures->loadTextures();
 	m_Sound = SoundObject::getInstance();
-
-	//ensure last game is wiped
-	closeGame();
 
 	//set up a blank senerio
 	if (dir == "./Assets/Levels/Editor.txt")
@@ -157,6 +158,28 @@ void Game::startGame(string dir)
 		m_Sound->m_locMusic.stop();
 
 	}
+
+	chooseNodes();
+
+	cout << "Generating Pathfinding ... ";
+	
+	//pass pathfinding to roads
+	for (int i = 0; i < m_vRoads.size(); i++)
+	{
+		m_vRoads[i].passPathfinding(*m_pathfinderData);
+	}
+
+	for (int i = 0; i < m_pathfinderData->m_closedList.size(); i++)
+	{
+		RectangleShape temp;
+		temp.setPosition(m_pathfinderData->m_closedList[i].second);
+		temp.setSize(Vector2f(fGridSize, fGridSize));
+		temp.setFillColor(Color(255, 0, 0, 125));
+		temp.setOutlineThickness(2.0f);
+		rectsForTesting.push_back(temp);
+	}
+	cout << "Finished" << endl;
+
 }
 
 void Game::loadLevel(string dir)
@@ -220,10 +243,13 @@ void Game::loadLevel(string dir)
 				Vector2f size(sx, sy);
 
 				Road tempRoad;
-				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures->m_vTJunctionTextures[1]);
-				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures->m_vTwoWayStreetTextures[1]);
+				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures->m_vTJunctionTextures[1]); 
+				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures->m_vTwoWayStreetTextures[1]); 
 				if (type == "CrossRoads")tempRoad = Road(position, size, rot, m_Gametextures->m_vCrossRoadsTextures[1]);
+				if (type == "Corner")tempRoad = Road(position, size, rot, m_Gametextures->m_vCornerTextures[1]);
+				tempRoad.setType(type);
 				m_vRoads.push_back(tempRoad);
+				
 						
 
 			}
@@ -347,6 +373,11 @@ void Game::drawScene(RenderWindow & window)
 		}
 
 	}
+	//draw nodes
+	for (int i = 0; i < rectsForTesting.size(); i++)
+	{
+		window.draw(rectsForTesting[i]);
+	}
 
 	//draw temp object
 	if (m_bPlacingObject)window.draw(m_sfTempSprite);
@@ -368,6 +399,7 @@ void Game::closeGame()
 	m_vCarsStartPostions.clear();
 	m_vCarsEndPostions.clear();
 	m_pathfinderData->clearNodes();
+	m_uiNumbofCars = 0;
 
 
 }
@@ -599,7 +631,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 		//find the distance from nearest the road to every grid
 		Vector2f dist = m_vGridSystem[i] - position;
 		float mag = sqrt(dist.x * dist.x + dist.y * dist.y);
-		if (mag < 50)
+		if (mag < fGridSize)
 		{
 			sfSnappedPos = m_vGridSystem[i];
 			i = m_vGridSystem.size();
@@ -615,7 +647,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	if (type == "T-Junction")tempRoad.setSize(Vector2f(2500, 1500));
 	if (type == "NormalRoad")tempRoad.setSize(Vector2f(500, 1000));
 	if (type == "CrossRoads")tempRoad.setSize(Vector2f(2500, 2500));
-	if (type == "Corner")tempRoad.setSize(Vector2f(1000, 1000));
+	if (type == "Corner")tempRoad.setSize(Vector2f(500, 500));
 
 	bool valid = true;
 
@@ -641,7 +673,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	//set up drawbales
 	m_sfTempRect.setPosition(sfSnappedPos);
 	if(valid)m_sfTempRect.setFillColor(Color(0,255,0,125));
-	if (!valid)m_sfTempRect.setFillColor(Color(255, 0, 0, 125));
+	else m_sfTempRect.setFillColor(Color(255, 0, 0, 125));
 	m_sfTempRect.setSize(Vector2f(500,500));
 	m_sfTempRect.setRotation(rot);
 
@@ -689,7 +721,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	}
 	if (type == "Corner")
 	{
-		m_sfSize = Vector2f(1000, 1000);
+		m_sfSize = Vector2f(500, 500);
 		m_sfTempRect.setSize(m_sfSize);
 		m_sfTempTexture = m_Gametextures->m_vCornerTextures[1];
 
@@ -716,7 +748,7 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 		//find the distance from nearest the road to every grid
 		Vector2f dist = m_vGridSystem[i] - position;
 		float mag = sqrt(dist.x * dist.x + dist.y * dist.y);
-		if (mag < 50)
+		if (mag < fGridSize)
 		{
 			sfSnappedPos = m_vGridSystem[i];
 			i = m_vGridSystem.size();
@@ -728,8 +760,8 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	Road tempRoad;
 	if (type == "T-Junction")tempRoad = Road(sfSnappedPos, Vector2f(2500, 1500), rot, m_Gametextures->m_vTJunctionTextures[1]);
 	if (type == "NormalRoad")tempRoad = Road(sfSnappedPos, Vector2f(500, 1000), rot, m_Gametextures->m_vTwoWayStreetTextures[1]);
-	if (type == "CrossRoads")tempRoad = Road(sfSnappedPos, Vector2f(2500, 2500), rot, m_Gametextures->m_vCrossRoadsTextures[1]);
-	if (type == "Corner")tempRoad	= Road(sfSnappedPos, Vector2f(1000, 1000), rot, m_Gametextures->m_vCornerTextures[1]);
+	if (type == "CrossRoads")tempRoad = Road(sfSnappedPos, Vector2f(2500, 2500), 0 , m_Gametextures->m_vCrossRoadsTextures[1]);
+	if (type == "Corner")tempRoad	= Road(sfSnappedPos, Vector2f(500, 500), rot, m_Gametextures->m_vCornerTextures[1]);
 
 	//check if the new road is in the level
 	if (sfSnappedPos.x > m_sfLevelSize.x)return false;
@@ -755,6 +787,7 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	m_vRoads[m_vRoads.size() - 1].setType(type);
 
 
+
 }
 
 void Game::generateGrid()
@@ -764,7 +797,7 @@ void Game::generateGrid()
 	m_vGridSystem.clear();
 
 	// loop from 0 to level size in steps of GRIDSIZE
-	float fGridSize = 200.0f;
+	
 
 	for (int y = 0; y < m_sfLevelSize.y - fGridSize; y += fGridSize)
 	{
@@ -775,16 +808,49 @@ void Game::generateGrid()
 		}
 
 	}
-	cout << "Finished" << endl;
-	cout << "Generating Pathfinding ... ";
+
 	for (int i = 0; i < m_vGridSystem.size(); i++)
 	{
-		
+		//generates a full closed grid
+
+		m_pathfinderData->addNode(0, 0, i, m_vGridSystem[i]);
+
 
 	}
-
-
 	cout << "Finished" << endl;
+
+	
 	
 
+}
+
+void Game::chooseNodes()
+{
+	RectangleShape nodeSquare;
+	nodeSquare.setSize(Vector2f(fGridSize, fGridSize));
+
+
+	//loop nodes
+	for (int i = 0; i < m_vGridSystem.size(); i++)
+	{
+		nodeSquare.setPosition(m_vGridSystem[i]);
+
+		//loop roads
+		for (int x = 0; x < m_vRoads.size(); x++)
+		{
+
+			FloatRect A = nodeSquare.getGlobalBounds();
+			FloatRect B = m_vRoads[x].getCollisionBox().getGlobalBounds();
+
+			if (!A.intersects(B))
+			{
+				//closed
+				//m_pathfinderData->m_closedList.push_back(m_pathfinderData->m_nodes[i]);
+
+
+			}
+		}
+
+
+	}
 }
