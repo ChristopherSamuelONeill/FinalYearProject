@@ -19,7 +19,7 @@ void mainMenu(bool tutorial);
 void profileMenu(bool tutorial);
 void settingsMenu(bool tutorial);
 void playMenu();
-void LoadLevel();
+void LoadLevel(string path);
 void editor();
 
 void resetSelectors();
@@ -46,7 +46,7 @@ int main()
 
 	if (DEBUGMODE)
 	{
-		editor();
+		LoadLevel("test");
 	}
 	else
 	{
@@ -1507,7 +1507,7 @@ void playMenu()
 					if (LoadButton.m_bClicked(sfMousePos) && tutorialState == 11)
 					{
 						window.close();
-						LoadLevel();
+						LoadLevel("test");
 
 					}
 					if (BackButton.m_bClicked(sfMousePos) && tutorialState == 11)
@@ -1537,17 +1537,9 @@ void playMenu()
 
 }
 
-void LoadLevel()
+void LoadLevel(string path)
 {
-}
-
-void editor()
-{
-	//Game Object
-
-
 	Game Editor;
-	//Editor = Game("./Assets/Levels/Editor.txt");
 	Editor = Game("test");
 
 	//Create a window with the specifications of the profile
@@ -1555,6 +1547,100 @@ void editor()
 	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor", Style::Fullscreen);
 	else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor");
 	window.setFramerateLimit(60);
+	window.setVerticalSyncEnabled(true);
+
+	//create a view to fill the windowfor game render
+	View gameView;
+	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+	gameView.setSize(sf::Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
+
+	//create a view to fill the windowfor game render
+	View hudView;
+	hudView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	hudView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+	hudView.setSize(sf::Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
+
+	Event event;
+	int iMouseWheel;
+
+
+	while (window.isOpen())
+	{
+
+		//move camera
+		float fMoveSpeed = 10;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+		{
+			fMoveSpeed *= 3;
+		}
+		//key presses
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+		{
+			gameView.move(Vector2f(0.0f, -fMoveSpeed));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+		{
+			gameView.move(Vector2f(0.0f, fMoveSpeed));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+		{
+			gameView.move(Vector2f(-fMoveSpeed, 0.0f));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+		{
+			gameView.move(Vector2f(fMoveSpeed, 0.0f));
+		}
+		while (window.pollEvent(event))
+		{
+			if (event.type == Event::MouseWheelMoved)
+			{
+				iMouseWheel = event.mouseWheel.delta;
+				if (iMouseWheel > 0)
+				{
+					//zoom in
+					gameView.zoom(0.9);
+				}
+				if (iMouseWheel < 0)
+				{
+					//zoom out
+					gameView.zoom(1.1);
+				}
+			}
+		}
+		window.clear(Color::Black);
+
+		//draw the game 
+		window.setView(gameView);
+
+		Editor.updateScene(0.01f);
+		Editor.drawScene(window);
+
+		//draw the hud
+		window.setView(hudView);
+
+		
+	
+
+		//show the window
+		window.display();
+	}
+
+}
+
+void editor()
+{
+	//Game Object
+	Game Editor;
+	Editor = Game("./Assets/Levels/Editor.txt");
+	
+
+	//Create a window with the specifications of the profile
+	RenderWindow window;
+	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor", Style::Fullscreen);
+	else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor");
+	window.setFramerateLimit(60);
+	window.setVerticalSyncEnabled(true);
 
 	//create a view to fill the windowfor game render
 	View gameView;
@@ -1710,6 +1796,13 @@ void editor()
 	("+",
 		Vector2f(800 * resolutionScale.x, 540 * resolutionScale.y),
 		Vector2f(250 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
+		"Button_Green"
+	);
+	Button pathfinding
+	("Grid",
+		Vector2f(0, 630 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		resolutionScale,
 		"Button_Green"
 	);
@@ -1896,7 +1989,11 @@ void editor()
 		while (window.pollEvent(event))
 		{
 
+			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
+			cout << sfMousePos.x << " " << sfMousePos.y << endl;
+
 			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
+			
 				
 			if (event.type == Event::MouseWheelMoved)
 			{
@@ -2103,6 +2200,16 @@ void editor()
 						sType = "Pedestrian Light";
 
 					}
+					//show pathfinding or not
+					else if (pathfinding.m_bClicked(sfMousePos) )
+					{
+						placingBool = false;
+						resetSelectors();
+						if(Editor.m_bDrawPathfinding == false )Editor.m_bDrawPathfinding = true;
+						else if(Editor.m_bDrawPathfinding == true)Editor.m_bDrawPathfinding = false;
+
+					}
+					
 					//check if to show help
 					else if (helpButton.m_bClicked(sfMousePos))
 					{
@@ -2191,6 +2298,7 @@ void editor()
 			window.draw(RoadSelectorButton);
 			window.draw(trafficLightButton);
 			window.draw(carsButton);
+			window.draw(pathfinding);
 
 			if (RoadSelectorBool)
 			{

@@ -46,8 +46,7 @@ private:
 	SceneObject m_Time; // \brief time of day overlay for level
 	vector<SceneObject> m_vSceneObejcts; // \brief list of SceneObjects for the Scene
 	vector<Road> m_vRoads; // \brief list of the roads
-	vector<RectangleShape> m_vCarsStartPostions;// \brief vector of all the start positions
-	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the start positions
+
 
 	TextureObject *m_Gametextures;// \brief handle to all game textures
 
@@ -57,6 +56,8 @@ private:
 
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 	Pathfinding *m_pathfinderData;   // \brief contains nodes for map
+	vector<RectangleShape> m_vCarsStartPostions;// \brief vector of all the start positions
+	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the end positions
 
 	SoundObject *m_Sound;// \brief Sound object
 	Profile *m_Player;// \brief Sound object
@@ -72,7 +73,9 @@ private:
 	float fGridSize = 100.0f;
 
 
+
 public:
+
 
 	Game(); // \brief Default constructor of game object
 
@@ -124,7 +127,7 @@ public:
 	RectangleShape m_sfTempRect; // \brief Temp Rect for editor 
 	Sprite m_sfTempSprite; // \brief Temp Sprite for editor 
 	Texture m_sfTempTexture; // \brief Temp Texture for editor 
-	
+	bool m_bDrawPathfinding = false;
 	bool m_bPlacingObject = false; // \brief True while placing an object
 
 	void placeTrafficLights();

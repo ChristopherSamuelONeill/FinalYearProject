@@ -1,10 +1,46 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DefaultSFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Road.cpp
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\road.cpp(62): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\road.cpp(63): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\road.cpp(64): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\road.cpp(65): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\road.cpp(483): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\road.cpp(487): warning C4018: '<': signed/unsigned mismatch
+  Game.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\include\profile.h(115): warning C4244: 'initializing': conversion from 'unsigned int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(20): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(27): warning C4101: 'colour': unreferenced local variable
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(40): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(102): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(113): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(126): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(137): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(148): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(321): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(327): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(345): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(351): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(358): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(366): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(371): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(381): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(388): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(393): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(457): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(468): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(491): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(529): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(540): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(551): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(594): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(625): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(646): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(681): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(763): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(793): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(819): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(821): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(823): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(831): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(855): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(860): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(865): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(883): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(889): warning C4018: '<': signed/unsigned mismatch
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\game.cpp(808): warning C4715: 'Game::placeRoad': not all control paths return a value
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)

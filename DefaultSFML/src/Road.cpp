@@ -286,7 +286,7 @@ void Road::passPathfinding(Pathfinding & pathData)
 			//top prong
 			for (int i = 0; i < 1000; i += 100)
 			{
-				temp = Vector2f(m_sfPosition.x - 1400, m_sfPosition.y - 1500 + i);
+				temp = Vector2f(m_sfPosition.x - 1300, m_sfPosition.y - 1500 + i);
 				middleOfRoad.push_back(temp);
 			}
 
@@ -484,9 +484,9 @@ void Road::passPathfinding(Pathfinding & pathData)
 	{
 		RoadnodeSquare.setPosition(middleOfRoad[i]);
 		
-		for (int x = 0; x < pathData.m_nodes.size(); x++)
+		for (int x = 0; x < pathData.m_carNodes.size(); x++)
 		{
-			nodeSquare.setPosition(pathData.m_nodes[x].second);
+			nodeSquare.setPosition(pathData.m_carNodes[x].second);
 
 			FloatRect A = RoadnodeSquare.getGlobalBounds();
 			FloatRect B = nodeSquare.getGlobalBounds();
@@ -495,7 +495,7 @@ void Road::passPathfinding(Pathfinding & pathData)
 			//if the node has the same position add it to the closed list
 			if (A.intersects(B))
 			{
-				pathData.m_closedList.push_back(pathData.m_nodes[x]);
+				pathData.m_carNodes[x].first->m_bAccessable = false;
 			}
 			
 		}

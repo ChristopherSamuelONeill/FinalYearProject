@@ -19,17 +19,11 @@ void Game::generateCars()
 	cout << "Generating "<< m_uiNumbofCars << " cars ... ";
 	for (int i = 0; i < m_uiNumbofCars; i++)
 	{
-		//pick a random start pos
-		Vector2f start(100, 250);
-		//pick a random end pos
-		Vector2f end(100, 250);
-		// pick a random colour
-		int colour;
+		//Texture[8]
 
-		Vector2f Size(100, 250);
-		Car tempCar;
+		//Car tempCar(m_vCarsStartPostions[0],m_vCarsEndPostions[0],Vector2f(100,250),);
 		
-		m_vCars.push_back(tempCar);
+		//m_vCars.push_back(tempCar);
 	}
 	cout << "Finished" << endl;
 }
@@ -70,9 +64,6 @@ void Game::startGame(string dir)
 	{
 		loadLevel(dir);
 	}
-
-	//generate path finding
-	generateGrid();
 
 	//set up music
 	//get the volume settings
@@ -159,26 +150,13 @@ void Game::startGame(string dir)
 
 	}
 
+	//pathfinding
+	generateGrid();
 	chooseNodes();
 
-	cout << "Generating Pathfinding ... ";
-	
-	//pass pathfinding to roads
-	for (int i = 0; i < m_vRoads.size(); i++)
-	{
-		m_vRoads[i].passPathfinding(*m_pathfinderData);
-	}
+	//generate cars
+	generateCars();
 
-	for (int i = 0; i < m_pathfinderData->m_closedList.size(); i++)
-	{
-		RectangleShape temp;
-		temp.setPosition(m_pathfinderData->m_closedList[i].second);
-		temp.setSize(Vector2f(fGridSize, fGridSize));
-		temp.setFillColor(Color(255, 0, 0, 125));
-		temp.setOutlineThickness(2.0f);
-		rectsForTesting.push_back(temp);
-	}
-	cout << "Finished" << endl;
 
 }
 
@@ -266,6 +244,28 @@ void Game::loadLevel(string dir)
 				settings >> i;
 				m_uiNumbofPed = i;
 
+			}
+			else if (temp == "StartPoint")
+			{
+				RectangleShape temp;
+				temp.setSize(Vector2f(fGridSize, fGridSize));
+				float x,y;
+				settings >> x >> y;
+				temp.setPosition(Vector2f(x, y));
+				temp.setOutlineThickness(10.0f);
+				temp.setOutlineColor(Color::Green);
+				m_vCarsStartPostions.push_back(temp);
+			}
+			else if (temp == "EndPoint")
+			{
+				RectangleShape temp;
+				temp.setSize(Vector2f(fGridSize, fGridSize));
+				float x, y;
+				settings >> x >> y;
+				temp.setPosition(Vector2f(x, y));
+				temp.setOutlineThickness(10.0f);
+				temp.setOutlineColor(Color::Red);
+				m_vCarsEndPostions.push_back(temp);
 			}
 			
 		}
@@ -373,10 +373,25 @@ void Game::drawScene(RenderWindow & window)
 		}
 
 	}
+
 	//draw nodes
-	for (int i = 0; i < rectsForTesting.size(); i++)
+	if (m_bDrawPathfinding)
 	{
-		window.draw(rectsForTesting[i]);
+		for (int i = 0; i < rectsForTesting.size(); i++)
+		{
+			window.draw(rectsForTesting[i]);
+		}
+	}
+
+	//draw start positions
+	for (int i = 0; i < m_vCarsStartPostions.size(); i++)
+	{
+		window.draw(m_vCarsStartPostions[i]);
+	}
+	//draw end positions
+	for (int i = 0; i < m_vCarsEndPostions.size(); i++)
+	{
+		window.draw(m_vCarsEndPostions[i]);
 	}
 
 	//draw temp object
@@ -476,6 +491,7 @@ void Game::cycleBackground()
 	m_sfLevelSize *= 2.0f;
 	m_Background.setSize(m_sfLevelSize);
 	generateGrid();
+	chooseNodes();
 }
 
 void Game::cycleLevelTime()
@@ -809,11 +825,13 @@ void Game::generateGrid()
 
 	}
 
+	m_pathfinderData->clearNodes();
+
 	for (int i = 0; i < m_vGridSystem.size(); i++)
 	{
 		//generates a full closed grid
 
-		m_pathfinderData->addNode(0, 0, i, m_vGridSystem[i]);
+		m_pathfinderData->addNode(0, 0, i, m_vGridSystem[i],true);
 
 
 	}
@@ -826,14 +844,21 @@ void Game::generateGrid()
 
 void Game::chooseNodes()
 {
+
+	cout << "Generating Pathfinding ... ";
+
 	RectangleShape nodeSquare;
 	nodeSquare.setSize(Vector2f(fGridSize, fGridSize));
-
-
-	//loop nodes
-	for (int i = 0; i < m_vGridSystem.size(); i++)
+	
+	//fill map with inaccessible nodes nodes
+	for (int i = 0; i < m_pathfinderData->m_carNodes.size(); i++)
 	{
-		nodeSquare.setPosition(m_vGridSystem[i]);
+		m_pathfinderData->m_carNodes[i].first->m_bAccessable = false;
+	}
+	// replace roads with open
+	for (int i = 0; i < m_pathfinderData->m_carNodes.size(); i++)
+	{
+		nodeSquare.setPosition(m_pathfinderData->m_carNodes[i].second);
 
 		//loop roads
 		for (int x = 0; x < m_vRoads.size(); x++)
@@ -842,15 +867,44 @@ void Game::chooseNodes()
 			FloatRect A = nodeSquare.getGlobalBounds();
 			FloatRect B = m_vRoads[x].getCollisionBox().getGlobalBounds();
 
-			if (!A.intersects(B))
+			if (A.intersects(B))
 			{
-				//closed
-				//m_pathfinderData->m_closedList.push_back(m_pathfinderData->m_nodes[i]);
-
-
+				//Accessible
+				m_pathfinderData->m_carNodes[i].first->m_bAccessable = true;
 			}
+	
 		}
 
-
 	}
+
+
+	//pass pathfinding to roads
+	for (int i = 0; i < m_vRoads.size(); i++)
+	{
+		m_vRoads[i].passPathfinding(*m_pathfinderData);
+	}
+
+	//draw nodes list
+	for (int i = 0; i < m_pathfinderData->m_carNodes.size(); i++)
+	{
+		RectangleShape temp;
+		temp.setPosition(m_pathfinderData->m_carNodes[i].second);
+		temp.setSize(Vector2f(fGridSize, fGridSize));
+		if (m_pathfinderData->m_carNodes[i].first->m_bAccessable == true)
+		{
+			temp.setFillColor(Color(0, 255, 0, 50));
+			temp.setOutlineThickness(5.0f);
+		}
+		else if (m_pathfinderData->m_carNodes[i].first->m_bAccessable == false)
+		{
+			temp.setFillColor(Color(255, 0, 0, 255));
+			temp.setOutlineThickness(25.0f);
+		}
+		
+		rectsForTesting.push_back(temp);
+	}
+
+
+
+	cout << "Finished" << endl;
 }

@@ -4,17 +4,17 @@ Pathfinding::Pathfinding()
 {
 }
 
-void Pathfinding::addNode( float hValue, float gValue, int index, Vector2f pos)
+void Pathfinding::addNode( float hValue, float gValue, int index, Vector2f pos, bool accessable)
 {
 	pair< Node*, Vector2f> tempNode;
-	tempNode.first = new Node(hValue, gValue, index);
+	tempNode.first = new Node(hValue, gValue, index, accessable);
 	tempNode.second = pos;
-	m_nodes.push_back(tempNode);
+	m_carNodes.push_back(tempNode);
 }
 
 void Pathfinding::clearNodes()
 {
-	m_openList.clear();
-	m_closedList.clear();
-	m_nodes.clear();
+	m_carOpenNodes.clear();
+	m_carClosedNodes.clear();
+	m_carNodes.clear();
 }

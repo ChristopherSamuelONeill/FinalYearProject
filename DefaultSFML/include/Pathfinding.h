@@ -23,16 +23,22 @@ public:
 	// \param hValue , float Huesristic value of the node
 	// \param gValue , float movement cost of the node
 	// \param index , int the node number in the list
-	void addNode( float hValue, float gValue, int index, Vector2f pos);
+	// \param accessable, bool avaible node or not
+	void addNode( float hValue, float gValue, int index, Vector2f pos, bool accessable);
 
 	// \brief Function to clear all nodes
 	void clearNodes();
 
 	
 
-	vector<pair< Node*, Vector2f>> m_nodes; // \brief list of ALL nodes
-	vector<pair< Node*, Vector2f>> m_openList; // \brief list of nodes available for checking
-	vector<pair< Node*, Vector2f>> m_closedList;// \brief list of nodes NOT to be checked
+	vector<pair< Node*, Vector2f>> m_carNodes; // \brief list of ALL nodes
+	vector<pair< Node*, Vector2f>> m_carOpenNodes; // \brief list of nodes available for checking
+	vector<pair< Node*, Vector2f>> m_carClosedNodes;// \brief list of nodes NOT to be checked
+
+
+	vector<pair< Node*, Vector2f>> m_pedNodes; // \brief list of ALL nodes
+	vector<pair< Node*, Vector2f>> m_pedOpenNodes; // \brief list of nodes available for checking
+	vector<pair< Node*, Vector2f>> m_pedClosedNodes;// \brief list of nodes NOT to be checked
 	
 
 };
