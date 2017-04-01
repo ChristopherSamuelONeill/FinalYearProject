@@ -40,7 +40,7 @@ private:
 	// \param Path to the level
 	void loadLevel(string dir);
 	
-	vector<Car> m_vCars; // \brief list of cars for the scene
+	
 	vector<Pedestrian> m_vPedestrians;// \brief list of pedestrians for the scene
 	SceneObject m_Background; // \brief Background for the level
 	SceneObject m_Time; // \brief time of day overlay for level
@@ -57,7 +57,7 @@ private:
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 	Pathfinding *m_pathfinderData;   // \brief contains nodes for map
 	vector<RectangleShape> m_vCarsStartPostions;// \brief vector of all the start positions
-	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the end positions
+	
 
 	SoundObject *m_Sound;// \brief Sound object
 	Profile *m_Player;// \brief Sound object
@@ -76,6 +76,8 @@ private:
 
 public:
 
+	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the end positions
+	vector<Car> m_vCars; // \brief list of cars for the scene
 
 	Game(); // \brief Default constructor of game object
 
@@ -127,7 +129,7 @@ public:
 	RectangleShape m_sfTempRect; // \brief Temp Rect for editor 
 	Sprite m_sfTempSprite; // \brief Temp Sprite for editor 
 	Texture m_sfTempTexture; // \brief Temp Texture for editor 
-	bool m_bDrawPathfinding = true;
+	bool m_bDrawPathfinding = false;
 	bool m_bPlacingObject = false; // \brief True while placing an object
 
 	void placeTrafficLights();

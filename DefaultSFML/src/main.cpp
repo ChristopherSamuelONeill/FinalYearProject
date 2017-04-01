@@ -47,6 +47,7 @@ int main()
 	if (DEBUGMODE)
 	{
 		LoadLevel("test");
+		//editor();
 	}
 	else
 	{
@@ -1568,6 +1569,17 @@ void LoadLevel(string path)
 	while (window.isOpen())
 	{
 
+		Vector2f sfMousePos;
+
+		sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
+		
+
+		if (Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			Editor.m_vCarsEndPostions[0].setPosition(sfMousePos);
+			Editor.m_vCars[0].m_sfDesriredPoint = sfMousePos;
+		}
+
 		//move camera
 		float fMoveSpeed = 10;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
@@ -1616,10 +1628,12 @@ void LoadLevel(string path)
 		}
 		window.clear(Color::Black);
 
+		
+
 		//draw the game 
 		window.setView(gameView);
 
-		Editor.updateScene(0.01f);
+		Editor.updateScene(0.016f);
 		Editor.drawScene(window);
 
 		//draw the hud
@@ -1638,8 +1652,8 @@ void editor()
 {
 	//Game Object
 	Game Editor;
-	Editor = Game("./Assets/Levels/Editor.txt");
-	
+	//Editor = Game("./Assets/Levels/Editor.txt");
+	Editor = Game("test");
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;
@@ -1952,6 +1966,7 @@ void editor()
 
 			//move the editor objects
 			sfPlacingPos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
+			
 
 			if (placingBool)
 			{
@@ -1995,8 +2010,8 @@ void editor()
 		while (window.pollEvent(event))
 		{
 
-			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
-			cout << sfMousePos.x << " " << sfMousePos.y << endl;
+			
+			
 
 			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
 			

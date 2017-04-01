@@ -184,8 +184,8 @@ pair<Node*, Vector2f> Controller::getNode(Vector2f pos)
 {
 
 	// Find the Desired mode
-	RectangleShape goalRect(Vector2f(100, 100));
-	RectangleShape nodeRect(Vector2f(100, 100));
+	RectangleShape goalRect(Vector2f(50, 50));
+	RectangleShape nodeRect(Vector2f(50, 50));
 
 	for (int i = 0; i < m_Pathfinding->m_carNodes.size(); i++)
 	{
@@ -232,7 +232,7 @@ bool Controller::nodeInList(pair<Node*, Vector2f> node1, vector<pair<Node*, Vect
 float Controller::getManhattanDistance(pair<Node*, Vector2f> node1, pair<Node*, Vector2f> node2)
 {
 	// Number of Nodes in x
-	float fXDist = (node2.second.x - node1.second.x) / 100;
+	float fXDist = (node2.second.x - node1.second.x) / 50;
 
 	// Number of Nodes in x
 	float fYDist = (node2.second.y - node1.second.y) / 100;
@@ -470,7 +470,7 @@ void Controller::QuePath(pair<Node*, Vector2f> node)
 		pNodes.push_back(node);
 
 
-	}
+ 	}
 
 	while (!pNodes.empty())
 	{

@@ -25,4 +25,4 @@ Road 4800 4600 500 1000 0 NormalRoad
 c xPos yPos
 StartPoint 4900 5400
 c xPos yPos
-EndPoint 6200 3200
+EndPoint 4900 3500

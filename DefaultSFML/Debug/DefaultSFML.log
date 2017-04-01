@@ -1,9 +1,18 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DefaultSFML.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Controller.cpp
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\controller.cpp(50): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\controller.cpp(134): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\controller.cpp(160): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\controller.cpp(190): warning C4018: '<': signed/unsigned mismatch
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\controller.cpp(217): warning C4018: '<': signed/unsigned mismatch
+  Car.cpp
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(34): warning C4305: '=': truncation from 'double' to 'float'
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(94): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(97): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(158): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(171): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(177): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(198): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(205): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(236): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(240): warning C4244: '-=': conversion from 'double' to 'int', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(272): warning C4305: '+=': truncation from 'double' to 'float'
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(281): warning C4305: '=': truncation from 'double' to 'float'
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(300): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\src\car.cpp(431): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.exe
   DefaultSFML.vcxproj -> D:\Uni\Year Three\Project\Product Creation\Code\TrafficManagement\Debug\TrafficManagement.pdb (Full PDB)

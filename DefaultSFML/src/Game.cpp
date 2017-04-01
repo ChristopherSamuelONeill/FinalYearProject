@@ -32,7 +32,7 @@ void Game::generateCars()
 
 		};
 
-		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(100, 250), tempTexture);
+		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(250, 100), tempTexture,270);
 		m_vCars.push_back(tempCar);
 		m_vCars[i].receiveNodeData(m_pathfinderData);
 		m_vCars[i].startPathFinding();
@@ -304,23 +304,7 @@ void Game::loadLevel(string dir)
 	file.close();
 }
 
-void Game::spawnCar(int cartype, Vector2f pos, Vector2f size)
-{
 
-	Texture tempTexture[8] = { 
-		m_Gametextures->m_vCarColourTextures[cartype] ,
-		m_Gametextures->m_vCarLights[0],
-		m_Gametextures->m_vCarLights[1],
-		m_Gametextures->m_vCarLights[2],
-		m_Gametextures->m_vCarLights[3],
-		m_Gametextures->m_vCarWheels[0],
-		m_Gametextures->m_vCarWheels[1],
-		m_Gametextures->m_vCarWheels[2]
-	};
-	m_vCars.push_back(Car(pos,pos, size, tempTexture));
-		
-	
-}
 
 void Game::updateScene(float dt)
 {
@@ -413,7 +397,7 @@ void Game::drawScene(RenderWindow & window)
 	for (int i = 0; i < m_vCars.size(); i++)
 	{
 		VertexArray path;
-		int lol = m_vCars[i].m_path.size();
+
 		for (int x = 0; x < m_vCars[i].m_path.size(); x++)
 		{
 			Vector2f pos = m_vCars[i].m_path.front();
