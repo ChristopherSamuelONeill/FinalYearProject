@@ -96,9 +96,6 @@
     <ClCompile Include="src\Pedestrian.cpp">
       <Filter>Source Files\Game Obejcts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Controller.cpp">
-      <Filter>Source Files\Ai</Filter>
-    </ClCompile>
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files\Ai</Filter>
     </ClCompile>
@@ -107,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Controller.cpp">
+      <Filter>Source Files\Ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,10 +161,10 @@
     <ClInclude Include="include\Node.h">
       <Filter>Header Files\Ai</Filter>
     </ClInclude>
-    <ClInclude Include="include\Controller.h">
+    <ClInclude Include="include\Pathfinding.h">
       <Filter>Header Files\Ai</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pathfinding.h">
+    <ClInclude Include="include\Controller.h">
       <Filter>Header Files\Ai</Filter>
     </ClInclude>
   </ItemGroup>

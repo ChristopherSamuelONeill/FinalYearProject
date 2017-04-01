@@ -34,6 +34,9 @@ void Game::generateCars()
 
 		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(100, 250), tempTexture);
 		m_vCars.push_back(tempCar);
+		m_vCars[i].receiveNodeData(m_pathfinderData);
+		m_vCars[i].startPathFinding();
+
 	}
 	cout << "Finished" << endl;
 }
@@ -405,6 +408,24 @@ void Game::drawScene(RenderWindow & window)
 	{
 		window.draw(m_vCarsEndPostions[i]);
 	}
+
+	//draw route
+	for (int i = 0; i < m_vCars.size(); i++)
+	{
+		VertexArray path;
+		int lol = m_vCars[i].m_path.size();
+		for (int x = 0; x < m_vCars[i].m_path.size(); x++)
+		{
+			Vector2f pos = m_vCars[i].m_path.front();
+			sf::Vertex newPoint(pos, sf::Color::Green);
+			path.append(newPoint);
+
+			cout << m_vCars[i].m_path.size() << endl;
+		}
+		window.draw(path);
+		
+	}
+
 
 	//draw temp object
 	if (m_bPlacingObject)window.draw(m_sfTempSprite);
@@ -823,21 +844,27 @@ void Game::generateGrid()
 	cout << "Generating Grid ... ";
 	//clear grid (incase of resize)
 	m_vGridSystem.clear();
+	m_pathfinderData->clearNodes();
 
 	// loop from 0 to level size in steps of GRIDSIZE
-	
 
 	for (int y = 0; y < m_sfLevelSize.y - fGridSize; y += fGridSize)
 	{
+		m_pathfinderData->m_uiNodeY++;
 		for (int x = 0; x < m_sfLevelSize.x - fGridSize; x += fGridSize)
 		{
+			
 			m_vGridSystem.push_back(Vector2f(x, y));
 			
 		}
 
 	}
 
-	m_pathfinderData->clearNodes();
+	for (int x = 0; x < m_sfLevelSize.x - fGridSize; x += fGridSize)
+	{
+		m_pathfinderData->m_uiNodeX++;
+	}
+	m_pathfinderData->m_uiNodeY;
 
 	for (int i = 0; i < m_vGridSystem.size(); i++)
 	{
@@ -893,7 +920,7 @@ void Game::chooseNodes()
 	//pass pathfinding to roads
 	for (int i = 0; i < m_vRoads.size(); i++)
 	{
-		m_vRoads[i].passPathfinding(*m_pathfinderData);
+		//m_vRoads[i].passPathfinding(*m_pathfinderData);
 	}
 
 	//draw nodes list

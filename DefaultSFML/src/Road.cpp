@@ -59,10 +59,10 @@ void Road::passPathfinding(Pathfinding & pathData)
 	//find rotation matrix
 	float vdRotationMatrix1[2][2]; // X Y
 
-	vdRotationMatrix1[0][0] = cos(m_fRotation * (3.14159265359 / 180)) ;
-	vdRotationMatrix1[0][1] = -sin(m_fRotation * (3.14159265359 / 180));
-	vdRotationMatrix1[1][0] = sin(m_fRotation * (3.14159265359 / 180));
-	vdRotationMatrix1[1][1] = cos(m_fRotation * (3.14159265359 / 180));
+	vdRotationMatrix1[0][0] = cos(m_fRotation * float((3.14159265359 / 180))) ;
+	vdRotationMatrix1[0][1] = -sin(m_fRotation *float((3.14159265359 / 180)));
+	vdRotationMatrix1[1][0] = sin(m_fRotation * float((3.14159265359 / 180)));
+	vdRotationMatrix1[1][1] = cos(m_fRotation * float((3.14159265359 / 180)));
 
 
 	

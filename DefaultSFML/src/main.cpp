@@ -953,7 +953,7 @@ void settingsMenu(bool tutorial)
 						}
 
 					
-						if (tutorialState == 9  );
+						if (tutorialState == 9  )
 						{
 							if (gameVolume.m_bClicked(sfMousePos))
 							{

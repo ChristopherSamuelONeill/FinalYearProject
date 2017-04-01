@@ -2,11 +2,11 @@
 
 Car::Car()
 {
+	
 }
 
 Car::Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8])
 {
-	
 	
 
 	// Initialize Data
@@ -16,6 +16,9 @@ Car::Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8])
 	m_iMaxTurnAngle = 90;
 	m_fSteerOrientation = 0;
 	m_fRotation = 0;
+
+	m_sfStart = Position;
+	m_sfGoal = Goal;
 
 
 	m_sfTexture[0] = textures[0]; // car
@@ -27,8 +30,16 @@ Car::Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8])
 	m_sfTexture[6] = textures[6];// front wheels
 	m_sfTexture[7] = textures[7];// front wheels
 
+
+
 }
 
+
+
+void Car::startPathFinding()
+{
+	generatePath();
+}
 
 void Car::draw(RenderTarget & target, RenderStates states) const
 {
@@ -208,3 +219,4 @@ void Car::turnWheels()
 
 
 }
+

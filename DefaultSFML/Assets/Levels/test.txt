@@ -23,6 +23,6 @@ Road 3300 2100 500 500 270 Corner
 c Pos X Pos Y Scale x Scale y Rotation Type 
 Road 4800 4600 500 1000 0 NormalRoad
 c xPos yPos
-StartPoint 4895 5506
+StartPoint 4900 5400
 c xPos yPos
-EndPoint 6266 3200
+EndPoint 6200 3200

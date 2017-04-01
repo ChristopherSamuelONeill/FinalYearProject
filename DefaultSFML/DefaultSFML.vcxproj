@@ -159,8 +159,8 @@
     <ClInclude Include="include\Car.h" />
     <ClInclude Include="include\Clickable.h" />
     <ClInclude Include="include\CollisionDetection.h" />
-    <ClInclude Include="include\Controller.h" />
     <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\Controller.h" />
     <ClInclude Include="include\Hoverable.h" />
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Overlay.h" />

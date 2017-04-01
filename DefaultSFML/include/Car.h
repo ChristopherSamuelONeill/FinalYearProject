@@ -8,17 +8,17 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-
+#include "Controller.h"
 
 using namespace std;
 using namespace sf;
 
-class Car : public Drawable
+
+class Car : public Drawable , public Controller
 {
 private:
 
 	Vector2f m_sfSize; // \brief X Y size of car
-	Vector2f m_sfPosition; // \brief X Y position of car
 	Vector2f m_sfVelocity; // \brief X Y speed of car
 
 	void turnWheels(); // \brief sets the angle of the car wheels
@@ -41,6 +41,9 @@ private:
 	RectangleShape m_sfLights[2];// \brief Rect for the lights front/back
 	Sprite m_sfLightsSprite[2]; // \brief Sprite for the lights front/back
 
+	
+
+	
 
 public:
 
@@ -63,7 +66,7 @@ public:
 	Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8]);
 
 
-
+	void startPathFinding();
 	void draw(RenderTarget& target, RenderStates states) const;
 	void update(float dt);
 	void setTimeOfDay(int time);

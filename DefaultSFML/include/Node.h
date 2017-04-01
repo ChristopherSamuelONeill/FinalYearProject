@@ -4,8 +4,16 @@
 
 
 #include <iostream>
+#include <SFML\Graphics.hpp>
+
+using namespace std;
+using namespace sf;
+
+
 class Node
 {
+
+
 
 public:
 
@@ -26,7 +34,13 @@ public:
 	float m_fFValue = m_fHValue + m_fGValue; // \brief Combined value of the node
 	bool m_bAccessable; // \brief wheather the node is accessible or not
 
-	Node *parentNode; // \brief A pointer to the parent node
+	pair<Node* , Vector2f> *parentNode; // \brief A pointer to the parent node
+
+
+	
+
+    // \brief Clears node to default
+	void ResetNode();
 
 
 };

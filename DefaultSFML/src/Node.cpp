@@ -13,3 +13,13 @@ Node::Node(float hValue, float gValue, int index, bool Accessable)
 	parentNode = NULL;
 	m_bAccessable = Accessable;
 }
+
+void Node::ResetNode()
+{
+	
+	parentNode = NULL;
+
+	m_fGValue = 0.f;
+	m_fHValue = 0.f;
+	m_fFValue = 0.f;
+}

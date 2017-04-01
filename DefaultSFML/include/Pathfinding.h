@@ -29,6 +29,7 @@ public:
 	// \brief Function to clear all nodes
 	void clearNodes();
 
+
 	
 
 	vector<pair< Node*, Vector2f>> m_carNodes; // \brief list of ALL nodes
@@ -40,6 +41,8 @@ public:
 	vector<pair< Node*, Vector2f>> m_pedOpenNodes; // \brief list of nodes available for checking
 	vector<pair< Node*, Vector2f>> m_pedClosedNodes;// \brief list of nodes NOT to be checked
 	
+	unsigned int m_uiNodeX = 0; //!< Dimensions of level
+	unsigned int m_uiNodeY = 0; //!< Dimensions of level
 
 };
 
