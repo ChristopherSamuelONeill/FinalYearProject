@@ -50,6 +50,25 @@ void SoundObject::loadSounds()
 	m_vBufferFX.push_back(temp);
 	m_vFXSounds.push_back(stemp);
 
+	if (!temp.loadFromFile("./Assets/sounds/Fx/CarEngine.wav"))
+	{
+		cout << "Error : CarEngine.wav failed to load" << endl;
+	}
+	m_vBufferCarEngine = temp;
+
+	if (!temp.loadFromFile("./Assets/sounds/Fx/IdleEngine.wav"))
+	{
+		cout << "Error : IdleEngine.wav failed to load" << endl;
+	}
+	m_vBufferCarIdle = temp;
+
+	if (!temp.loadFromFile("./Assets/sounds/Fx/Brakes.wav"))
+	{
+		cout << "Error : Brakes.wav failed to load" << endl;
+	}
+	m_vBufferCarBrakes = temp;
+
+
 	cout << "Finished" << endl;
 
 	

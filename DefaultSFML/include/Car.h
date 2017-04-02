@@ -13,6 +13,8 @@
 #include "Controller.h"
 #include <math.h>
 #include <array>
+#include "Sound.h"
+#include "Profile.h"
 
 using namespace std;
 using namespace sf;
@@ -21,6 +23,16 @@ using namespace sf;
 class Car : public Drawable , public Controller
 {
 private:
+
+	SoundObject *m_Sound;// \brief Sound object
+	Sound m_engineSound;
+	Sound m_idleSound;
+	Sound m_BrakeSound;
+	Profile *m_Player;// \brief Profile object
+
+	bool m_bCarIdleSoundIsPlaying = false;
+	bool m_bCarBrakeSoundIsPlaying = false;
+	bool m_bCarEngineSoundIsPlaying = true;
 
 	Vector2f m_sfSize; // \brief X Y size of car
 	Vector2f m_sfVelocity; // \brief X Y speed of car
@@ -31,7 +43,7 @@ private:
 	int m_iMaxTurnAngle; // \brief Maximum angle the cars can turn
 	float m_fSteerOrientation; // \brief Orientation of wheels
 
-	bool m_bBraking = true;// \brief True when braking
+	bool m_bBraking = false;// \brief True when braking
 	bool m_bLights = true;// \brief True when lights on
 
 	Texture m_sfTexture[8];

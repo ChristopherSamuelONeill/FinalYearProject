@@ -29,6 +29,11 @@ public:
 
 	vector<SoundBuffer> m_vBufferFX;
 	vector<Sound> m_vFXSounds;
+
+	SoundBuffer m_vBufferCarEngine;
+	SoundBuffer m_vBufferCarIdle;
+	SoundBuffer m_vBufferCarBrakes;
+	
 	
 	Music m_locMusic;
 	Music m_timeMusic;

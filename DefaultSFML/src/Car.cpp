@@ -56,6 +56,10 @@ Car::Car(Vector2f Position, Vector2f Goal, Vector2f Size, Texture textures[8], f
 	m_sfTexture[6] = textures[6];// front wheels
 	m_sfTexture[7] = textures[7];// front wheels
 
+	m_Sound = SoundObject::getInstance();;// \brief Sound object
+	m_Player = Profile::getInstance();;// \brief Sound object
+
+	
 
 
 }
@@ -69,6 +73,7 @@ void Car::applyDrivingForce()
 {
 	openCloseThrottle(true);
 	m_bBraking = false;
+	
 }
 
 void Car::openCloseThrottle(bool bOpen)
@@ -106,14 +111,43 @@ void Car::driveToPoint()
 		angle = angle - 360 ;
 	}
 
-	//decide how to drive
-	if (carAngle + 5 < angle)SetTurning(1);
-	else if  (angle + 5 < carAngle )SetTurning(-1);
-	else SetTurning(0);
+	//find the difference between the angles
+	float angleDiff = abs(m_fRotation - angle);
+
+	//if the difference is greaten than 180 reverse the direction steering
+	if (angleDiff > 180)
+	{
+		//decide how to drive
+		if (carAngle + 5 < angle)SetTurning(-1);
+		else if (angle + 5 < carAngle)SetTurning(1);
+		else SetTurning(0);
+	}
+	else
+	{
+		//decide how to drive
+		if (carAngle + 5 < angle)
+		{
+			if (m_fSpeed > 100)
+			{
+				m_bThrottle = false;
+			}
+			SetTurning(1);
+		}
+		else if (angle + 5 < carAngle)
+		{
+			SetTurning(-1);
+			if (m_fSpeed > 100)
+			{
+				m_bThrottle = false;
+			}
+			
+		}
+		else SetTurning(0);
+	}
+	
 	
 
 	if (magDist  < 200 + (m_fSpeed / 2 )) applyBrakingForce();
-	else if (magDist < 300 + (m_fSpeed / 2)) m_bThrottle = false;
 	else applyDrivingForce();
 	
 
@@ -147,6 +181,63 @@ void Car::draw(RenderTarget & target, RenderStates states) const
 
 void Car::update(float dt)
 {
+	
+	m_Sound = SoundObject::getInstance();;// \brief Sound object
+	m_Player = Profile::getInstance();;// \brief Sound object
+
+	if (m_bCarIdleSoundIsPlaying == false)
+	{
+		m_idleSound.setBuffer(m_Sound->m_vBufferCarIdle);
+		m_idleSound.setVolume(m_Player->m_iGameAudioVolume);
+		m_idleSound.setLoop(true);
+		m_idleSound.play();
+		m_bCarIdleSoundIsPlaying = true;
+
+	}
+
+
+
+	if (m_bCarEngineSoundIsPlaying == true)
+	{
+		
+
+		
+		
+		m_bCarEngineSoundIsPlaying = false;
+
+	}
+	//if (m_bCarBrakeSoundIsPlaying == true)
+	//{
+	//	m_BrakeSound.setBuffer(m_Sound->m_vBufferCarBrakes);
+	//	m_BrakeSound.setVolume(m_Player->m_iGameAudioVolume);
+	//	m_BrakeSound.setLoop(true);
+	//	m_BrakeSound.play();
+	//	
+
+	//}*/
+	
+	if (m_bBraking == true)
+	{
+		if (m_BrakeSound.getStatus() == 0 && m_fSpeed > 100)
+		{
+			m_BrakeSound.setBuffer(m_Sound->m_vBufferCarBrakes);
+			m_BrakeSound.setVolume(m_Player->m_iGameAudioVolume);
+			m_BrakeSound.play();
+		}
+		m_engineSound.stop();
+	}
+	else if(m_bThrottle == true)
+	{
+		if (m_engineSound.getStatus() == 0)
+		{
+			m_engineSound.setBuffer(m_Sound->m_vBufferCarEngine);
+			m_engineSound.setVolume(m_Player->m_iGameAudioVolume);
+			m_engineSound.setLoop(true);
+			m_engineSound.play();
+		}
+		m_BrakeSound.stop();
+	}
+
 
 	driveToPoint();
 	
@@ -156,6 +247,9 @@ void Car::update(float dt)
 	m_MiddleVector = Vector2f(m_sfPosition.x + (m_sfSize.y / 2), m_sfPosition.y + (m_sfSize.y / 2));
 	// find wheel base
 	m_fWheelBase = m_sfSize.x * 0.8;
+
+	
+
 
 
 
@@ -202,6 +296,9 @@ void Car::update(float dt)
 	//gearing and rpm-----------------------------------------------------
 	if (m_bThrottle) // if the throttle is open
 	{
+
+		
+
 		m_iRPM += 2.2 * m_aiAccelerationRates.at(m_iGear); // increase rpm by the current gear ratio
 		if (m_iGear < 5)
 		{
@@ -229,6 +326,7 @@ void Car::update(float dt)
 	}
 	else // throttle is closed
 	{
+		
 
 		// decrease rpm
 		if (m_bBraking)

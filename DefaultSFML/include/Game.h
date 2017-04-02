@@ -60,7 +60,7 @@ private:
 	
 
 	SoundObject *m_Sound;// \brief Sound object
-	Profile *m_Player;// \brief Sound object
+	Profile *m_Player;// \brief Profile object
 
 
 	//editor objects
