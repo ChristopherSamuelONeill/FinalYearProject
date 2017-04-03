@@ -365,6 +365,14 @@ void TextureObject::loadTextures()
 	};
 	m_vPedestrianLightTextures.push_back(sfTempTexture);
 	
+	//Start/Endpoint
+
+	//Goal.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Goal.png"))
+	{
+		cout << "Error: Goal.png was unable to load." << endl;
+	};
+	m_StartEndPoint = sfTempTexture;
 
 
 

@@ -10,7 +10,9 @@ Button::Button(string text, Vector2f pos, Vector2f size, Vector2f resolutionScal
 	m_sButtonText = text;
 	float scalex = size.x / 400 ;
 	float scaley = size.y / 118 ;
-	float textScale = scalex / scaley;
+
+
+	float textScale = min(scalex, scaley);
 	m_sfResolutionScale = resolutionScale;
 
 	m_sfVTopLeftPos = pos;

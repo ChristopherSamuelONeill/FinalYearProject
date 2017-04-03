@@ -32,6 +32,8 @@ SoundObject *sound;
 bool RoadSelectorBool = false; // true while choosing road
 bool LightSelectorBool = false; // true while choosing roads
 bool CarsSelectorBool = false; // true while altering cars
+bool PedSelectorBool = false; // true while altering pedestrians
+bool StartEndPointsBool = false; // true while altering start and end points
 
 bool placingBool = false; // true while placing roads
 
@@ -46,8 +48,8 @@ int main()
 
 	if (DEBUGMODE)
 	{
-		LoadLevel("test");
-		//editor();
+		//LoadLevel("test");
+		editor();
 	}
 	else
 	{
@@ -1574,12 +1576,6 @@ void LoadLevel(string path)
 		sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
 		
 
-		if (Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			Editor.m_vCarsEndPostions[0].setPosition(sfMousePos);
-			Editor.m_vCars[0].m_sfDesriredPoint = sfMousePos;
-		}
-
 		//move camera
 		float fMoveSpeed = 10;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
@@ -1819,13 +1815,29 @@ void editor()
 		resolutionScale,
 		"Button_Green"
 	);
-	Button pathfinding
-	("Grid",
+	Button StartEndPointsButton
+	("Start/End Points",
 		Vector2f(0, 630 * resolutionScale.y),
 		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
 		resolutionScale,
-		"Button_Green"
+		"Button_Yellow"
 	);
+	Button startPointButton
+	("Start Point",
+		Vector2f(300 * resolutionScale.x, 630 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 44.5 * resolutionScale.y),
+		resolutionScale,
+		"Button_Yellow"
+	);
+	Button endPointButton
+	("End Point",
+		Vector2f(300 * resolutionScale.x, 675 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 44.5 * resolutionScale.y),
+		resolutionScale,
+		"Button_Yellow"
+	);
+
+
 
 	//Menu Buttons-------------------------------------------------
 	Button newButton
@@ -1856,7 +1868,13 @@ void editor()
 		resolutionScale,
 		"Button_Green"
 	);
-
+	Button pathfinding
+	("Grid",
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, 360 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
+		"Button_Green"
+	);
 
 	Button QuitButton
 	("Exit",
@@ -1971,6 +1989,8 @@ void editor()
 			if (placingBool)
 			{
 				if (sType == "CrossRoads")fRotation = 0;
+				if (sType == "StartPoint")fRotation = 0;
+				if (sType == "EndPoint")fRotation = 0;
 				Editor.spawnTempObject(sfPlacingPos, fRotation, sType);
 				Editor.m_bPlacingObject = true;
 				if (Keyboard::isKeyPressed(Keyboard::Return))
@@ -1996,7 +2016,23 @@ void editor()
 
 
 					}
+					if (sType == "StartPoint" || sType == "EndPoint")
+					{
+						if (Editor.placeStartEndPoint(sfPlacingPos, sType))
+						{
+							Editor.m_bPlacingObject = false;
+							resetSelectors();
+						
+						}
+						else
+						{
+							sound->m_vInterfaceSounds[1].setBuffer(sound->m_vBufferInterfaceSounds[1]);
+							sound->m_vInterfaceSounds[1].setVolume(player->m_iInterfaceAudioVolume);
+							sound->m_vInterfaceSounds[1].play();
+						}
+
 					
+					}
 					
 				}
 			}
@@ -2009,9 +2045,6 @@ void editor()
 
 		while (window.pollEvent(event))
 		{
-
-			
-			
 
 			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
 			
@@ -2044,7 +2077,6 @@ void editor()
 			{
 				loadLevelEntryName.takeInput(event.key.code);
 			}
-
 			if (sf::Event::MouseButtonPressed)
 			{
 				if (Mouse::isButtonPressed(sf::Mouse::Right))
@@ -2087,6 +2119,7 @@ void editor()
 						RoadSelectorBool = false;
 						LightSelectorBool = false;
 					}
+
 					//check if car selector Button has been clicked
 					else if (carsButton.m_bClicked(sfMousePos))
 					{
@@ -2095,16 +2128,20 @@ void editor()
 							CarsSelectorBool = true;
 							LightSelectorBool = false;
 							RoadSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
 						}
 						else if (CarsSelectorBool == true)
 						{
 							CarsSelectorBool = false;
 							LightSelectorBool = false;
 							RoadSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
 						}
 						placingBool = false;
 					}
-					//check if 2 way road Button has been clicked
+					//check if less cars Button has been clicked
 					else if (lessCarsButton.m_bClicked(sfMousePos) && CarsSelectorBool == true)
 					{
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
@@ -2120,7 +2157,7 @@ void editor()
 						numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
 
 					}
-					//check if 2 way road Button has been clicked
+					//check if more carsButton has been clicked
 					else if (moreCarsButton.m_bClicked(sfMousePos) && CarsSelectorBool == true)
 					{
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
@@ -2134,6 +2171,61 @@ void editor()
 						numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
 
 					}
+					
+					// check if ped selector Button has been clicked
+					else if (pedsButton.m_bClicked(sfMousePos))
+					{
+						if (PedSelectorBool == false)
+						{
+							CarsSelectorBool = false;
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+							PedSelectorBool = true;
+							StartEndPointsBool = false;
+						}
+						else if (CarsSelectorBool == true)
+						{
+							CarsSelectorBool = false;
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
+
+						}
+						placingBool = false;
+					}
+					//check if less ped Button has been clicked
+					else if (lessPedsButton.m_bClicked(sfMousePos) && PedSelectorBool == true)
+					{
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+						{
+							if (Editor.m_uiNumbofPed <= 10) Editor.m_uiNumbofPed = 1;
+							else Editor.m_uiNumbofPed -= 10;
+						}
+						else
+						{
+							if (Editor.m_uiNumbofPed <= 2) Editor.m_uiNumbofPed = 1;
+							else Editor.m_uiNumbofPed -= 1;
+						}
+						numberPedsButton.setText(to_string(Editor.m_uiNumbofPed));
+					
+
+					}
+					//check if less ped Button has been clicked
+					else if (morePedsButton.m_bClicked(sfMousePos) && PedSelectorBool == true)
+					{
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+						{
+							Editor.m_uiNumbofPed += 10;
+						}
+						else
+						{
+							Editor.m_uiNumbofPed += 1;
+						}
+						numberPedsButton.setText(to_string(Editor.m_uiNumbofPed));
+
+					}
+			
 					//check if road selector Button has been clicked
 					else if (RoadSelectorButton.m_bClicked(sfMousePos))
 					{
@@ -2142,12 +2234,16 @@ void editor()
 							RoadSelectorBool = true;
 							LightSelectorBool = false;
 							CarsSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
 						}
 						else if (RoadSelectorBool == true)
 						{
 							RoadSelectorBool = false;
 							LightSelectorBool = false;
 							CarsSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
 						}
 						placingBool = false;
 					}
@@ -2173,7 +2269,6 @@ void editor()
 					else if (CrossRoadsButton.m_bClicked(sfMousePos) && RoadSelectorBool == true)
 					{
 						placingBool = true;
-						LightSelectorBool = false;
 						RoadSelectorBool = false;
 						sType = "CrossRoads";
 
@@ -2187,6 +2282,45 @@ void editor()
 						sType = "Corner";
 
 					}
+					
+					// check if start end selector Button has been clicked
+					else if (StartEndPointsButton.m_bClicked(sfMousePos))
+					{
+						if (StartEndPointsBool == false)
+						{
+							CarsSelectorBool = false;
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = true;
+						}
+						else if (StartEndPointsBool == true)
+						{
+							CarsSelectorBool = false;
+							LightSelectorBool = false;
+							RoadSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
+
+						}
+						placingBool = false;
+					}
+					//check if less ped Button has been clicked
+					else if (startPointButton.m_bClicked(sfMousePos) && StartEndPointsBool == true)
+					{
+						placingBool = true;
+						StartEndPointsBool = false;
+						sType = "StartPoint";
+					}
+					//check if less ped Button has been clicked
+					else if (endPointButton.m_bClicked(sfMousePos) && StartEndPointsBool == true)
+					{
+						placingBool = true;
+						StartEndPointsBool = false;
+						sType = "EndPoint";
+					}
+
+
 					//check if traffic selector Button has been clicked
 					else if (trafficLightButton.m_bClicked(sfMousePos))
 					{
@@ -2195,12 +2329,16 @@ void editor()
 							LightSelectorBool = true;
 							RoadSelectorBool = false;
 							CarsSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
 						}
 						else if (LightSelectorBool == true)
 						{
 							LightSelectorBool = false;
 							RoadSelectorBool = false;
 							CarsSelectorBool = false;
+							PedSelectorBool = false;
+							StartEndPointsBool = false;
 						}
 						placingBool = false;
 					}
@@ -2319,7 +2457,9 @@ void editor()
 			window.draw(RoadSelectorButton);
 			window.draw(trafficLightButton);
 			window.draw(carsButton);
-			window.draw(pathfinding);
+			window.draw(pedsButton);
+			window.draw(StartEndPointsButton);
+			
 
 			if (RoadSelectorBool)
 			{
@@ -2339,11 +2479,23 @@ void editor()
 				window.draw(numberCarsButton);
 				window.draw(moreCarsButton);
 			}
+			if (PedSelectorBool)
+			{
+				window.draw(lessPedsButton);
+				window.draw(numberPedsButton);
+				window.draw(morePedsButton);
+			}
+			if (StartEndPointsBool)
+			{
+				window.draw(startPointButton);
+				window.draw(endPointButton);
+			}
 
 			window.draw(newButton);
 			window.draw(saveButton);
 			window.draw(loudButton);
 			window.draw(helpButton);
+			window.draw(pathfinding);
 			window.draw(QuitButton);
 			window.draw(helpOverlayMessage);
 		
@@ -2380,6 +2532,8 @@ void resetSelectors()
 	RoadSelectorBool = false;
 	LightSelectorBool = false;
 	CarsSelectorBool = false;
+	PedSelectorBool = false;
+	StartEndPointsBool = false;
 
 	placingBool = false; 
 }

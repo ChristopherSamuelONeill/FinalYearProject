@@ -5,6 +5,8 @@
 #include <SFML\Graphics.hpp>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 
 #include "Car.h"
@@ -40,7 +42,7 @@ private:
 	// \param Path to the level
 	void loadLevel(string dir);
 	
-	
+	vector<Car> m_vCars; // \brief list of cars for the scene
 	vector<Pedestrian> m_vPedestrians;// \brief list of pedestrians for the scene
 	SceneObject m_Background; // \brief Background for the level
 	SceneObject m_Time; // \brief time of day overlay for level
@@ -57,6 +59,7 @@ private:
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 	Pathfinding *m_pathfinderData;   // \brief contains nodes for map
 	vector<RectangleShape> m_vCarsStartPostions;// \brief vector of all the start positions
+	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the end positions
 	
 
 	SoundObject *m_Sound;// \brief Sound object
@@ -76,8 +79,6 @@ private:
 
 public:
 
-	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the end positions
-	vector<Car> m_vCars; // \brief list of cars for the scene
 
 	Game(); // \brief Default constructor of game object
 
@@ -100,8 +101,8 @@ public:
 	// \brief function to clear scene
 	void closeGame();
 
-	unsigned int m_uiNumbofCars; // \brief Number of cars that will spawn for the level
-	unsigned int m_uiNumbofPed; // \brief Number of pedestrians that will spawn for the level
+	unsigned int m_uiNumbofCars = 0; // \brief Number of cars that will spawn for the level
+	unsigned int m_uiNumbofPed = 0; // \brief Number of pedestrians that will spawn for the level
 
 	Vector2f m_sfLevelSize;// \brief The dimensions of the level
 
@@ -129,7 +130,7 @@ public:
 	RectangleShape m_sfTempRect; // \brief Temp Rect for editor 
 	Sprite m_sfTempSprite; // \brief Temp Sprite for editor 
 	Texture m_sfTempTexture; // \brief Temp Texture for editor 
-	bool m_bDrawPathfinding = true;
+	bool m_bDrawPathfinding = false;
 	bool m_bPlacingObject = false; // \brief True while placing an object
 
 	void placeTrafficLights();
@@ -137,7 +138,13 @@ public:
 	// \brief function to attempt to place a road to the level
 	// \param Position , vector of the position the object
 	// \param Rotation , float of the orientation the object
+	// \param Type , string of the type of Road
 	bool placeRoad(Vector2f position, float rot, string type);
+
+	// \brief function to attempt to place a Start or End point
+	// \param Position , vector of the position the object
+	// \param Type , string of the type StartPoint or EndPoint
+	bool placeStartEndPoint(Vector2f position, string type);
 
 	
 	

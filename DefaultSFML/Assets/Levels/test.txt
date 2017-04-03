@@ -1,28 +1,28 @@
 c Scale X Scale Y 
-LevelSize 12000 6800
+LevelSize 10666 6000
 c Texture Number
-Background 0
+Background 6
 c Texture Number
-Time 0
+Time 5
 c Cars
-Cars 1
+Cars 4
 c Pedestrians
 Pedestrians 0
 c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 3800 2100 2500 2500 0 CrossRoads
-c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 4800 1600 500 500 0 Corner
-c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 3800 2100 500 1000 270 NormalRoad
-c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 3800 3600 500 500 180 Corner
-c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 3800 3100 500 1000 180 NormalRoad
-c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 3300 2100 500 500 270 Corner
-c Pos X Pos Y Scale x Scale y Rotation Type 
-Road 4800 4600 500 1000 0 NormalRoad
-c xPos yPos
-StartPoint 4900 5400
-c xPos yPos
-EndPoint 4900 3500
+Road 4200 1800 2500 2500 0 CrossRoads
+c Pos X Pos Y 
+StartPoint 4200 2900
+c Pos X Pos Y 
+StartPoint 5300 4200
+c Pos X Pos Y 
+StartPoint 5500 1800
+c Pos X Pos Y 
+StartPoint 4200 3100
+c Pos X Pos Y 
+EndPoint 6600 2900
+c Pos X Pos Y 
+EndPoint 5300 1800
+c Pos X Pos Y 
+EndPoint 5500 4200
+c Pos X Pos Y 
+EndPoint 6600 3100

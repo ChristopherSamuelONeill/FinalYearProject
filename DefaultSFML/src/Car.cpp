@@ -163,7 +163,7 @@ void Car::applyBrakingForce()
 void Car::startPathFinding()
 {
 	cout << "\tFinding a route ... ";
-	generatePath();
+//	generatePath();
 	cout << "Finished" << endl;
 }
 
@@ -203,7 +203,7 @@ void Car::update(float dt)
 		if (m_BrakeSound.getStatus() == 0 && m_fSpeed > 100)
 		{
 			m_BrakeSound.setBuffer(m_Sound->m_vBufferCarBrakes);
-			m_BrakeSound.setVolume(m_Player->m_iGameAudioVolume);
+			m_BrakeSound.setVolume(m_Player->m_iGameAudioVolume * 0.8);
 			m_BrakeSound.play();
 		}
 		m_engineSound.stop();
@@ -213,7 +213,7 @@ void Car::update(float dt)
 		if (m_engineSound.getStatus() == 0)
 		{
 			m_engineSound.setBuffer(m_Sound->m_vBufferCarEngine);
-			m_engineSound.setVolume(m_Player->m_iGameAudioVolume);
+			m_engineSound.setVolume(m_Player->m_iGameAudioVolume/2);
 			m_engineSound.setLoop(true);
 			m_engineSound.play();
 		}
@@ -348,7 +348,6 @@ void Car::update(float dt)
 			fAcceleration = (m_fForce / m_fMass);
 			if (m_fDrag <= 0.8)
 			{
-				cout << m_fDrag << endl;
 				m_fDrag += 0.0025;
 			}
 

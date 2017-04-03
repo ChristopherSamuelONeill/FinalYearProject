@@ -29,15 +29,16 @@ public:
 	vector<Texture> m_vTimeTextures; // \brief Texture for background
 
 	//Road Textures
-	vector<Texture> m_vTwoWayStreetTextures; // \brief Texture for cars going either way
+	vector<Texture> m_vTwoWayStreetTextures; // \brief Texture for 2 way road 
 
-	vector<Texture> m_vTJunctionTextures; // \brief Texture for cars going either way
+	vector<Texture> m_vTJunctionTextures; // \brief Texture for T Juntion
 
-	vector<Texture> m_vCornerTextures; // \brief Texture for cars going either way
+	vector<Texture> m_vCornerTextures; // \brief Texture for Corner
 	
-	vector<Texture> m_vCrossRoadsTextures; // \brief Texture for cars going either way
+	vector<Texture> m_vCrossRoadsTextures; // \brief Texture for cross roads
 
-
+	//StartEnd point teture
+	Texture m_StartEndPoint; // \brief Texture Start and end point
 
 	//Traffic Textures
 	vector<Texture> m_vTrafficLightTextures; // \brief Texture traffic lights  0 red , 1 yellow, 2 green

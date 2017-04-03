@@ -17,6 +17,8 @@ Game::Game(string dir)
 void Game::generateCars()
 {
 	cout << "Generating "<< m_uiNumbofCars << " cars ... \n";
+	srand(time(NULL));
+
 	for (int i = 0; i < m_uiNumbofCars; i++)
 	{
 		Texture tempTexture[8] =
@@ -31,8 +33,14 @@ void Game::generateCars()
 			m_Gametextures->m_vCarWheels[2]
 
 		};
+		
+		int iRandStart = rand() % (m_vCarsStartPostions.size() - 1) + 0;
+		int iRandEnd = rand() % (m_vCarsEndPostions.size() - 1) + 0;
 
-		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(250, 100), tempTexture,270);
+		cout << iRandStart <<" : " << iRandEnd << endl;
+
+
+		Car tempCar(m_vCarsStartPostions[iRandStart].getPosition() , m_vCarsEndPostions[iRandEnd].getPosition(), Vector2f(250, 100), tempTexture,270);
 		m_vCars.push_back(tempCar);
 		m_vCars[i].receiveNodeData(m_pathfinderData);
 		m_vCars[i].startPathFinding();
@@ -343,6 +351,16 @@ void Game::drawScene(RenderWindow & window)
 		window.draw(m_vRoads[i]);
 	}
 
+	//draw nodes
+	if (m_bDrawPathfinding)
+	{
+		for (int i = 0; i < rectsForTesting.size(); i++)
+		{
+			window.draw(rectsForTesting[i]);
+		}
+	}
+
+
 	//draw SceneObjects
 	for (int i = 0; i < m_vSceneObejcts.size(); i++)
 	{
@@ -371,14 +389,7 @@ void Game::drawScene(RenderWindow & window)
 
 	}
 
-	//draw nodes
-	if (m_bDrawPathfinding)
-	{
-		for (int i = 0; i < rectsForTesting.size(); i++)
-		{
-			window.draw(rectsForTesting[i]);
-		}
-	}
+
 
 	//draw start positions
 	for (int i = 0; i < m_vCarsStartPostions.size(); i++)
@@ -641,6 +652,19 @@ void Game::saveLevelToFile(string dir)
 			onewFile << "c " << "Pos X " << "Pos Y " << "Scale x " << "Scale y "<< "Rotation " << "Type " << endl;
 			onewFile << "Road " << m_vRoads[i].getPosition().x << " " << m_vRoads[i].getPosition().y << " " << m_vRoads[i].getSize().x << " " << m_vRoads[i].getSize().y << " " << m_vRoads[i].getRotation() << " " << m_vRoads[i].getType() <<  endl;
 		}
+
+		//save the Start Points
+		for (int i = 0; i < m_vCarsStartPostions.size(); i++)
+		{
+			onewFile << "c " << "Pos X " << "Pos Y " << endl;
+			onewFile << "StartPoint " << m_vCarsStartPostions[i].getPosition().x << " " << m_vCarsStartPostions[i].getPosition().y << endl;
+		}
+		//save the End Points
+		for (int i = 0; i < m_vCarsEndPostions.size(); i++)
+		{
+			onewFile << "c " << "Pos X " << "Pos Y " << endl;
+			onewFile << "EndPoint " << m_vCarsEndPostions[i].getPosition().x << " " << m_vCarsEndPostions[i].getPosition().y << endl;
+		}
 	
 		
 	}
@@ -670,19 +694,20 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 
 	}
 
-	RectangleShape tempRoad;
+	RectangleShape tempObject;
 
-	tempRoad.setPosition(sfSnappedPos);
-	tempRoad.setRotation(rot);
+	tempObject.setPosition(sfSnappedPos);
+	tempObject.setRotation(rot);
 
-	if (type == "T-Junction")tempRoad.setSize(Vector2f(2500, 1500));
-	if (type == "NormalRoad")tempRoad.setSize(Vector2f(500, 1000));
-	if (type == "CrossRoads")tempRoad.setSize(Vector2f(2500, 2500));
-	if (type == "Corner")tempRoad.setSize(Vector2f(500, 500));
+	if (type == "T-Junction")tempObject.setSize(Vector2f(2500, 1500));
+	if (type == "NormalRoad")tempObject.setSize(Vector2f(500, 1000));
+	if (type == "CrossRoads")tempObject.setSize(Vector2f(2500, 2500));
+	if (type == "Corner")tempObject.setSize(Vector2f(500, 500));
+	if (type == "StartPoint" || type == "EndPoint") tempObject.setSize(Vector2f(fGridSize, fGridSize));
 
 	bool valid = true;
 
-	//check if the new road is in the level
+	//check if the new object is in the level
 	if (sfSnappedPos.x > m_sfLevelSize.x)valid = false;
 	else if (sfSnappedPos.x <= 0)valid = false;
 	else if (sfSnappedPos.y <= 0)valid = false;
@@ -690,16 +715,19 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 
 	CollisionDetection test;
 
-
-	//check the road doesnt overlap with any other roads
-	for (int i = 0; i < m_vRoads.size(); i++)
+	if (type == "T-Junction" || type == "NormalRoad" || type == "CrossRoads" || type == "Corner")
 	{
-		if (test(tempRoad, m_vRoads[i].getCollisionBox()) == true)
+		//check the road doesnt overlap with any other roads
+		for (int i = 0; i < m_vRoads.size(); i++)
 		{
-			//did not place due to overlap
-			valid = false;
+			if (test(tempObject, m_vRoads[i].getCollisionBox()) == true)
+			{
+				//did not place due to overlap
+				valid = false;
+			}
 		}
 	}
+
 
 	//set up drawbales
 	m_sfTempRect.setPosition(sfSnappedPos);
@@ -755,6 +783,14 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 		m_sfSize = Vector2f(500, 500);
 		m_sfTempRect.setSize(m_sfSize);
 		m_sfTempTexture = m_Gametextures->m_vCornerTextures[1];
+
+	}
+
+	if (type == "StartPoint" || type == "EndPoint")
+	{
+		m_sfSize = Vector2f(fGridSize, fGridSize);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures->m_StartEndPoint;
 
 	}
 
@@ -818,6 +854,58 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	m_vRoads[m_vRoads.size() - 1].setType(type);
 
 	return true;
+
+}
+
+bool Game::placeStartEndPoint(Vector2f position,string type)
+{
+
+	//snap to nearest grid
+	Vector2f sfSnappedPos;
+
+	for (int i = 0; i < m_vGridSystem.size(); i++)
+	{
+		//find the distance from nearest the road to every grid
+		Vector2f dist = m_vGridSystem[i] - position;
+		float mag = sqrt(dist.x * dist.x + dist.y * dist.y);
+		if (mag < fGridSize)
+		{
+			sfSnappedPos = m_vGridSystem[i];
+			i = m_vGridSystem.size();
+		}
+
+	}
+
+	FloatRect rect1,rect2,rect3;
+	Vector2f Size(fGridSize, fGridSize);
+	RectangleShape tempRect;
+	tempRect.setPosition(sfSnappedPos);
+	tempRect.setSize(Size);
+
+	//check no start points and end points over lap
+	for (int i = 0; i < m_vCarsStartPostions.size(); i++)
+	{
+		for (int x = 0; x < m_vCarsEndPostions.size(); x++)
+		{
+			rect1 = m_vCarsStartPostions[i].getGlobalBounds();
+			rect2 = m_vCarsEndPostions[x].getGlobalBounds();
+			rect3 = tempRect.getGlobalBounds();
+			if (rect1.intersects(rect3)) return false;
+			if (rect2.intersects(rect3)) return false;
+		}
+	}
+
+	if (type == "StartPoint")
+	{
+		m_vCarsStartPostions.push_back(tempRect);
+	}
+	if (type == "EndPoint")
+	{
+		m_vCarsEndPostions.push_back(tempRect);
+	}
+
+	return true;
+
 
 }
 
@@ -902,7 +990,7 @@ void Game::chooseNodes()
 	//pass pathfinding to roads
 	for (int i = 0; i < m_vRoads.size(); i++)
 	{
-		//m_vRoads[i].passPathfinding(*m_pathfinderData);
+		m_vRoads[i].passPathfinding(*m_pathfinderData);
 	}
 
 	//draw nodes list
