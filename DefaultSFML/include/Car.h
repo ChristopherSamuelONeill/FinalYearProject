@@ -31,8 +31,7 @@ private:
 	Profile *m_Player;// \brief Profile object
 
 	bool m_bCarIdleSoundIsPlaying = false;
-	bool m_bCarBrakeSoundIsPlaying = false;
-	bool m_bCarEngineSoundIsPlaying = true;
+
 
 	Vector2f m_sfSize; // \brief X Y size of car
 	Vector2f m_sfVelocity; // \brief X Y speed of car

@@ -162,7 +162,9 @@ void Car::applyBrakingForce()
 
 void Car::startPathFinding()
 {
-	//generatePath();
+	cout << "\tFinding a route ... ";
+	generatePath();
+	cout << "Finished" << endl;
 }
 
 void Car::draw(RenderTarget & target, RenderStates states) const
@@ -195,26 +197,6 @@ void Car::update(float dt)
 
 	}
 
-
-
-	if (m_bCarEngineSoundIsPlaying == true)
-	{
-		
-
-		
-		
-		m_bCarEngineSoundIsPlaying = false;
-
-	}
-	//if (m_bCarBrakeSoundIsPlaying == true)
-	//{
-	//	m_BrakeSound.setBuffer(m_Sound->m_vBufferCarBrakes);
-	//	m_BrakeSound.setVolume(m_Player->m_iGameAudioVolume);
-	//	m_BrakeSound.setLoop(true);
-	//	m_BrakeSound.play();
-	//	
-
-	//}*/
 	
 	if (m_bBraking == true)
 	{

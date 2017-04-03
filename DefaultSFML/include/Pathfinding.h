@@ -29,9 +29,6 @@ public:
 	// \brief Function to clear all nodes
 	void clearNodes();
 
-
-	
-
 	vector<pair< Node*, Vector2f>> m_carNodes; // \brief list of ALL nodes
 	vector<pair< Node*, Vector2f>> m_carOpenNodes; // \brief list of nodes available for checking
 	vector<pair< Node*, Vector2f>> m_carClosedNodes;// \brief list of nodes NOT to be checked

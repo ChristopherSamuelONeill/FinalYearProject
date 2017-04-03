@@ -129,7 +129,7 @@ public:
 	RectangleShape m_sfTempRect; // \brief Temp Rect for editor 
 	Sprite m_sfTempSprite; // \brief Temp Sprite for editor 
 	Texture m_sfTempTexture; // \brief Temp Texture for editor 
-	bool m_bDrawPathfinding = false;
+	bool m_bDrawPathfinding = true;
 	bool m_bPlacingObject = false; // \brief True while placing an object
 
 	void placeTrafficLights();

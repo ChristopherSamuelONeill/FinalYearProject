@@ -27,7 +27,11 @@ protected:
 	Vector2f m_sfStart;// \brief XY of the start
 	Vector2f m_sfPosition; // \brief X Y position of car
 	
-	pair< Node*, Vector2f> PreviousNode;// \brief node previous to current
+	int plz;
+	int secPlz;
+
+	int m_iPreviousNode;// \brief the previous node index parent
+	int m_iCurrentNode;
 
 	void generatePath();
 

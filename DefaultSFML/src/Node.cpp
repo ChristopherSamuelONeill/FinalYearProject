@@ -2,6 +2,7 @@
 
 Node::Node()
 {
+	parentNode = NULL;
 }
 
 Node::Node(float hValue, float gValue, int index, bool Accessable)

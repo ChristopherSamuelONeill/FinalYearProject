@@ -2,11 +2,8 @@
 
 void Controller::generatePath()
 {
-
 	//find end node
 	m_TargetNode = getNode(m_sfGoal);
-
-	
 
 	// Add Node at current location to closed list
 	if (getNode(m_sfPosition).first != NULL)
@@ -27,13 +24,19 @@ void Controller::generatePath()
 	//calculate the path
 	bool bPathFound = false; // was apath found
 
+	//the current node been tested
+	pair< Node*, Vector2f> CurrentNode;
+
+
 	while (!bPathFound)
 	{
-		//the current node been tested
-		pair< Node*, Vector2f> CurrentNode = m_Pathfinding->m_carClosedNodes.back();
-
+		
+		CurrentNode = m_Pathfinding->m_carClosedNodes[m_Pathfinding->m_carClosedNodes.size()-1];
 		CurrentNode.first->m_fHValue = getManhattanDistance(CurrentNode, m_TargetNode);
 
+		//CurrentNode.first->parentNode = &getNodeFromIndex(m_iPreviousNode);
+
+	
 		if (CurrentNode == m_TargetNode)
 		{
 			bPathFound = true;
@@ -43,22 +46,14 @@ void Controller::generatePath()
 		//find adjacent nodes
 		vector<pair< Node*, Vector2f>> AdjacentNodes = adjacentNodes(CurrentNode);
 
-		//cout << AdjacentNodes[0].first->m_bAccessable << endl;
-		int lol = AdjacentNodes.size();
-
 		//for each adjacent node
 		for (int i = 0; i < AdjacentNodes.size();i++)
 		{
-
-			if (CurrentNode == AdjacentNodes[i])
-			{
-				cout << "DICK HEAD" << endl;
-			}
-
 			// If adjNode is inaccessible
 			if (AdjacentNodes[i].first->m_bAccessable == false ) ; // ignore
-			else if (AdjacentNodes[i] == m_TargetNode)
+			else if (AdjacentNodes[i] == m_TargetNode && !nodeInList(AdjacentNodes[i], m_Pathfinding->m_carClosedNodes))
 			{
+
 				//reset the node
 				AdjacentNodes[i].first->ResetNode();
 
@@ -75,6 +70,18 @@ void Controller::generatePath()
 				AdjacentNodes[i].first->m_fFValue = AdjacentNodes[i].first->m_fGValue + AdjacentNodes[i].first->m_fHValue;
 
 				
+				for (int i = 0; i < m_Pathfinding->m_carOpenNodes.size(); i++)
+				{
+					if (m_Pathfinding->m_carOpenNodes[i].first != NULL && m_Pathfinding->m_carOpenNodes[i].first->parentNode != NULL)
+					{
+
+						plz = m_Pathfinding->m_carOpenNodes[i].first->m_iIndex;
+						secPlz = m_Pathfinding->m_carOpenNodes[i].first->parentNode->first->m_iIndex;
+						cout << "Found " << plz << " -> " << secPlz << endl;
+
+
+					}
+				}
 
 				//queue route
 				QuePath(AdjacentNodes[i]);
@@ -84,8 +91,7 @@ void Controller::generatePath()
 			}
 			else if(nodeInList(AdjacentNodes[i],m_Pathfinding->m_carOpenNodes))
 			{
-				//if node is in open nodes
-
+				
 				// Distance from the current Node and open Node
 				Vector2f fDistToNode = Vector2f(CurrentNode.second.x - AdjacentNodes[i].second.x, CurrentNode.second.y - AdjacentNodes[i].second.y);
 
@@ -102,6 +108,7 @@ void Controller::generatePath()
 			{
 				//(AdjacentNodes[i] is accessable , not the dest , is not yet on the open or closed list
 				//reset the node
+
 				AdjacentNodes[i].first->ResetNode();
 
 				//set the parent node
@@ -118,15 +125,13 @@ void Controller::generatePath()
 
 				//add to open list
 				m_Pathfinding->m_carOpenNodes.push_back(AdjacentNodes[i]);
-				
 
 			}
 
 		}
 		
-
 		//find next node
-	
+
 		if (!m_Pathfinding->m_carOpenNodes.empty())
 		{
 			pair< Node*, Vector2f> smallestFValueNode = m_Pathfinding->m_carOpenNodes.back(); // node with the lowest cost
@@ -135,38 +140,40 @@ void Controller::generatePath()
 			{
 				if (m_Pathfinding->m_carOpenNodes[i].first->m_fFValue < smallestFValueNode.first->m_fFValue)
 				{
-					smallestFValueNode.swap(m_Pathfinding->m_carOpenNodes[i]);
+					smallestFValueNode = m_Pathfinding->m_carOpenNodes[i];
 				}
 				else if (m_Pathfinding->m_carOpenNodes[i].first->m_fFValue == smallestFValueNode.first->m_fFValue)
 				{
 					// the node with lower H is set
 					if (m_Pathfinding->m_carOpenNodes[i].first->m_fHValue < smallestFValueNode.first->m_fHValue)
 					{
-						smallestFValueNode.swap(m_Pathfinding->m_carOpenNodes[i]);
+						smallestFValueNode = m_Pathfinding->m_carOpenNodes[i];
+						
 					}
-
 				}
 				else
 				{
-					// do nothing
+					
 				}
 			}
 
 			//add the lowest f vlaue to closed list
+
+			m_iPreviousNode = smallestFValueNode.first->parentNode->first->m_iIndex;
+			m_iCurrentNode = smallestFValueNode.first->m_iIndex;
+	
 			m_Pathfinding->m_carClosedNodes.push_back(smallestFValueNode);
 
-			//remove the node from open list
-			vector<pair< Node*, Vector2f>> newOpenNodes;
+			//remove from open list
 			for (int i = 0; i < m_Pathfinding->m_carOpenNodes.size(); i++)
 			{
-				if (m_Pathfinding->m_carOpenNodes[i] != smallestFValueNode)
+				if (m_Pathfinding->m_carOpenNodes[i] == smallestFValueNode)
 				{
-					newOpenNodes.push_back(m_Pathfinding->m_carOpenNodes[i]);
-
+					m_Pathfinding->m_carOpenNodes.erase(m_Pathfinding->m_carOpenNodes.begin() + i);
 				}
+				
 			}
-			m_Pathfinding->m_carOpenNodes.swap(newOpenNodes);
-
+		
 		}
 		else
 		{
@@ -174,7 +181,6 @@ void Controller::generatePath()
 			return;
 		}
 
-		
 
 	}
 
@@ -182,7 +188,6 @@ void Controller::generatePath()
 
 pair<Node*, Vector2f> Controller::getNode(Vector2f pos)
 {
-
 	// Find the Desired mode
 	RectangleShape goalRect(Vector2f(50, 50));
 	RectangleShape nodeRect(Vector2f(50, 50));
@@ -214,7 +219,7 @@ pair<Node*, Vector2f> Controller::getNodeFromIndex(int index)
 	if (!m_Pathfinding->m_carNodes.empty())
 	{
 		// If index is within available range
-		if ((index >= 0) && (index < m_Pathfinding->m_carNodes.size()))
+		if ((index >= 0) && (index < m_Pathfinding->m_carNodes.size() -1))
 		{
 			// Returns Node at index
 			return m_Pathfinding->m_carNodes[index];
@@ -261,189 +266,193 @@ vector<pair<Node*, Vector2f>> Controller::adjacentNodes(pair<Node*, Vector2f> cu
 
 	if (currentNode.first != NULL)
 	{
-		// a temporary node
-		pair< Node*, Vector2f> tempNode;
 
 		unsigned int uiIndex;
 
 		for (int i = 0; i < 8; i++)
 		{
+			// a temporary node
+			pair< Node*, Vector2f> tempNode;
+
 			switch (i)
 			{
-			case 1:
-			{
-				//top left
-				uiIndex = (currentNode.first->m_iIndex - 1) - m_Pathfinding->m_uiNodeX;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
+				case 1:
 				{
-					uiIndex = (currentNode.first->m_iIndex - 1);
-					pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
-					uiIndex = (currentNode.first->m_iIndex) - m_Pathfinding->m_uiNodeX;
-					pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+					//top left
+					uiIndex = (currentNode.first->m_iIndex - 1) - m_Pathfinding->m_uiNodeX;
+					tempNode = getNodeFromIndex(uiIndex);
 
-					// If checkNode1 Node exists and is not accessible
-					if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-					// Else If checkNode2 Node exists and is not accessible
-					else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-					// Both checkNodes exist and are accessible
-					else
+					if (tempNode.first != NULL)
 					{
-						// Adds adjacent Node to vector
+						//uiIndex = (currentNode.first->m_iIndex - 1);
+						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+						//uiIndex = (currentNode.first->m_iIndex) - m_Pathfinding->m_uiNodeX;
+						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+
+						//// If checkNode1 Node exists and is not accessible
+						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
+					
+						//// Else If checkNode2 Node exists and is not accessible
+						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
+
+						//// Both checkNodes exist and are accessible
+						//else
+						//{
+						//	// Adds adjacent Node to vector
+						//	AdjacentNodes.push_back(tempNode);
+						//}
 						AdjacentNodes.push_back(tempNode);
 					}
+					break;
+
 				}
-				break;
-
-			}
-			case 2:
-			{
-				//top middle
-				uiIndex = currentNode.first->m_iIndex - m_Pathfinding->m_uiNodeX;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
+				case 2:
 				{
-
-					// Adds adjacent Node to vector
-					AdjacentNodes.push_back(tempNode);
-				}
-				break;
-			}
-			case 3:
-			{
-				//top right
-				uiIndex = (currentNode.first->m_iIndex + 1) - m_Pathfinding->m_uiNodeX;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
-				{
+					//top middle
 					uiIndex = currentNode.first->m_iIndex - m_Pathfinding->m_uiNodeX;
-					pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+					tempNode = getNodeFromIndex(uiIndex);
+
+					if (tempNode.first != NULL)
+					{
+
+						// Adds adjacent Node to vector
+						AdjacentNodes.push_back(tempNode);
+					}
+					break;
+				}
+				case 3:
+				{
+					//top right
+					uiIndex = (currentNode.first->m_iIndex + 1) - m_Pathfinding->m_uiNodeX;
+					tempNode = getNodeFromIndex(uiIndex);
+
+					if (tempNode.first != NULL)
+					{
+						uiIndex = currentNode.first->m_iIndex - m_Pathfinding->m_uiNodeX;
+						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+						//uiIndex = currentNode.first->m_iIndex + 1;
+						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+
+						//// If checkNode1 Node exists and is not accessible
+						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
+
+						//// Else If checkNode2 Node exists and is not accessible
+						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
+
+						//// Both checkNodes exist and are accessible
+						//else
+						//{
+						//	// Adds adjacent Node to vector
+						//	AdjacentNodes.push_back(tempNode);
+						//}
+						AdjacentNodes.push_back(tempNode);
+					}
+					break;
+				}
+				case 4:
+				{
+					//middle right
 					uiIndex = currentNode.first->m_iIndex + 1;
-					pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+					tempNode = getNodeFromIndex(uiIndex);
 
-					// If checkNode1 Node exists and is not accessible
-					if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-					// Else If checkNode2 Node exists and is not accessible
-					else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-					// Both checkNodes exist and are accessible
-					else
+					if (tempNode.first != NULL)
 					{
 						// Adds adjacent Node to vector
 						AdjacentNodes.push_back(tempNode);
 					}
+					break;
 				}
-				break;
-			}
-			case 4:
-			{
-				//middle right
-				uiIndex = currentNode.first->m_iIndex + 1;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
+				case 5:
 				{
-					// Adds adjacent Node to vector
-					AdjacentNodes.push_back(tempNode);
+					//bottom right
+					uiIndex = (currentNode.first->m_iIndex + 1) + m_Pathfinding->m_uiNodeX;
+					tempNode = getNodeFromIndex(uiIndex);
+
+					if (tempNode.first != NULL)
+					{
+						//uiIndex = currentNode.first->m_iIndex + 1;
+						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+						//uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
+						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+
+						//// If checkNode1 Node exists and is not accessible
+						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
+
+						//// Else If checkNode2 Node exists and is not accessible
+						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
+
+						//// Both checkNodes exist and are accessible
+						//else
+						//{
+						//	// Adds adjacent Node to vector
+						//	AdjacentNodes.push_back(tempNode);
+						//}
+						AdjacentNodes.push_back(tempNode);
+					}
+					break;
 				}
-				break;
-			}
-			case 5:
-			{
-				//bottom right
-				uiIndex = (currentNode.first->m_iIndex + 1) + m_Pathfinding->m_uiNodeX;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
+				case 6:
 				{
-					uiIndex = currentNode.first->m_iIndex + 1;
-					pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+					//bottom middle
 					uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
-					pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+					tempNode = getNodeFromIndex(uiIndex);
 
-					// If checkNode1 Node exists and is not accessible
-					if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-					// Else If checkNode2 Node exists and is not accessible
-					else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-					// Both checkNodes exist and are accessible
-					else
+					if (tempNode.first != NULL)
 					{
 						// Adds adjacent Node to vector
 						AdjacentNodes.push_back(tempNode);
 					}
+					break;
 				}
-				break;
-			}
-			case 6:
-			{
-				//btttom middle
-				uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
+				case 7:
 				{
-					// Adds adjacent Node to vector
-					AdjacentNodes.push_back(tempNode);
+					//bottom left
+					uiIndex = (currentNode.first->m_iIndex - 1) + m_Pathfinding->m_uiNodeX;
+					tempNode = getNodeFromIndex(uiIndex);
+
+					if (tempNode.first != NULL)
+					{
+						//uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
+						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+						//uiIndex = currentNode.first->m_iIndex - 1;
+						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+
+						//// If checkNode1 Node exists and is not accessible
+						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
+
+						//// Else If checkNode2 Node exists and is not accessible
+						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
+
+						//// Both checkNodes exist and are accessible
+						//else
+						//{
+						//	// Adds adjacent Node to vector
+						//	AdjacentNodes.push_back(tempNode);
+						//}
+						AdjacentNodes.push_back(tempNode);
+					}
+					break;
 				}
-				break;
-			}
-			case 7:
-			{
-				//bottom left
-				uiIndex = (currentNode.first->m_iIndex - 1) + m_Pathfinding->m_uiNodeX;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
+				case 8:
 				{
-					uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
-					pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
+					//bottom middle
 					uiIndex = currentNode.first->m_iIndex - 1;
-					pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
+					tempNode = getNodeFromIndex(uiIndex);
 
-					// If checkNode1 Node exists and is not accessible
-					if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-					// Else If checkNode2 Node exists and is not accessible
-					else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-					// Both checkNodes exist and are accessible
-					else
+					if (tempNode.first != NULL)
 					{
 						// Adds adjacent Node to vector
 						AdjacentNodes.push_back(tempNode);
 					}
+					break;
 				}
-				break;
-			}
-			case 8:
-			{
-				//btttom middle
-				uiIndex = currentNode.first->m_iIndex - 1;
-				tempNode = getNodeFromIndex(uiIndex);
-
-				if (tempNode.first != NULL)
-				{
-					// Adds adjacent Node to vector
-					AdjacentNodes.push_back(tempNode);
-				}
-
-			}
-			break;
+			
 			}
 		}
-
 	}
 	
 	
-
+	std::cout << AdjacentNodes.size();
 	return AdjacentNodes;
 }
 
@@ -452,24 +461,16 @@ void Controller::QuePath(pair<Node*, Vector2f> node)
 	// Vector for stack of Nodes to be used in path
 	vector<pair<Node*, Vector2f>> pNodes;
 
-
-
 	// Pushes destination Node onto vector
 	pNodes.push_back(node);
 
-	m_TargetNode;
-	m_StartNode;
 
-	pair< Node*, Vector2f> test =  m_Pathfinding->m_carClosedNodes[0];
-
-	while (node.first->parentNode->first != test.first)
+	while (node.first->parentNode->first != m_StartNode.first)
 	{
 		// Make the Node it's Parent
 		node = *node.first->parentNode;
 		// Push the parent onto the path of Nodes
 		pNodes.push_back(node);
-
-
  	}
 
 	while (!pNodes.empty())

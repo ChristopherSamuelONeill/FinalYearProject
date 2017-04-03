@@ -16,7 +16,7 @@ Game::Game(string dir)
 
 void Game::generateCars()
 {
-	cout << "Generating "<< m_uiNumbofCars << " cars ... ";
+	cout << "Generating "<< m_uiNumbofCars << " cars ... \n";
 	for (int i = 0; i < m_uiNumbofCars; i++)
 	{
 		Texture tempTexture[8] =
@@ -303,8 +303,6 @@ void Game::loadLevel(string dir)
 
 	file.close();
 }
-
-
 
 void Game::updateScene(float dt)
 {
@@ -819,7 +817,7 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	m_vRoads.push_back(tempRoad);
 	m_vRoads[m_vRoads.size() - 1].setType(type);
 
-
+	return true;
 
 }
 
