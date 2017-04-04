@@ -178,6 +178,8 @@ public:
 	RectangleShape m_sfCarRect;// \brief Rect for the Car
 	RectangleShape m_sfRearRect;// \brief Rect for the Cars rear (car behind will brake)
 	bool m_bFinished = false;
+	bool m_bCrashed = false;
+	bool m_bSpawned = false;
 	void startPathFinding();
 	void draw(RenderTarget& target, RenderStates states) const;
 	void update(float dt);

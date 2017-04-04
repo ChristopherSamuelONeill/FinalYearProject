@@ -10,6 +10,9 @@ Game::Game()
 
 Game::Game(string dir)
 {
+	m_Gametextures = TextureObject::getInstance();
+	m_Gametextures->loadTextures();
+	m_bEditorMode = false;
 	m_pathfinderData = new Pathfinding;
 	startGame(dir);
 }
@@ -34,24 +37,14 @@ void Game::generateCars()
 
 		};
 		
-		//int iRandStart = rand() % (m_vCarsStartPostions.size() - 1) + 0;
-		//int iRandEnd = rand() % (m_vCarsEndPostions.size() - 1) + 0;
+		int iRandStart = rand() % (m_vCarsStartPostions.size() - 1);
+		
+		Car tempCar(m_vCarsStartPostions[iRandStart].first.getPosition(), m_vCarsEndPostions[iRandStart].first.getPosition(), Vector2f(250, 100), tempTexture, m_vCarsStartPostions[iRandStart].second);
+		m_vCars.push_back(tempCar);
+		m_vCars[i].receiveNodeData(*m_pathfinderData);
+		m_vCars[i].startPathFinding();
 
 
-		if (i == 0)
-		{
-			Car tempCar(m_vCarsStartPostions[0].first.getPosition(), m_vCarsEndPostions[0].first.getPosition(), Vector2f(250, 100), tempTexture, m_vCarsStartPostions[0].second);
-			m_vCars.push_back(tempCar);
-			m_vCars[i].receiveNodeData(*m_pathfinderData);
-			m_vCars[i].startPathFinding();
-		}
-	/*	if (i == 1)
-		{
-			Car tempCar(m_vCarsStartPostions[1].first.getPosition(), m_vCarsEndPostions[0].first.getPosition(), Vector2f(250, 100), tempTexture, m_vCarsStartPostions[1].second);
-			m_vCars.push_back(tempCar);
-			m_vCars[i].receiveNodeData(*m_pathfinderData);
-			m_vCars[i].startPathFinding();
-		}*/
 
 	}
 	cout << "Finished" << endl;
@@ -185,7 +178,6 @@ void Game::startGame(string dir)
 
 	//generate cars
 	generateCars();
-
 
 }
 
@@ -400,7 +392,8 @@ void Game::loadLevel(string dir)
 
 void Game::updateScene(float dt)
 {
-
+	//spawn cars
+	spawnCars();
 	
 	//update Background
 	m_Background.update();
@@ -420,7 +413,7 @@ void Game::updateScene(float dt)
 	//update Traffic LIghts
 	for (int i = 0; i < m_vTrafficLights.size(); i++)
 	{
-		m_vTrafficLights[i].update();
+		m_vTrafficLights[i].update(dt);
 	}
 
 	//update cars
@@ -428,7 +421,7 @@ void Game::updateScene(float dt)
 	{
 		for (int y = 0; y < m_vCars.size(); y++)
 		{
-			m_vCars[i].
+			m_vCars[i].CheckForCar(m_vCars[y]);
 		}
 		if (m_vTrafficLights.size() > 0)
 		{
@@ -558,6 +551,37 @@ void Game::closeGame()
 	m_uiNumbofCars = 0;
 
 
+}
+
+bool Game::checkforWin()
+{
+	//check for end condition
+	int numOfCarsFinished = 0;
+	for (int i = 0; i < m_vCars.size(); i++)
+	{
+		if (m_vCars[i].m_bFinished == true)
+		{
+			numOfCarsFinished++;
+		}
+	}
+	if (numOfCarsFinished == m_vCars.size()) return true;
+	else return false;
+}
+
+bool Game::checkforLoss()
+{
+	//check for end condition
+	int numOfCarsFinished = 0;
+	for (int i = 0; i < m_vCars.size(); i++)
+	{
+		if (m_vCars[i].m_bCrashed == true)
+		{
+			numOfCarsFinished++;
+		}
+	}
+	/*if (numOfCarsFinished == m_vCars.size()) return true;
+	else return false;*/
+	return false;
 }
 
 void Game::cycleBackground()
@@ -696,6 +720,20 @@ void Game::cycleLevelTime()
 	}
 
 	m_Time.setTexture(m_Gametextures->m_vTimeTextures[m_iLevelTime],"");
+}
+
+void Game::checkForTrafficLights(Vector2f pos)
+{
+	for (int i = 0; i < m_vTrafficLights.size(); i++)
+	{
+		if (m_vTrafficLights[i].m_bClicked(pos));
+		{
+			if (m_vTrafficLights[i].m_iState == 2)m_vTrafficLights[i].changeToRed();
+			else if (m_vTrafficLights[i].m_iState == 0)m_vTrafficLights[i].changeToGreen();
+			i = m_vTrafficLights.size();
+		}
+	}
+
 }
 
 void Game::saveLevelToFile(string dir)
@@ -913,8 +951,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	{
 		m_sfSize = Vector2f(fGridSize, fGridSize);
 		m_sfTempRect.setSize(m_sfSize);
-		m_sfTempRect.setOrigin(m_sfSize / 2.0f);
-		m_sfTempSprite.setOrigin(m_sfSize / 2.0f);
+		
 		m_sfTempTexture = m_Gametextures->m_StartEndPoint;
 
 	}
@@ -1139,6 +1176,39 @@ bool Game::placeStartEndPoint(Vector2f position,string type, float rot)
 
 	return true;
 
+
+}
+
+void Game::spawnCars()
+{
+	CollisionDetection spawnTest;
+	// loop cars and ensure none are touching
+	for (int i = 0; i < m_vCars.size(); i++)
+	{
+		for (int x = 0; x < m_vCars.size(); x++)
+		{
+			if (i != x)
+			{
+				if (spawnTest(m_vCars[i].m_sfCarRect, m_vCars[x].m_sfCarRect))
+				{
+					if (m_vCars[i].m_bSpawned == false && m_vCars[x].m_bSpawned == false)
+					{
+						//m_vCars[x].m_bSpawned = true; // spawn car i
+					}
+					else
+					{
+						m_vCars[x].m_bSpawned = false;
+					}
+				}
+				else
+				{
+					m_vCars[x].m_bSpawned = true; // spawn car i
+					
+				}
+			}
+			
+		}
+	}
 
 }
 

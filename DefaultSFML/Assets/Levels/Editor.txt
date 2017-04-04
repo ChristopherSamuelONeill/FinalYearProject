@@ -1,0 +1,6 @@
+c Scale X Scale Y 
+LevelSize 10666 6000
+c Texture Number
+Background 0
+c Texture Number
+Time 0

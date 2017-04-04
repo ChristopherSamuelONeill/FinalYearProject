@@ -2,11 +2,11 @@
 #define TRAFFICLIGHT_H
 
 #include <SFML\Graphics.hpp>
-
+#include "Clickable.h"
 
 using namespace sf;
 
-class TrafficLight : public Drawable
+class TrafficLight : public Drawable, public Clickable
 {
 public:
 
@@ -25,15 +25,15 @@ public:
 	void draw(RenderTarget& target, RenderStates states) const;
 
 	// \brief Updates object
-	void update();
+	// \param dt time passed
+	void update(float dt);
 
-	// \brief Changes the traffic light to red , returns true when finished
-	// \param DeltaTime , amount of time passed (should be called every frame untill returning true)
-	bool changeToRed(float dt);
+	// \brief Changes the traffic light to red 
 
-	// \brief Changes the traffic light to green , returns true when finished
-	// \param DeltaTime , amount of time passed (should be called every frame untill returning true)
-	bool changeToGreen(float dt);
+	void changeToRed();
+
+	// \brief Changes the traffic light to green 
+	void changeToGreen();
 
 	// \brief Vector 2f Returns the position of the light
 	Vector2f getPosition();
@@ -49,6 +49,7 @@ public:
 
 
 	int m_iState;			// \brief 0 red , 1 amber , 2 green.
+	int m_iDesiredState;	// \brief 0 red , 1 amber , 2 green.
 
 private:
 	Vector2f m_sfPosition; 	// \brief X Y coords of the object

@@ -19,7 +19,8 @@ void mainMenu(bool tutorial);
 void profileMenu(bool tutorial);
 void settingsMenu(bool tutorial);
 void playMenu();
-void LoadLevel(string path);
+void play(string path);
+void LoadLevel();
 void editor();
 
 void resetSelectors();
@@ -46,62 +47,56 @@ int main()
 	player->loadProfile("default");
 	sound->loadSounds();
 
-	if (DEBUGMODE)
+	
+	//luanch game
+	if (DEBUGMODE) cout << "Luanching Game" << endl;
+
+	//open profile list
+	fstream file;
+	string lineData;
+	string tempProfile;
+	vector<string> profileNames;
+
+	file.open("Assets/profiles/profileList.txt");
+	if (DEBUGMODE) cout << "opening Profile list" << endl;
+	if (file.is_open())
 	{
-		//LoadLevel("test");
-		editor();
+		while (getline(file, lineData))
+		{
+			istringstream iss(lineData);
+			iss.str(lineData);
+			iss >> tempProfile;
+			profileNames.push_back(tempProfile);
+		}
 	}
 	else
 	{
-		//luanch game
-		if (DEBUGMODE) cout << "Luanching Game" << endl;
-
-		//open profile list
-		fstream file;
-		string lineData;
-		string tempProfile;
-		vector<string> profileNames;
-
-		file.open("Assets/profiles/profileList.txt");
-		if (DEBUGMODE) cout << "opening Profile list" << endl;
-		if (file.is_open())
-		{
-			while (getline(file, lineData))
-			{
-				istringstream iss(lineData);
-				iss.str(lineData);
-				iss >> tempProfile;
-				profileNames.push_back(tempProfile);
-			}
-		}
-		else
-		{
-			cout << "Couldnt Open file ... Assets/profiles/profileList.txt" << endl;
-		}
-
-		file.close();
-		if (DEBUGMODE) cout << "Profile list closed" << endl;
-		if (DEBUGMODE) cout << "Profiles present : " << profileNames.size() << endl;
-		//check to see if any profiles were present
-		if (profileNames.size() > 0)
-		{
-			// luanch profileMenu in normal mode
-			player->loadProfile("default");
-			tutorialState = 11;
-			profileMenu(false);
-		}
-		else
-		{
-			if (DEBUGMODE) cout << "Tutorial mode" << endl;
-			if (DEBUGMODE) cout << "Loading Default profile" << endl;
-			player->loadProfile("default");
-			if (DEBUGMODE) cout << "Default profile loaded" << endl;
-			// luanch menu in tutorial mode
-
-			mainMenu(true);
-		}
-
+		cout << "Couldnt Open file ... Assets/profiles/profileList.txt" << endl;
 	}
+
+	file.close();
+	if (DEBUGMODE) cout << "Profile list closed" << endl;
+	if (DEBUGMODE) cout << "Profiles present : " << profileNames.size() << endl;
+	//check to see if any profiles were present
+	if (profileNames.size() > 0)
+	{
+		// luanch profileMenu in normal mode
+		player->loadProfile("default");
+		tutorialState = 11;
+		profileMenu(false);
+	}
+	else
+	{
+		if (DEBUGMODE) cout << "Tutorial mode" << endl;
+		if (DEBUGMODE) cout << "Loading Default profile" << endl;
+		player->loadProfile("default");
+		if (DEBUGMODE) cout << "Default profile loaded" << endl;
+		// luanch menu in tutorial mode
+
+		mainMenu(true);
+	}
+
+	
 
 	
 	return 0;
@@ -1495,25 +1490,27 @@ void playMenu()
 				{
 
 					
-					if (EditorButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					if (EditorButton.m_bClicked(sfMousePos) )
 					{
 						window.close();
 						editor();
 
 					}
-					if (LevelsButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					if (LevelsButton.m_bClicked(sfMousePos) )
 					{
 
 						window.close();
+						string level = "CampaignLevels/level0" +to_string(player->m_uilevel);
+						play(level);
 
 					}
-					if (LoadButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					if (LoadButton.m_bClicked(sfMousePos) )
 					{
 						window.close();
-						LoadLevel("test");
+						LoadLevel();
 
 					}
-					if (BackButton.m_bClicked(sfMousePos) && tutorialState == 11)
+					if (BackButton.m_bClicked(sfMousePos) )
 					{
 						window.close(); // Allows window to close when 'X' is pressed
 						mainMenu(false);
@@ -1540,14 +1537,15 @@ void playMenu()
 
 }
 
-void LoadLevel(string path)
+void play(string path)
 {
-	Game Editor;
-	Editor = Game("test");
+	Game Level;
+	Level = Game(path);
+
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;
-	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor", Style::Fullscreen);
+	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), path, Style::Fullscreen);
 	else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor");
 	window.setFramerateLimit(60);
 	window.setVerticalSyncEnabled(true);
@@ -1568,13 +1566,36 @@ void LoadLevel(string path)
 	int iMouseWheel;
 
 
+	//helps scale hud elements
+	Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
+	Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
+	Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
+
+
+	Overlay winOverlay(Vector2f(200 * resolutionScale.x, 150 * resolutionScale.y), Vector2f(888 * resolutionScale.x, 500 * resolutionScale.y),
+		"Congratulations , you completed the level!\n\n Click anywhere to go back to the menu");
+	Overlay loseOverlay(Vector2f(200 * resolutionScale.x, 150 * resolutionScale.y), Vector2f(888 * resolutionScale.x, 500 * resolutionScale.y),
+		"Bad Luck , you failed to complete the level\n\n Click anywhere to go back to the menu");
+
+	winOverlay.m_bDraw = false;
+	loseOverlay.m_bDraw = false;
+
+	Button QuitButton
+	("Exit",
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, player->m_sfResolution.y - 90 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
+		"Button_Green"
+	);
+
+
 	while (window.isOpen())
 	{
 
 		Vector2f sfMousePos;
 
 		sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
-		
+
 
 		//move camera
 		float fMoveSpeed = 10;
@@ -1601,10 +1622,197 @@ void LoadLevel(string path)
 		}
 		while (window.pollEvent(event))
 		{
+			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
 			if (event.type == Event::Closed)
 			{
 				window.close(); // Allows window to close when 'X' is pressed
 				return;
+			}
+
+
+			if (event.type == Event::MouseWheelMoved)
+			{
+				iMouseWheel = event.mouseWheel.delta;
+				if (iMouseWheel > 0)
+				{
+					//zoom in
+					gameView.zoom(0.9);
+				}
+				if (iMouseWheel < 0)
+				{
+					//zoom out
+					gameView.zoom(1.1);
+				}
+			}
+			if (Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+
+				Level.checkForTrafficLights(sfMousePos);
+
+				 if (QuitButton.m_bClicked(sfMousePos))
+				{
+					 window.close();
+					playMenu();
+				}
+				 else if (winOverlay.m_bClicked(sfMousePos)&& winOverlay.m_bDraw == true)
+				 {
+					 player->m_uilevel++;
+					 window.close();
+					 Level.closeGame();
+					 playMenu();
+				 }
+				 else if (loseOverlay.m_bClicked(sfMousePos) && loseOverlay.m_bDraw == true)
+				 {
+					 window.close();
+					 Level.closeGame();
+					 playMenu();
+				 }
+			}
+		}
+		window.clear(Color::Black);
+
+
+		//draw the game 
+		
+		window.setView(gameView);
+
+		Level.updateScene(0.016f);
+
+		//check for game over
+		if (Level.checkforLoss())
+		{
+			loseOverlay.m_bDraw = true;
+		}
+		else if (Level.checkforWin())
+		{
+			winOverlay.m_bDraw = true;
+		}
+		Level.drawScene(window);
+
+		//draw the hud
+		window.setView(hudView);
+
+		if(winOverlay.m_bDraw == true)window.draw(winOverlay);
+		if(loseOverlay.m_bDraw == true)window.draw(loseOverlay);
+		window.draw(QuitButton);
+
+
+
+		//show the window
+		window.display();
+	}
+
+}
+
+void LoadLevel()
+{
+
+	//Create a window with the specifications of the profile
+	RenderWindow window;
+	if (player->m_bFullscreen == true) window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Editor", Style::Fullscreen);
+	else window.create(VideoMode(player->m_sfResolution.x, player->m_sfResolution.y), "Load Level");
+	window.setFramerateLimit(60);
+	window.setVerticalSyncEnabled(true);
+
+	//create a view to fill the windowfor game render
+	View gameView;
+	gameView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+	gameView.setSize(sf::Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
+
+	//create a view to fill the windowfor game render
+	View hudView;
+	hudView.setViewport(sf::FloatRect(0, 0, 1.0f, 1.0f));
+	hudView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+	hudView.setSize(sf::Vector2f(player->m_sfResolution.x, player->m_sfResolution.y));
+
+	Event event;
+	int iMouseWheel;
+
+
+	//helps scale hud elements
+	Vector2f resolutionScale(player->m_sfResolution.x / 1280, player->m_sfResolution.y / 720);
+	Vector2f buttonSize(250 * resolutionScale.x, 100 * resolutionScale.y);
+	Vector2f middleOfScreen((player->m_sfResolution.x / 2) - (buttonSize.x / 2), (player->m_sfResolution.y / 2) - (buttonSize.y / 2));
+
+
+	//Enter your level Sprite
+	RectangleShape listOfProfilesRect;
+	Sprite listOfProfilesSprite;
+	Texture listOfProfilesTex;
+	if (!listOfProfilesTex.loadFromFile("Assets/textures/profileMenu.png"))
+	{
+		cout << "Error: ProfileEnterBackground.png was unable to load.";
+	};
+	listOfProfilesRect.setPosition(Vector2f(middleOfScreen.x - buttonSize.x, -120 + middleOfScreen.y * resolutionScale.y));
+	listOfProfilesRect.setSize(Vector2f(buttonSize.x * 3, 240 * resolutionScale.y));
+	listOfProfilesRect.setFillColor(Color::Blue);
+
+	listOfProfilesSprite.setTexture(listOfProfilesTex);
+	listOfProfilesSprite.setScale(Vector2f(1 * resolutionScale.x, 1 * resolutionScale.y));
+	listOfProfilesSprite.setPosition(listOfProfilesRect.getPosition());
+
+	Button QuitButton
+	("Exit",
+		Vector2f(player->m_sfResolution.x - 300 * resolutionScale.x, player->m_sfResolution.y - 90 * resolutionScale.y),
+		Vector2f(300 * resolutionScale.x, 88.5 * resolutionScale.y),
+		resolutionScale,
+		"Button_Green"
+	);
+
+
+	//create text box 
+	Vector2f edgeOfTextBox(listOfProfilesRect.getPosition().x, listOfProfilesRect.getPosition().y + (144 * resolutionScale.y) / 2);
+	TextBox saveLevelEntryName("Enter level name", edgeOfTextBox, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+	TextBox loadLevelEntryName("Enter level name", edgeOfTextBox, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+
+	Button loadSubmitButton("Submit", Vector2f(edgeOfTextBox.x + 343, edgeOfTextBox.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
+
+	loadLevelEntryName.m_bIsEntering = true;
+
+	while (window.isOpen())
+	{
+
+		Vector2f sfMousePos;
+
+		sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), gameView);
+
+
+		//move camera
+		float fMoveSpeed = 10;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift))
+		{
+			fMoveSpeed *= 3;
+		}
+		//key presses
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+		{
+			gameView.move(Vector2f(0.0f, -fMoveSpeed));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+		{
+			gameView.move(Vector2f(0.0f, fMoveSpeed));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+		{
+			gameView.move(Vector2f(-fMoveSpeed, 0.0f));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+		{
+			gameView.move(Vector2f(fMoveSpeed, 0.0f));
+		}
+		while (window.pollEvent(event))
+		{
+			sfMousePos = window.mapPixelToCoords(Mouse::getPosition(window), hudView);
+			if (event.type == Event::Closed)
+			{
+				window.close(); // Allows window to close when 'X' is pressed
+				return;
+			}
+
+			if (event.type == sf::Event::KeyPressed && loadLevelEntryName.m_bIsEntering == true)
+			{
+				loadLevelEntryName.takeInput(event.key.code);
 			}
 
 			if (event.type == Event::MouseWheelMoved)
@@ -1621,35 +1829,52 @@ void LoadLevel(string path)
 					gameView.zoom(1.1);
 				}
 			}
+			if (Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				if (loadSubmitButton.m_bClicked(sfMousePos) && loadLevelEntryName.m_bIsEntering == true)
+				{
+
+					loadLevelEntryName.m_bIsEntering = false;
+					play(loadLevelEntryName.m_sText);
+					window.close();
+					gameView.setCenter(sf::Vector2f(player->m_sfResolution.x / 2, player->m_sfResolution.y / 2));
+				}
+				else if (QuitButton.m_bClicked(sfMousePos))
+				{
+					window.close();
+					playMenu();
+				}
+			}
 		}
 		window.clear(Color::Black);
 
-		
 
-		//draw the game 
-		window.setView(gameView);
-
-		Editor.updateScene(0.016f);
-		Editor.drawScene(window);
 
 		//draw the hud
 		window.setView(hudView);
 
-		
-	
+		window.draw(QuitButton);
+
+		if (loadLevelEntryName.m_bIsEntering)
+		{
+			window.draw(listOfProfilesSprite);
+			window.draw(loadLevelEntryName);
+			window.draw(loadSubmitButton);
+		}
+
 
 		//show the window
 		window.display();
 	}
 
+	
 }
 
 void editor()
 {
 	//Game Object
 	Game Editor;
-	//Editor = Game("./Assets/Levels/Editor.txt");
-	Editor = Game("test");
+	Editor = Game("editor");
 
 	//Create a window with the specifications of the profile
 	RenderWindow window;
@@ -1916,6 +2141,7 @@ void editor()
 	helpOverlayMessage.m_bDraw = true;
 	
 	numberCarsButton.setText(to_string(Editor.m_uiNumbofCars));
+	numberCarsButton.setText(to_string(Editor.m_uiNumbofPed));
 	float fRotation = 0;
 
 	//selection string
@@ -1941,12 +2167,12 @@ void editor()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
-				fRotation += 90;
+				fRotation -= 90;
 				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
-				fRotation -= 90;
+				fRotation += 90;
 			}
 
 			if (fRotation >= 360)fRotation = 0;

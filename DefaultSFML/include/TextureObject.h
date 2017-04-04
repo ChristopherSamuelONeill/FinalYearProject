@@ -16,6 +16,8 @@ public:
 	static TextureObject *textureObject;
 	static TextureObject* getInstance();
 
+	bool m_bLoaded = false;
+
 
 	void loadTextures(); // \brief Loads all of the textures needed for game just once
 

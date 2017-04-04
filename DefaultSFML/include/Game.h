@@ -57,7 +57,7 @@ private:
 
 	TextureObject *m_Gametextures;// \brief handle to all game textures
 
-	
+	void spawnCars();
 	void generateGrid();// \brief Function to generate a grid for the map
 	void chooseNodes();// \brief Function to decide which nodes are open and wich are closed
 
@@ -81,7 +81,7 @@ private:
 	bool m_bEditorMode; //brief bool of wetaher game is in editor mode or not (false for not)
 	float fGridSize = 100.0f;
 
-
+	
 
 public:
 
@@ -103,6 +103,12 @@ public:
 	// \brief function to clear scene
 	void closeGame();
 
+	// \brief function to check for end state
+	bool checkforWin();
+
+	// \brief function to check for end state
+	bool checkforLoss();
+
 	unsigned int m_uiNumbofCars = 0; // \brief Number of cars that will spawn for the level
 	unsigned int m_uiNumbofPed = 0; // \brief Number of pedestrians that will spawn for the level
 
@@ -118,6 +124,10 @@ public:
 
 	// \brief function to cycle Level time of day
 	void cycleLevelTime();
+
+	// \brief function to cycle lights if clicked on
+	// \param pos , vector of the position where was clicked
+	void checkForTrafficLights(Vector2f pos);
 
 	// \brief function to save the current scene to a file
 	// \param dir , string location of the map file
