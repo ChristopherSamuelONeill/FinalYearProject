@@ -48,8 +48,8 @@ int main()
 
 	if (DEBUGMODE)
 	{
-		LoadLevel("test");
-		//editor();
+		//LoadLevel("test");
+		editor();
 	}
 	else
 	{
@@ -1989,7 +1989,6 @@ void editor()
 			if (placingBool)
 			{
 				if (sType == "CrossRoads")fRotation = 0;
-				if (sType == "StartPoint")fRotation = 0;
 				if (sType == "EndPoint")fRotation = 0;
 				if (sType == "NormalRoad" && fRotation == 180)fRotation = 0;
 				if (sType == "NormalRoad" && fRotation == 270)fRotation = 90;
@@ -2022,7 +2021,7 @@ void editor()
 					}
 					if (sType == "StartPoint" || sType == "EndPoint")
 					{
-						if (Editor.placeStartEndPoint(sfPlacingPos, sType))
+						if (Editor.placeStartEndPoint(sfPlacingPos, sType,fRotation))
 						{
 							Editor.m_bPlacingObject = false;
 							resetSelectors();

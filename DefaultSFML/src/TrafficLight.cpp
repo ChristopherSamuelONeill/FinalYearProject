@@ -1,4 +1,5 @@
 #include "TrafficLight.h"
+#include "..\include\TrafficLight.h"
 
 TrafficLight::TrafficLight()
 {
@@ -18,13 +19,12 @@ TrafficLight::TrafficLight(Vector2f Pos, Vector2f Size, Texture textures[3], flo
 	//set up drawbales
 	m_sfRect.setPosition(m_sfPosition);
 	m_sfRect.setSize(m_sfSize);
-	m_sfRect.setOrigin(m_sfSize / 2.0f);
+	
 	m_sfRect.setRotation(m_fRotation);
 	m_sfRect.setFillColor(Color::Red);
 
 	
 	m_sfSprite.setPosition(m_sfRect.getPosition());
-	m_sfSprite.setOrigin(m_sfSize / 2.0f);
 	m_sfSprite.setRotation(m_fRotation);
 
 }
@@ -39,7 +39,7 @@ void TrafficLight::update()
 	//set up drawbales
 	m_sfRect.setPosition(m_sfPosition);
 	m_sfRect.setSize(m_sfSize);
-	m_sfRect.setOrigin(m_sfSize / 2.0f);
+	
 	m_sfRect.setRotation(m_fRotation);
 	m_sfRect.setFillColor(Color::Red);
 
@@ -49,7 +49,7 @@ void TrafficLight::update()
 	if (m_iState == 2) m_sfSprite.setTexture(m_sfTextures[2]);
 
 	m_sfSprite.setPosition(m_sfRect.getPosition());
-	m_sfSprite.setOrigin(m_sfSize / 2.0f);
+
 	m_sfSprite.setRotation(m_fRotation);
 
 
@@ -119,4 +119,9 @@ Vector2f TrafficLight::getSize()
 float TrafficLight::getRotation()
 {
 	return m_fRotation;
+}
+
+RectangleShape TrafficLight::getCollisionBox()
+{
+	return m_sfRect;
 }

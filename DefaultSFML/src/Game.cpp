@@ -38,10 +38,20 @@ void Game::generateCars()
 		//int iRandEnd = rand() % (m_vCarsEndPostions.size() - 1) + 0;
 
 
-		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(250, 100), tempTexture,270);
-		m_vCars.push_back(tempCar);
-		m_vCars[i].receiveNodeData(m_pathfinderData);
-		m_vCars[i].startPathFinding();
+		if (i == 0)
+		{
+			Car tempCar(m_vCarsStartPostions[0].first.getPosition(), m_vCarsEndPostions[0].first.getPosition(), Vector2f(250, 100), tempTexture, m_vCarsStartPostions[0].second);
+			m_vCars.push_back(tempCar);
+			m_vCars[i].receiveNodeData(*m_pathfinderData);
+			m_vCars[i].startPathFinding();
+		}
+	/*	if (i == 1)
+		{
+			Car tempCar(m_vCarsStartPostions[1].first.getPosition(), m_vCarsEndPostions[0].first.getPosition(), Vector2f(250, 100), tempTexture, m_vCarsStartPostions[1].second);
+			m_vCars.push_back(tempCar);
+			m_vCars[i].receiveNodeData(*m_pathfinderData);
+			m_vCars[i].startPathFinding();
+		}*/
 
 	}
 	cout << "Finished" << endl;
@@ -252,7 +262,7 @@ void Game::loadLevel(string dir)
 				{
 					if (rot == 0)
 					{
-						tempPavment = Pavement(position - Vector2f(0, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+						tempPavment = Pavement(position - Vector2f(0, 100), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
 					}
 					if (rot == 90)
 					{
@@ -321,24 +331,27 @@ void Game::loadLevel(string dir)
 			}
 			else if (temp == "StartPoint")
 			{
-				RectangleShape temp;
-				temp.setSize(Vector2f(fGridSize, fGridSize));
-				float x,y;
-				settings >> x >> y;
-				temp.setPosition(Vector2f(x, y));
-				temp.setOutlineThickness(10.0f);
-				temp.setOutlineColor(Color::Green);
+				pair<RectangleShape, float> temp;
+				temp.first.setSize(Vector2f(fGridSize, fGridSize));
+				float x,y,r;
+				settings >> x >> y >> r;
+				temp.first.setPosition(Vector2f(x, y));
+				temp.first.setOutlineThickness(10.0f);
+				temp.first.setOutlineColor(Color::Green);
+				temp.second = r;
 				m_vCarsStartPostions.push_back(temp);
 			}
 			else if (temp == "EndPoint")
 			{
-				RectangleShape temp;
-				temp.setSize(Vector2f(fGridSize, fGridSize));
-				float x, y;
-				settings >> x >> y;
-				temp.setPosition(Vector2f(x, y));
-				temp.setOutlineThickness(10.0f);
-				temp.setOutlineColor(Color::Red);
+				pair<RectangleShape, float> temp;
+				temp.first.setSize(Vector2f(fGridSize, fGridSize));
+				float x, y, r;
+				settings >> x >> y >> r;
+				temp.first.setPosition(Vector2f(x, y));
+				temp.first.setOutlineThickness(10.0f);
+				temp.first.setOutlineColor(Color::Red);
+				temp.second = r;
+				
 				m_vCarsEndPostions.push_back(temp);
 			}
 			else if (temp == "TrafficLight")
@@ -359,14 +372,7 @@ void Game::loadLevel(string dir)
 			}
 			else if (temp == "PedLight")
 			{
-				RectangleShape temp;
-				temp.setSize(Vector2f(fGridSize, fGridSize));
-				float x, y;
-				settings >> x >> y;
-				temp.setPosition(Vector2f(x, y));
-				temp.setOutlineThickness(10.0f);
-				temp.setOutlineColor(Color::Red);
-				m_vCarsEndPostions.push_back(temp);
+			
 			}
 			
 		}
@@ -411,11 +417,36 @@ void Game::updateScene(float dt)
 		m_vPavement[i].update();
 	}
 
+	//update Traffic LIghts
+	for (int i = 0; i < m_vTrafficLights.size(); i++)
+	{
+		m_vTrafficLights[i].update();
+	}
+
 	//update cars
 	for (int i = 0; i < m_vCars.size(); i++)
 	{
-		m_vCars[i].setTimeOfDay(m_iLevelTime);
-		m_vCars[i].update(dt);
+		for (int y = 0; y < m_vCars.size(); y++)
+		{
+			m_vCars[i].
+		}
+		if (m_vTrafficLights.size() > 0)
+		{
+			for (int x = 0; x < m_vTrafficLights.size(); x++)
+			{
+				m_vCars[i].setTimeOfDay(m_iLevelTime);
+				m_vCars[i].CheckForTrafficLight(m_vTrafficLights[x]);
+				m_vCars[i].update(dt);
+
+			}
+
+		}
+		else
+		{
+			m_vCars[i].setTimeOfDay(m_iLevelTime);
+			m_vCars[i].update(dt);
+		}
+		
 
 	}
 	
@@ -463,10 +494,10 @@ void Game::drawScene(RenderWindow & window)
 	}
 
 
-	//draw SceneObjects
-	for (int i = 0; i < m_vSceneObejcts.size(); i++)
+	//draw TrafficLights
+	for (int i = 0; i < m_vTrafficLights.size(); i++)
 	{
-		window.draw(m_vSceneObejcts[i]);
+		window.draw(m_vTrafficLights[i]);
 	}
 
 
@@ -481,12 +512,12 @@ void Game::drawScene(RenderWindow & window)
 		//draw car start positions
 		for (int i = 0; i < m_vCarsStartPostions.size(); i++)
 		{
-			window.draw(m_vCarsStartPostions[i]);
+			window.draw(m_vCarsStartPostions[i].first);
 		}
 		//draw car start positions
 		for (int i = 0; i < m_vCarsEndPostions.size(); i++)
 		{
-			window.draw(m_vCarsEndPostions[i]);
+			window.draw(m_vCarsEndPostions[i].first);
 		}
 
 	}
@@ -496,12 +527,12 @@ void Game::drawScene(RenderWindow & window)
 	//draw start positions
 	for (int i = 0; i < m_vCarsStartPostions.size(); i++)
 	{
-		window.draw(m_vCarsStartPostions[i]);
+		window.draw(m_vCarsStartPostions[i].first);
 	}
 	//draw end positions
 	for (int i = 0; i < m_vCarsEndPostions.size(); i++)
 	{
-		window.draw(m_vCarsEndPostions[i]);
+		window.draw(m_vCarsEndPostions[i].first);
 	}
 
 	//draw temp object
@@ -740,21 +771,21 @@ void Game::saveLevelToFile(string dir)
 		//save the Start Points
 		for (int i = 0; i < m_vCarsStartPostions.size(); i++)
 		{
-			onewFile << "c " << "Pos X " << "Pos Y " << endl;
-			onewFile << "StartPoint " << m_vCarsStartPostions[i].getPosition().x << " " << m_vCarsStartPostions[i].getPosition().y << endl;
+			onewFile << "c " << "Pos X " << "Pos Y " << " rot " << endl;
+			onewFile << "StartPoint " << m_vCarsStartPostions[i].first.getPosition().x << " " << m_vCarsStartPostions[i].first.getPosition().y << " " << m_vCarsStartPostions[i].second << endl;
 		}
 		//save the End Points
 		for (int i = 0; i < m_vCarsEndPostions.size(); i++)
 		{
 			onewFile << "c " << "Pos X " << "Pos Y " << endl;
-			onewFile << "EndPoint " << m_vCarsEndPostions[i].getPosition().x << " " << m_vCarsEndPostions[i].getPosition().y << endl;
+			onewFile << "EndPoint " << m_vCarsEndPostions[i].first.getPosition().x << " " << m_vCarsEndPostions[i].first.getPosition().y << endl;
 		}
 
 		//save the Trafiic lights 
 		for (int i = 0; i < m_vTrafficLights.size(); i++)
 		{
 			onewFile << "c " << "Pos X " << "Pos Y " << "Scale X " << "Scale Y " << "Rotation" << endl;
-			onewFile << "TrafficLight" << m_vTrafficLights[i].getPosition().x << " " << m_vTrafficLights[i].getPosition().y << " " << m_vTrafficLights[i].getSize().x << " "<< m_vTrafficLights[i].getSize().y << " " << m_vTrafficLights[i].getRotation() << endl;
+			onewFile << "TrafficLight " << m_vTrafficLights[i].getPosition().x << " " << m_vTrafficLights[i].getPosition().y << " " << m_vTrafficLights[i].getSize().x << " "<< m_vTrafficLights[i].getSize().y << " " << m_vTrafficLights[i].getRotation() << endl;
 		}
 		
 	
@@ -831,7 +862,7 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	
 	if (type == "TrafficLight")
 	{
-		m_sfSize = Vector2f(350, 500);
+		m_sfSize = Vector2f(350, 250);
 		m_sfTempRect.setSize(m_sfSize);
 		m_sfTempTexture = m_Gametextures->m_vTrafficLightTextures[0];
 		
@@ -882,6 +913,8 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	{
 		m_sfSize = Vector2f(fGridSize, fGridSize);
 		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempRect.setOrigin(m_sfSize / 2.0f);
+		m_sfTempSprite.setOrigin(m_sfSize / 2.0f);
 		m_sfTempTexture = m_Gametextures->m_StartEndPoint;
 
 	}
@@ -898,6 +931,9 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 
 bool Game::placeTrafficLights(Vector2f position, float rot, string type)
 {
+
+	cout << position.x << endl;
+
 	//snap to nearest grid
 	Vector2f sfSnappedPos;
 
@@ -914,6 +950,8 @@ bool Game::placeTrafficLights(Vector2f position, float rot, string type)
 
 	}
 
+	
+
 	RectangleShape tempObject;
 
 	tempObject.setPosition(sfSnappedPos);
@@ -927,7 +965,7 @@ bool Game::placeTrafficLights(Vector2f position, float rot, string type)
 
 	if (type == "TrafficLight")
 	{
-		m_sfSize = Vector2f(350, 500);
+		m_sfSize = Vector2f(350, 250);
 		m_sfTempRect.setSize(m_sfSize);
 		m_sfTempTexture = m_Gametextures->m_vTrafficLightTextures[0];
 
@@ -945,7 +983,7 @@ bool Game::placeTrafficLights(Vector2f position, float rot, string type)
 
 	//if valid create road
 	m_vTrafficLights.push_back(tempLight);
-	
+	cout << sfSnappedPos.x << endl;
 	return true;
 }
 
@@ -1005,7 +1043,7 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	{
 		if (rot == 0)
 		{
-			tempPavment = Pavement(sfSnappedPos - Vector2f(0, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+			tempPavment = Pavement(sfSnappedPos - Vector2f(0, 100), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
 		}
 		if (rot == 90)
 		{
@@ -1048,7 +1086,7 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 
 }
 
-bool Game::placeStartEndPoint(Vector2f position,string type)
+bool Game::placeStartEndPoint(Vector2f position,string type, float rot)
 {
 
 	//snap to nearest grid
@@ -1069,22 +1107,24 @@ bool Game::placeStartEndPoint(Vector2f position,string type)
 
 	FloatRect rect1,rect2,rect3;
 	Vector2f Size(fGridSize, fGridSize);
-	RectangleShape tempRect;
-	tempRect.setPosition(sfSnappedPos);
-	tempRect.setSize(Size);
+	pair<RectangleShape, float> tempRect;
+	tempRect.first.setPosition(sfSnappedPos);
+	tempRect.first.setSize(Size);
 
 	//check no start points and end points over lap
 	for (int i = 0; i < m_vCarsStartPostions.size(); i++)
 	{
 		for (int x = 0; x < m_vCarsEndPostions.size(); x++)
 		{
-			rect1 = m_vCarsStartPostions[i].getGlobalBounds();
-			rect2 = m_vCarsEndPostions[x].getGlobalBounds();
-			rect3 = tempRect.getGlobalBounds();
+			rect1 = m_vCarsStartPostions[i].first.getGlobalBounds();
+			rect2 = m_vCarsEndPostions[x].first.getGlobalBounds();
+			rect3 = tempRect.first.getGlobalBounds();
 			if (rect1.intersects(rect3)) return false;
 			if (rect2.intersects(rect3)) return false;
 		}
 	}
+
+	tempRect.second = rot;
 
 	if (type == "StartPoint")
 	{
@@ -1094,6 +1134,8 @@ bool Game::placeStartEndPoint(Vector2f position,string type)
 	{
 		m_vCarsEndPostions.push_back(tempRect);
 	}
+
+
 
 	return true;
 

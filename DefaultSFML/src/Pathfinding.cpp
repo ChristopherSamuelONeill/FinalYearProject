@@ -25,7 +25,9 @@ void Pathfinding::clearNodes()
 {
 	m_carOpenNodes.clear();
 	m_carClosedNodes.clear();
-	m_carNodes.clear();
-	m_uiNodeX = 0;
-	m_uiNodeY = 0;
+	for (int i = 0; i < m_carNodes.size(); i++)
+	{
+		m_carNodes[i].first->ParticalReset();
+	}
+	
 }

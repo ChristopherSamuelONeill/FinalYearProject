@@ -63,8 +63,8 @@ private:
 
 	vector<Vector2f> m_vGridSystem; // \brief Vector containing grid system for map
 	Pathfinding *m_pathfinderData;   // \brief contains nodes for map
-	vector<RectangleShape> m_vCarsStartPostions;// \brief vector of all the start positions
-	vector<RectangleShape> m_vCarsEndPostions;// \brief vector of all the end positions
+	vector<pair<RectangleShape, float>> m_vCarsStartPostions;// \brief vector of all the start positions , 2nd is the rotation
+	vector<pair<RectangleShape, float>> m_vCarsEndPostions;// \brief vector of all the end positions
 	
 
 	SoundObject *m_Sound;// \brief Sound object
@@ -91,10 +91,6 @@ public:
 	// \brief Overloaded constructor of game object
 	// \param Path to the level
 	Game(string dir);
-
-	// \brief function to spawn car objects
-	// \param path to car model
-	void spawnCar(int cartype,Vector2f pos , Vector2f size);
 
 	// \brief function to update scene
 	// \param time change
@@ -155,7 +151,8 @@ public:
 	// \brief function to attempt to place a Start or End point
 	// \param Position , vector of the position the object
 	// \param Type , string of the type StartPoint or EndPoint
-	bool placeStartEndPoint(Vector2f position, string type);
+	// \param Rotation , float of the orientation the object
+	bool placeStartEndPoint(Vector2f position, string type, float rot);
 
 	
 	

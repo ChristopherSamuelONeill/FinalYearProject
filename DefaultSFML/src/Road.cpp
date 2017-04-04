@@ -224,6 +224,25 @@ void Road::passPathfinding(Pathfinding & pathData)
 				middleOfRoad.push_back(temp);
 			}
 
+			//bottom left
+			for (int x = 0; x < 1000; x += 100)
+			{
+				for (int y = 500; y < 1500; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
+			}
+			//bottom right
+			for (int x = 1500; x < 2500; x += 100)
+			{
+				for (int y = 500; y < 1500; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
+			}
+
 		}
 
 		if (m_fRotation == 180)
@@ -247,6 +266,25 @@ void Road::passPathfinding(Pathfinding & pathData)
 			{
 				temp = Vector2f(m_sfPosition.x - 1300, m_sfPosition.y - 1500 + i);
 				middleOfRoad.push_back(temp);
+			}
+
+			//top left
+			for (int x = -2500; x < -1500; x += 100)
+			{
+				for (int y = -1600; y < -500; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
+			}
+			//top right
+			for (int x = -1000; x < 0; x += 100)
+			{
+				for (int y = -1600; y < -500; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
 			}
 
 		}
@@ -273,6 +311,25 @@ void Road::passPathfinding(Pathfinding & pathData)
 				temp = Vector2f(m_sfPosition.x - 300, m_sfPosition.y + 2400 - i);
 				middleOfRoad.push_back(temp);
 			}
+			//top left
+			for (int x = -1500; x < -500; x += 100)
+			{
+				for (int y = 0; y < 1000; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
+			}
+			//bottom left
+			for (int x = -1500; x < -500; x += 100)
+			{
+				for (int y = 1500; y < 2500; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
+			}
+
 
 		}
 
@@ -297,6 +354,25 @@ void Road::passPathfinding(Pathfinding & pathData)
 			{
 				temp = Vector2f(m_sfPosition.x + 200, m_sfPosition.y - 100 - i);
 				middleOfRoad.push_back(temp);
+			}
+
+			//top right
+			for (int x = 500; x < 1500; x += 100)
+			{
+				for (int y = -2500; y < -1500; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
+			}
+			//bottom right
+			for (int x = 500; x < 1500; x += 100)
+			{
+				for (int y = -1000; y < 0; y += 100)
+				{
+					temp = Vector2f(m_sfPosition.x + x, m_sfPosition.y + y);
+					middleOfRoad.push_back(temp);
+				}
 			}
 
 		}

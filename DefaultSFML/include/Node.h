@@ -35,10 +35,9 @@ public:
 	bool m_bAccessable; // \brief wheather the node is accessible or not
 
 	pair<Node* , Vector2f> *parentNode; // \brief A pointer to the parent node
-
-
-	// \brief Clears parent node to default
-	void ResetParentNode();
+	
+    // \brief Clears node of parent and movement cost
+	void ParticalReset();
 
     // \brief Clears node to default
 	void ResetNode();

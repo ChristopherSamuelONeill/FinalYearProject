@@ -15,6 +15,8 @@
 #include <array>
 #include "Sound.h"
 #include "Profile.h"
+#include "TrafficLight.h"
+#include "CollisionDetection.h"
 
 using namespace std;
 using namespace sf;
@@ -31,6 +33,8 @@ private:
 	Profile *m_Player;// \brief Profile object
 
 	bool m_bCarIdleSoundIsPlaying = false;
+	bool m_bCarIsAtLights = false;
+	bool m_bCarIsBehindCar = false;
 
 
 	Vector2f m_sfSize; // \brief X Y size of car
@@ -51,7 +55,8 @@ private:
 
 	Texture m_sfTexture[8];
 
-	RectangleShape m_sfCarRect;// \brief Rect for the Car
+
+	
 	Sprite m_sfCarSprite; // \brief Sprite for the Car
 
 	RectangleShape m_sfWheelRect[3];// \brief Rect for the wheels
@@ -170,10 +175,14 @@ public:
 
 	Vector2f getPosition();
 	
-
+	RectangleShape m_sfCarRect;// \brief Rect for the Car
+	RectangleShape m_sfRearRect;// \brief Rect for the Cars rear (car behind will brake)
+	bool m_bFinished = false;
 	void startPathFinding();
 	void draw(RenderTarget& target, RenderStates states) const;
 	void update(float dt);
+	void CheckForTrafficLight(TrafficLight &trafficLight);
+	void CheckForCar(Car &car);
 	void setTimeOfDay(int time);
 	void SetTurning(int iDirection); // -1 left , 1right , 0 straight
 };

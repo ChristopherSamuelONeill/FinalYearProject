@@ -41,8 +41,12 @@ Button::Button(string text, Vector2f pos, Vector2f size, Vector2f resolutionScal
 	float ypos = (m_sfVTopLeftPos.y + m_sfVSize.y / 2) - 30 * textScale  * m_sfResolutionScale.y;
 
 	// Create a text
+
+	float fSize = 30 * textScale * m_sfResolutionScale.x;
+	if (fSize < 15)fSize = 15;
+
 	m_sfButtonText = Text(m_sButtonText, m_sfFont);
-	m_sfButtonText.setCharacterSize(30 * textScale * m_sfResolutionScale.x);
+	m_sfButtonText.setCharacterSize(fSize);
 	m_sfButtonText.setStyle(Text::Bold);
 	m_sfButtonText.setFillColor(Color(0, 0, 0));
 	m_sfButtonText.setPosition(Vector2f(xpos, ypos));

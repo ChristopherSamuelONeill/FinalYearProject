@@ -27,7 +27,6 @@ private:
 	void setInvalid(sf::Vector2f Node);
 	pair< Node*, Vector2f> getNode(Vector2f pos); // \brief Retunrs the node at a given pos
 
-	Pathfinding *m_Pathfinding; // \brief Pointer to Path data
 
 
 protected:
@@ -35,10 +34,13 @@ protected:
 	Vector2f m_sfGoal;// \brief XY of the destination
 	Vector2f m_sfStart;// \brief XY of the start
 	Vector2f m_sfPosition; // \brief X Y position of car
+	Pathfinding m_Pathfinding; // \brief Pointer to Path data
+
+	vector<RectangleShape> m_sfRectRoute;
 
 public:
 
-	void receiveNodeData(Pathfinding *nodeData);
+	void receiveNodeData(Pathfinding nodeData);
 	Controller();
 	void findPath();// \brief Function that runs the A* algorithm
 

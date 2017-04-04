@@ -44,11 +44,17 @@ public:
 	// \brief Float Returns the roation of the light
 	float getRotation();
 
+	// \brief Vector 2f Returns the rectangle for the Light
+	RectangleShape getCollisionBox();
+
+
+	int m_iState;			// \brief 0 red , 1 amber , 2 green.
+
 private:
 	Vector2f m_sfPosition; 	// \brief X Y coords of the object
 	Vector2f m_sfSize;		// \brief Dimensions of the object
 	float m_fRotation;		// \brief oreientation of the object
-	int m_iState;			// \brief 0 red , 1 amber , 2 green.
+	
 	float m_fTimePassed;	// \brief used to track time delays (for changing sequence)
 
 	RectangleShape m_sfRect;// \brief Rectangle representing the traffic lights poistion
