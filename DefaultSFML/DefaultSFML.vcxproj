@@ -150,6 +150,8 @@
     <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Pathfinding.cpp" />
+    <ClCompile Include="src\Pavement.cpp" />
+    <ClCompile Include="src\PedController.cpp" />
     <ClCompile Include="src\Pedestrian.cpp" />
     <ClCompile Include="src\Road.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
@@ -176,6 +178,8 @@
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\Overlay.h" />
     <ClInclude Include="include\Pathfinding.h" />
+    <ClInclude Include="include\Pavement.h" />
+    <ClInclude Include="include\PedController.h" />
     <ClInclude Include="include\Pedestrian.h" />
     <ClInclude Include="include\Profile.h" />
     <ClInclude Include="include\Road.h" />

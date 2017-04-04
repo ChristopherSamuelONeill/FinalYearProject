@@ -91,28 +91,7 @@ void Road::passPathfinding(Pathfinding & pathData)
 				middleOfRoad.push_back(temp);
 			}
 		}
-		else if (m_fRotation == 180)
-		{
-			//middle
-			for (int i = 0; i < 1000; i += 100)
-			{
-				temp = Vector2f(m_sfPosition.x - 300, m_sfPosition.y - i - 100);
-				middleOfRoad.push_back(temp);
-			}
-			//left
-			for (int i = 0; i < 1000; i += 100)
-			{
-				temp = Vector2f(m_sfPosition.x - 600, m_sfPosition.y - i - 100);
-				middleOfRoad.push_back(temp);
-			}
-
-			//right
-			for (int i = 0; i < 1000; i += 100)
-			{
-				temp = Vector2f(m_sfPosition.x , m_sfPosition.y - i - 100);
-				middleOfRoad.push_back(temp);
-			}
-		}
+		
 		else if (m_fRotation == 90)
 		{
 			//middle
@@ -134,27 +113,7 @@ void Road::passPathfinding(Pathfinding & pathData)
 				middleOfRoad.push_back(temp);
 			}
 		}
-		else if (m_fRotation == 270)
-		{
-			//middle
-			for (int i = 0; i < 1000; i += 100)
-			{
-				temp = Vector2f(m_sfPosition.x + i, m_sfPosition.y - 300);
-				middleOfRoad.push_back(temp);
-			}
-			//top
-			for (int i = 0; i < 1000; i += 100)
-			{
-				temp = Vector2f(m_sfPosition.x + i , m_sfPosition.y );
-				middleOfRoad.push_back(temp);
-			}
-			//bottom
-			for (int i = 0; i < 1000; i += 100)
-			{
-				temp = Vector2f(m_sfPosition.x + i , m_sfPosition.y - 600);
-				middleOfRoad.push_back(temp);
-			}
-		}
+	
 	}
 
 	if (m_sType == "CrossRoads")

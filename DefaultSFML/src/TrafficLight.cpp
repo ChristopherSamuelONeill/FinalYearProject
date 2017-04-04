@@ -105,3 +105,18 @@ bool TrafficLight::changeToGreen(float dt)
 
 	return false;
 }
+
+Vector2f TrafficLight::getPosition()
+{
+	return m_sfPosition;
+}
+
+Vector2f TrafficLight::getSize()
+{
+	return m_sfSize;
+}
+
+float TrafficLight::getRotation()
+{
+	return m_fRotation;
+}

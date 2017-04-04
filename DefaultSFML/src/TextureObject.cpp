@@ -374,7 +374,35 @@ void TextureObject::loadTextures()
 	};
 	m_StartEndPoint = sfTempTexture;
 
+	//Pavment Textures--------------------------------------------------
 
+	//normal2WayStreet.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Pavements/normal2WayStreet.png"))
+	{
+		cout << "Error: normal2WayStreet.png was unable to load." << endl;
+	};
+	m_PavementTwoWayStreetTextures = sfTempTexture;
+
+	//T-Junction.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Pavements/T-Junction.png"))
+	{
+		cout << "Error: T-Junction.png was unable to load." << endl;
+	};
+	m_PavementTJunctionTextures = sfTempTexture;
+
+	//Corner.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Pavements/Corner.png"))
+	{
+		cout << "Error: Corner.png was unable to load." << endl;
+	};
+	m_PavementCornerTextures = sfTempTexture;
+
+	//Cross Roads.pmg
+	if (!sfTempTexture.loadFromFile("./Assets/textures/Pavements/Cross Roads.png"))
+	{
+		cout << "Error: Cross Roads.png was unable to load." << endl;
+	};
+	m_PavementCrossRoadsTextures = sfTempTexture;
 
 	cout << "Finished" << endl;
 

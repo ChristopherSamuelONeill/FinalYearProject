@@ -34,13 +34,11 @@ void Game::generateCars()
 
 		};
 		
-		int iRandStart = rand() % (m_vCarsStartPostions.size() - 1) + 0;
-		int iRandEnd = rand() % (m_vCarsEndPostions.size() - 1) + 0;
-
-		cout << iRandStart <<" : " << iRandEnd << endl;
+		//int iRandStart = rand() % (m_vCarsStartPostions.size() - 1) + 0;
+		//int iRandEnd = rand() % (m_vCarsEndPostions.size() - 1) + 0;
 
 
-		Car tempCar(m_vCarsStartPostions[iRandStart].getPosition() , m_vCarsEndPostions[iRandEnd].getPosition(), Vector2f(250, 100), tempTexture,270);
+		Car tempCar(m_vCarsStartPostions[0].getPosition() , m_vCarsEndPostions[0].getPosition(), Vector2f(250, 100), tempTexture,270);
 		m_vCars.push_back(tempCar);
 		m_vCars[i].receiveNodeData(m_pathfinderData);
 		m_vCars[i].startPathFinding();
@@ -242,12 +240,67 @@ void Game::loadLevel(string dir)
 				Vector2f size(sx, sy);
 
 				Road tempRoad;
-				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures->m_vTJunctionTextures[1]); 
-				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures->m_vTwoWayStreetTextures[1]); 
-				if (type == "CrossRoads")tempRoad = Road(position, size, rot, m_Gametextures->m_vCrossRoadsTextures[1]);
-				if (type == "Corner")tempRoad = Road(position, size, rot, m_Gametextures->m_vCornerTextures[1]);
+				if (type == "T-Junction")tempRoad = Road(position, size, rot, m_Gametextures->m_vTJunctionTextures[0]); 
+				if (type == "NormalRoad")tempRoad = Road(position, size, rot, m_Gametextures->m_vTwoWayStreetTextures[0]); 
+				if (type == "CrossRoads")tempRoad = Road(position, size, rot, m_Gametextures->m_vCrossRoadsTextures[0]);
+				if (type == "Corner")tempRoad = Road(position, size, rot, m_Gametextures->m_vCornerTextures[0]);
 				tempRoad.setType(type);
 				m_vRoads.push_back(tempRoad);
+
+				Pavement tempPavment;
+				if (type == "T-Junction")
+				{
+					if (rot == 0)
+					{
+						tempPavment = Pavement(position - Vector2f(0, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+					}
+					if (rot == 90)
+					{
+						tempPavment = Pavement(position - Vector2f(-100, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+					}
+					if (rot == 180)
+					{
+						tempPavment = Pavement(position - Vector2f(0, -100), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+					}
+					if (rot == 270)
+					{
+						tempPavment = Pavement(position - Vector2f(100, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+					}
+
+				}
+				if (type == "NormalRoad")
+				{
+					if (rot == 0)
+					{
+						tempPavment = Pavement(position - Vector2f(100, 0), Vector2f(700, 1000), rot, m_Gametextures->m_PavementTwoWayStreetTextures);
+					}
+					if (rot == 90)
+					{
+						tempPavment = Pavement(position - Vector2f(0, 100), Vector2f(700, 1000), rot, m_Gametextures->m_PavementTwoWayStreetTextures);
+					}
+				}
+				if (type == "CrossRoads")tempPavment = Pavement(position, Vector2f(2500, 2500), 0, m_Gametextures->m_PavementCrossRoadsTextures);
+				if (type == "Corner")
+				{
+					if (rot == 0)
+					{
+						tempPavment = Pavement(position - Vector2f(0, 100), Vector2f(600, 600), rot, m_Gametextures->m_PavementCornerTextures);
+					}
+					if (rot == 90)
+					{
+						tempPavment = Pavement(position - Vector2f(-100, 0), Vector2f(600, 600), rot, m_Gametextures->m_PavementCornerTextures);
+					}
+					if (rot == 180)
+					{
+						tempPavment = Pavement(position - Vector2f(0, -100), Vector2f(600, 600), rot, m_Gametextures->m_PavementCornerTextures);
+					}
+					if (rot == 270)
+					{
+						tempPavment = Pavement(position - Vector2f(100, 0), Vector2f(600, 600), rot, m_Gametextures->m_PavementCornerTextures);
+					}
+				}
+				tempPavment.setType(type);
+				m_vPavement.push_back(tempPavment);
 				
 						
 
@@ -278,6 +331,33 @@ void Game::loadLevel(string dir)
 				m_vCarsStartPostions.push_back(temp);
 			}
 			else if (temp == "EndPoint")
+			{
+				RectangleShape temp;
+				temp.setSize(Vector2f(fGridSize, fGridSize));
+				float x, y;
+				settings >> x >> y;
+				temp.setPosition(Vector2f(x, y));
+				temp.setOutlineThickness(10.0f);
+				temp.setOutlineColor(Color::Red);
+				m_vCarsEndPostions.push_back(temp);
+			}
+			else if (temp == "TrafficLight")
+			{
+				
+				float x, y ,sx,sy,r;
+				settings >> x >> y >>sx >>sy>>r;
+				Texture lights[3] = {
+					m_Gametextures->m_vTrafficLightTextures[0],
+					m_Gametextures->m_vTrafficLightTextures[1],
+					m_Gametextures->m_vTrafficLightTextures[2]
+
+				};
+
+				TrafficLight temp(Vector2f(x, y), Vector2f(sx, sy), lights, r, 0);
+				m_vTrafficLights.push_back(temp);
+
+			}
+			else if (temp == "PedLight")
 			{
 				RectangleShape temp;
 				temp.setSize(Vector2f(fGridSize, fGridSize));
@@ -325,6 +405,12 @@ void Game::updateScene(float dt)
 		m_vRoads[i].update();
 	}
 
+	//update Pavement
+	for (int i = 0; i < m_vPavement.size(); i++)
+	{
+		m_vPavement[i].update();
+	}
+
 	//update cars
 	for (int i = 0; i < m_vCars.size(); i++)
 	{
@@ -332,7 +418,6 @@ void Game::updateScene(float dt)
 		m_vCars[i].update(dt);
 
 	}
-
 	
 	//update time
 	m_Time.setSize(m_sfLevelSize);
@@ -351,12 +436,29 @@ void Game::drawScene(RenderWindow & window)
 		window.draw(m_vRoads[i]);
 	}
 
-	//draw nodes
-	if (m_bDrawPathfinding)
+	// draw the pavement
+	for (int i = 0; i < m_vPavement.size(); i++)
 	{
-		for (int i = 0; i < rectsForTesting.size(); i++)
+		window.draw(m_vPavement[i]);
+	}
+
+
+	//draw nodes
+	if (m_iDrawPathfinding != 0)
+	{
+		if (m_iDrawPathfinding == 1 )
 		{
-			window.draw(rectsForTesting[i]);
+			for (int i = 0; i < CarNodes.size(); i++)
+			{
+				window.draw(CarNodes[i]);
+			}
+		}
+		if (m_iDrawPathfinding == 2)
+		{
+			for (int i = 0; i < PedNodes.size(); i++)
+			{
+				window.draw(PedNodes[i]);
+			}
 		}
 	}
 
@@ -401,24 +503,6 @@ void Game::drawScene(RenderWindow & window)
 	{
 		window.draw(m_vCarsEndPostions[i]);
 	}
-
-	//draw route
-	for (int i = 0; i < m_vCars.size(); i++)
-	{
-		VertexArray path;
-
-		for (int x = 0; x < m_vCars[i].m_path.size(); x++)
-		{
-			Vector2f pos = m_vCars[i].m_path.front();
-			sf::Vertex newPoint(pos, sf::Color::Green);
-			path.append(newPoint);
-
-			cout << m_vCars[i].m_path.size() << endl;
-		}
-		window.draw(path);
-		
-	}
-
 
 	//draw temp object
 	if (m_bPlacingObject)window.draw(m_sfTempSprite);
@@ -665,6 +749,14 @@ void Game::saveLevelToFile(string dir)
 			onewFile << "c " << "Pos X " << "Pos Y " << endl;
 			onewFile << "EndPoint " << m_vCarsEndPostions[i].getPosition().x << " " << m_vCarsEndPostions[i].getPosition().y << endl;
 		}
+
+		//save the Trafiic lights 
+		for (int i = 0; i < m_vTrafficLights.size(); i++)
+		{
+			onewFile << "c " << "Pos X " << "Pos Y " << "Scale X " << "Scale Y " << "Rotation" << endl;
+			onewFile << "TrafficLight" << m_vTrafficLights[i].getPosition().x << " " << m_vTrafficLights[i].getPosition().y << " " << m_vTrafficLights[i].getSize().x << " "<< m_vTrafficLights[i].getSize().y << " " << m_vTrafficLights[i].getRotation() << endl;
+		}
+		
 	
 		
 	}
@@ -737,16 +829,16 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 	m_sfTempRect.setRotation(rot);
 
 	
-	if (type == "Traffic Light")
+	if (type == "TrafficLight")
 	{
-		m_sfSize = Vector2f(800, 600);
+		m_sfSize = Vector2f(350, 500);
 		m_sfTempRect.setSize(m_sfSize);
 		m_sfTempTexture = m_Gametextures->m_vTrafficLightTextures[0];
 		
 	}
-	if (type == "Pedestrian Light")
+	if (type == "PedLight")
 	{
-		m_sfSize = Vector2f(800, 600);
+		m_sfSize = Vector2f(250, 500);
 		m_sfTempRect.setSize(m_sfSize);
 		m_sfTempTexture = m_Gametextures->m_vPedestrianLightTextures[0];
 		
@@ -804,6 +896,59 @@ void Game::spawnTempObject(Vector2f position, float rot, string type)
 
 }
 
+bool Game::placeTrafficLights(Vector2f position, float rot, string type)
+{
+	//snap to nearest grid
+	Vector2f sfSnappedPos;
+
+	for (int i = 0; i < m_vGridSystem.size(); i++)
+	{
+		//find the distance from nearest the road to every grid
+		Vector2f dist = m_vGridSystem[i] - position;
+		float mag = sqrt(dist.x * dist.x + dist.y * dist.y);
+		if (mag < fGridSize)
+		{
+			sfSnappedPos = m_vGridSystem[i];
+			i = m_vGridSystem.size();
+		}
+
+	}
+
+	RectangleShape tempObject;
+
+	tempObject.setPosition(sfSnappedPos);
+	tempObject.setRotation(rot);
+
+	//check if the new road is in the level
+	if (sfSnappedPos.x > m_sfLevelSize.x)return false;
+	else if (sfSnappedPos.x <= 0)return false;
+	else if (sfSnappedPos.y <= 0)return false;
+	else if (sfSnappedPos.y > m_sfLevelSize.y)return false;
+
+	if (type == "TrafficLight")
+	{
+		m_sfSize = Vector2f(350, 500);
+		m_sfTempRect.setSize(m_sfSize);
+		m_sfTempTexture = m_Gametextures->m_vTrafficLightTextures[0];
+
+	}
+
+	Texture lights[3] = {
+		m_Gametextures->m_vTrafficLightTextures[0],
+		m_Gametextures->m_vTrafficLightTextures[1],
+		m_Gametextures->m_vTrafficLightTextures[2]
+
+	};
+
+	
+	TrafficLight tempLight(sfSnappedPos, m_sfTempRect.getSize(), lights,rot,0);
+
+	//if valid create road
+	m_vTrafficLights.push_back(tempLight);
+	
+	return true;
+}
+
 bool Game::placeRoad(Vector2f position, float rot,string type)
 {
 	
@@ -852,6 +997,52 @@ bool Game::placeRoad(Vector2f position, float rot,string type)
 	//if valid create road
 	m_vRoads.push_back(tempRoad);
 	m_vRoads[m_vRoads.size() - 1].setType(type);
+
+	//create the pavement around it
+
+	Pavement tempPavment;
+	if (type == "T-Junction")
+	{
+		if (rot == 0)
+		{
+			tempPavment = Pavement(sfSnappedPos - Vector2f(0, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+		}
+		if (rot == 90)
+		{
+			tempPavment = Pavement(sfSnappedPos - Vector2f(-100, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+		}
+		if (rot == 180)
+		{
+			tempPavment = Pavement(position - Vector2f(0, -100), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+		}
+		if (rot == 270)
+		{
+			tempPavment = Pavement(position - Vector2f(100, 0), Vector2f(2500, 1600), rot, m_Gametextures->m_PavementTJunctionTextures);
+		}
+		
+	}
+	if (type == "NormalRoad")
+	{
+		if (rot == 0)
+		{
+			tempPavment = Pavement(sfSnappedPos - Vector2f(100, 0), Vector2f(700, 1000), rot, m_Gametextures->m_PavementTwoWayStreetTextures);
+		}
+		if (rot == 90)
+		{
+			tempPavment = Pavement(sfSnappedPos - Vector2f(0, 100), Vector2f(700, 1000), rot, m_Gametextures->m_PavementTwoWayStreetTextures);
+		}
+		
+	}
+	if (type == "CrossRoads")tempPavment = Pavement(sfSnappedPos, Vector2f(2500, 2500), 0, m_Gametextures->m_PavementCrossRoadsTextures);
+	if (type == "Corner")
+	{
+		if (rot == 0)
+		{
+			tempPavment = Pavement(sfSnappedPos - Vector2f(0, 100), Vector2f(600, 600), rot, m_Gametextures->m_PavementCornerTextures);
+		}
+	}
+	m_vPavement.push_back(tempPavment);
+
 
 	return true;
 
@@ -916,16 +1107,19 @@ void Game::generateGrid()
 	m_vGridSystem.clear();
 	m_pathfinderData->clearNodes();
 
+
+
 	// loop from 0 to level size in steps of GRIDSIZE
 
+	int count = 1;
 	for (int y = 0; y < m_sfLevelSize.y - fGridSize; y += fGridSize)
 	{
 		m_pathfinderData->m_uiNodeY++;
 		for (int x = 0; x < m_sfLevelSize.x - fGridSize; x += fGridSize)
 		{
-			
+	
 			m_vGridSystem.push_back(Vector2f(x, y));
-			
+	
 		}
 
 	}
@@ -934,13 +1128,14 @@ void Game::generateGrid()
 	{
 		m_pathfinderData->m_uiNodeX++;
 	}
-	m_pathfinderData->m_uiNodeY;
+
 
 	for (int i = 0; i < m_vGridSystem.size(); i++)
 	{
 		//generates a full closed grid
 
-		m_pathfinderData->addNode(0, 0, i, m_vGridSystem[i],true);
+		m_pathfinderData->addCarNode(0, 0, i, m_vGridSystem[i], true);
+		m_pathfinderData->addPedNode(0, 0, i, m_vGridSystem[i], true);
 
 
 	}
@@ -1010,8 +1205,66 @@ void Game::chooseNodes()
 			temp.setOutlineThickness(25.0f);
 		}
 		
-		rectsForTesting.push_back(temp);
+		CarNodes.push_back(temp);
 	}
+
+	//Path Finding for pedestrians
+
+	//fill map with inaccessible nodes nodes
+	for (int i = 0; i < m_pathfinderData->m_pedNodes.size(); i++)
+	{
+		m_pathfinderData->m_pedNodes[i].first->m_bAccessable = false;
+	}
+	// replace pavements with open
+	for (int i = 0; i < m_pathfinderData->m_pedNodes.size(); i++)
+	{
+		nodeSquare.setPosition(m_pathfinderData->m_carNodes[i].second);
+
+		//loop pavements
+		for (int x = 0; x < m_vPavement.size(); x++)
+		{
+
+			FloatRect A = nodeSquare.getGlobalBounds();
+			FloatRect B = m_vPavement[x].getCollisionBox().getGlobalBounds();
+
+			if (A.intersects(B))
+			{
+				//Accessible
+				m_pathfinderData->m_pedNodes[i].first->m_bAccessable = true;
+			}
+
+		}
+
+	}
+
+
+	//pass pathfinding to pavement
+	for (int i = 0; i < m_vPavement.size(); i++)
+	{
+		m_vPavement[i].passPathfinding(*m_pathfinderData);
+	}
+
+	//draw nodes list
+	for (int i = 0; i < m_pathfinderData->m_pedNodes.size(); i++)
+	{
+		RectangleShape temp;
+		temp.setPosition(m_pathfinderData->m_pedNodes[i].second);
+		temp.setSize(Vector2f(fGridSize, fGridSize));
+		if (m_pathfinderData->m_pedNodes[i].first->m_bAccessable == true)
+		{
+			temp.setFillColor(Color(0, 255, 0, 50));
+			temp.setOutlineThickness(5.0f);
+		}
+		else if (m_pathfinderData->m_pedNodes[i].first->m_bAccessable == false)
+		{
+			temp.setFillColor(Color(255, 0, 0, 255));
+			temp.setOutlineThickness(25.0f);
+		}
+
+		PedNodes.push_back(temp);
+	}
+
+
 
 
 

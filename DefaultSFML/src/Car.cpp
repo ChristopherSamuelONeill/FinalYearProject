@@ -127,19 +127,11 @@ void Car::driveToPoint()
 		//decide how to drive
 		if (carAngle + 5 < angle)
 		{
-			if (m_fSpeed > 100)
-			{
-				m_bThrottle = false;
-			}
 			SetTurning(1);
 		}
 		else if (angle + 5 < carAngle)
 		{
 			SetTurning(-1);
-			if (m_fSpeed > 100)
-			{
-				m_bThrottle = false;
-			}
 			
 		}
 		else SetTurning(0);
@@ -147,7 +139,7 @@ void Car::driveToPoint()
 	
 	
 
-	if (magDist  < 200 + (m_fSpeed / 2 )) applyBrakingForce();
+	if (m_iNumbOfPointsOnRoute == m_iCurrentNodeOnRoute) applyBrakingForce();
 	else applyDrivingForce();
 	
 
@@ -163,12 +155,21 @@ void Car::applyBrakingForce()
 void Car::startPathFinding()
 {
 	cout << "\tFinding a route ... ";
-//	generatePath();
+	findPath();
+	m_iNumbOfPointsOnRoute = m_path.size();
+	m_iCurrentNodeOnRoute = 0;
+	for (int i = 0; i < m_path.size(); i++)
+	{
+		cout << m_path[i].x << " " << m_path[i].y << endl;
+	}
+
 	cout << "Finished" << endl;
 }
 
 void Car::draw(RenderTarget & target, RenderStates states) const
 {
+
+	
 	
 	target.draw(m_sfCarSprite);
 	
@@ -184,8 +185,27 @@ void Car::draw(RenderTarget & target, RenderStates states) const
 void Car::update(float dt)
 {
 	
-	m_Sound = SoundObject::getInstance();;// \brief Sound object
-	m_Player = Profile::getInstance();;// \brief Sound object
+	//find desired point
+	m_sfDesriredPoint = m_path[m_iCurrentNodeOnRoute];
+
+	//has reach point?
+	float x = abs(m_sfDesriredPoint.x - m_sfPosition.x);
+	float y = abs(m_sfDesriredPoint.y - m_sfPosition.y);
+	float mag = sqrt((x * x) + (y * y));
+	if (mag < 50)
+	{
+		m_iCurrentNodeOnRoute++;
+	}
+	//reach end?
+	if (m_iCurrentNodeOnRoute == m_iNumbOfPointsOnRoute)
+	{
+		cout << "Route done" << endl;
+	}
+
+
+
+	m_Sound = SoundObject::getInstance();// \brief Sound object
+	m_Player = Profile::getInstance();// \brief Sound object
 
 	if (m_bCarIdleSoundIsPlaying == false)
 	{

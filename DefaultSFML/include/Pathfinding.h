@@ -24,7 +24,14 @@ public:
 	// \param gValue , float movement cost of the node
 	// \param index , int the node number in the list
 	// \param accessable, bool avaible node or not
-	void addNode( float hValue, float gValue, int index, Vector2f pos, bool accessable);
+	void addCarNode( float hValue, float gValue, int index, Vector2f pos, bool accessable);
+
+	// \brief Overloaded Function to add a new node to the pathfinding class
+	// \param hValue , float Huesristic value of the node
+	// \param gValue , float movement cost of the node
+	// \param index , int the node number in the list
+	// \param accessable, bool avaible node or not
+	void addPedNode(float hValue, float gValue, int index, Vector2f pos, bool accessable);
 
 	// \brief Function to clear all nodes
 	void clearNodes();

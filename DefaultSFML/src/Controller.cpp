@@ -1,196 +1,16 @@
 #include "Controller.h"
 
-void Controller::generatePath()
+Controller::Controller()
 {
-	//find end node
-	m_TargetNode = getNode(m_sfGoal);
-
-	// Add Node at current location to closed list
-	if (getNode(m_sfPosition).first != NULL)
-	{
-
-		// Add Node at your current location to closed list
-		m_Pathfinding->m_carClosedNodes.push_back(getNode(m_sfStart));
-		// Resets the current Node
-		 m_Pathfinding->m_carClosedNodes.back().first->ResetNode();
-		 m_StartNode = m_Pathfinding->m_carClosedNodes.back();
-	}
-	else
-	{
-		cout << "Error NULL node" << endl;
-		return;
-	}
-
-	//calculate the path
-	bool bPathFound = false; // was apath found
-
-	//the current node been tested
-	pair< Node*, Vector2f> CurrentNode;
-
-
-	while (!bPathFound)
-	{
-		
-		CurrentNode = m_Pathfinding->m_carClosedNodes[m_Pathfinding->m_carClosedNodes.size()-1];
-		CurrentNode.first->m_fHValue = getManhattanDistance(CurrentNode, m_TargetNode);
-
-		//CurrentNode.first->parentNode = &getNodeFromIndex(m_iPreviousNode);
-
 	
-		if (CurrentNode == m_TargetNode)
-		{
-			bPathFound = true;
-			return;
-		}
-
-		//find adjacent nodes
-		vector<pair< Node*, Vector2f>> AdjacentNodes = adjacentNodes(CurrentNode);
-
-		//for each adjacent node
-		for (int i = 0; i < AdjacentNodes.size();i++)
-		{
-			// If adjNode is inaccessible
-			if (AdjacentNodes[i].first->m_bAccessable == false ) ; // ignore
-			else if (AdjacentNodes[i] == m_TargetNode && !nodeInList(AdjacentNodes[i], m_Pathfinding->m_carClosedNodes))
-			{
-
-				//reset the node
-				AdjacentNodes[i].first->ResetNode();
-
-				//set the parent node
-				AdjacentNodes[i].first->parentNode = &CurrentNode;
-
-				//set the H value
-				AdjacentNodes[i].first->m_fHValue = getManhattanDistance(AdjacentNodes[i],m_TargetNode);
-
-				//calculate the G value
-				AdjacentNodes[i].first->m_fGValue = findGValue(CurrentNode, AdjacentNodes[i]);
-
-				//calculate the F value
-				AdjacentNodes[i].first->m_fFValue = AdjacentNodes[i].first->m_fGValue + AdjacentNodes[i].first->m_fHValue;
-
-				
-				for (int i = 0; i < m_Pathfinding->m_carOpenNodes.size(); i++)
-				{
-					if (m_Pathfinding->m_carOpenNodes[i].first != NULL && m_Pathfinding->m_carOpenNodes[i].first->parentNode != NULL)
-					{
-
-						plz = m_Pathfinding->m_carOpenNodes[i].first->m_iIndex;
-						secPlz = m_Pathfinding->m_carOpenNodes[i].first->parentNode->first->m_iIndex;
-						cout << "Found " << plz << " -> " << secPlz << endl;
-
-
-					}
-				}
-
-				//queue route
-				QuePath(AdjacentNodes[i]);
-				bPathFound = true;
-				return;
-
-			}
-			else if(nodeInList(AdjacentNodes[i],m_Pathfinding->m_carOpenNodes))
-			{
-				
-				// Distance from the current Node and open Node
-				Vector2f fDistToNode = Vector2f(CurrentNode.second.x - AdjacentNodes[i].second.x, CurrentNode.second.y - AdjacentNodes[i].second.y);
-
-				float mag = sqrt((fDistToNode.x * fDistToNode.x) + (fDistToNode.y * fDistToNode.y));
-
-				if (CurrentNode.first->m_fGValue + mag < AdjacentNodes[i].first->m_fGValue)
-				{
-					AdjacentNodes[i].first->parentNode = &CurrentNode;
-				}
-
-			}
-			else if (nodeInList(AdjacentNodes[i], m_Pathfinding->m_carClosedNodes));//ignore
-			else
-			{
-				//(AdjacentNodes[i] is accessable , not the dest , is not yet on the open or closed list
-				//reset the node
-
-				AdjacentNodes[i].first->ResetNode();
-
-				//set the parent node
-				AdjacentNodes[i].first->parentNode = &CurrentNode;
-
-				//set the H value
-				AdjacentNodes[i].first->m_fHValue = getManhattanDistance(AdjacentNodes[i], m_TargetNode);
-
-				//calculate the G value
-				AdjacentNodes[i].first->m_fGValue = findGValue(CurrentNode, AdjacentNodes[i]);
-
-				//calculate the F value
-				AdjacentNodes[i].first->m_fFValue = AdjacentNodes[i].first->m_fGValue + AdjacentNodes[i].first->m_fHValue;
-
-				//add to open list
-				m_Pathfinding->m_carOpenNodes.push_back(AdjacentNodes[i]);
-
-			}
-
-		}
-		
-		//find next node
-
-		if (!m_Pathfinding->m_carOpenNodes.empty())
-		{
-			pair< Node*, Vector2f> smallestFValueNode = m_Pathfinding->m_carOpenNodes.back(); // node with the lowest cost
-
-			for (int i = 0; i < m_Pathfinding->m_carOpenNodes.size(); i++)
-			{
-				if (m_Pathfinding->m_carOpenNodes[i].first->m_fFValue < smallestFValueNode.first->m_fFValue)
-				{
-					smallestFValueNode = m_Pathfinding->m_carOpenNodes[i];
-				}
-				else if (m_Pathfinding->m_carOpenNodes[i].first->m_fFValue == smallestFValueNode.first->m_fFValue)
-				{
-					// the node with lower H is set
-					if (m_Pathfinding->m_carOpenNodes[i].first->m_fHValue < smallestFValueNode.first->m_fHValue)
-					{
-						smallestFValueNode = m_Pathfinding->m_carOpenNodes[i];
-						
-					}
-				}
-				else
-				{
-					
-				}
-			}
-
-			//add the lowest f vlaue to closed list
-
-			m_iPreviousNode = smallestFValueNode.first->parentNode->first->m_iIndex;
-			m_iCurrentNode = smallestFValueNode.first->m_iIndex;
 	
-			m_Pathfinding->m_carClosedNodes.push_back(smallestFValueNode);
-
-			//remove from open list
-			for (int i = 0; i < m_Pathfinding->m_carOpenNodes.size(); i++)
-			{
-				if (m_Pathfinding->m_carOpenNodes[i] == smallestFValueNode)
-				{
-					m_Pathfinding->m_carOpenNodes.erase(m_Pathfinding->m_carOpenNodes.begin() + i);
-				}
-				
-			}
-		
-		}
-		else
-		{
-			cout << "failed to find a path" << endl;
-			return;
-		}
-
-
-	}
-
 }
 
 pair<Node*, Vector2f> Controller::getNode(Vector2f pos)
 {
 	// Find the Desired mode
-	RectangleShape goalRect(Vector2f(50, 50));
-	RectangleShape nodeRect(Vector2f(50, 50));
+	RectangleShape goalRect(Vector2f(100, 100));
+	RectangleShape nodeRect(Vector2f(100, 100));
 
 	for (int i = 0; i < m_Pathfinding->m_carNodes.size(); i++)
 	{
@@ -214,279 +34,282 @@ pair<Node*, Vector2f> Controller::getNode(Vector2f pos)
 	return pair<Node*, Vector2f>();
 }
 
-pair<Node*, Vector2f> Controller::getNodeFromIndex(int index)
+void Controller::findPath()
 {
-	if (!m_Pathfinding->m_carNodes.empty())
+
+
+	//Calculates the Position of the Start Tile in the Grid
+	int iStartTile = getNode(m_sfStart).first->m_iIndex;
+
+	//Calculates the Position of the End Tile in the Grid
+	int iEndTile = getNode(m_sfGoal).first->m_iIndex;
+
+
+	int iCurrentTile = iStartTile; //Holds the tile being checked
+
+	if (iStartTile != iEndTile )//&& iStartTile < m_Pathfinding->m_carNodes.size() && iEndTile <m_Pathfinding->m_carNodes.size())// && validVacinity(iEndTile))
 	{
-		// If index is within available range
-		if ((index >= 0) && (index < m_Pathfinding->m_carNodes.size() -1))
+	
+		//Calculates the Manhattan distance for each accessable node
+		for (int i = 0; i < m_Pathfinding->m_carNodes.size(); i++)
 		{
-			// Returns Node at index
-			return m_Pathfinding->m_carNodes[index];
+			if (m_Pathfinding->m_carNodes[i].first->m_bAccessable == true)
+			{
+				calculateManhattan(i, iEndTile);
+				
+			}
+			
+		}
+
+		int iNextIndex = NULL;
+		while (!m_bPathFound)
+		{
+			//If the tile being checked isn't the end tile
+			if (iCurrentTile != iEndTile)
+			{
+				//Pushes the node to the closed list
+				m_Pathfinding->m_carClosedNodes.push_back(m_Pathfinding->m_carNodes[iCurrentTile]);
+			}
+
+			//Find the move cost for the adjacent nodes
+			calculateMoveCost(iCurrentTile, iEndTile);
+
+			if (!m_bPathFound)
+			{
+				int iLowestF = 9999999999.0f;
+				//Checks for the lowest F value in the open list
+				for (int i = 0; i < m_Pathfinding->m_carOpenNodes.size(); i++)
+				{
+					if (m_Pathfinding->m_carOpenNodes[i].first->m_fFValue < iLowestF)
+					{
+						iCurrentTile = m_Pathfinding->m_carOpenNodes[i].first->m_iIndex;
+						iLowestF = m_Pathfinding->m_carOpenNodes[i].first->m_fFValue;
+						iNextIndex = i;
+					}
+				}
+				m_Pathfinding->m_carOpenNodes.erase(m_Pathfinding->m_carOpenNodes.begin() + iNextIndex);
+			}
+		}
+
+		pair< Node*, Vector2f> CurrentNode;
+		//If the end is not on the closed list
+		if (!nodeInList(m_Pathfinding->m_carNodes[iEndTile],m_Pathfinding->m_carClosedNodes))
+		{
+			CurrentNode = m_Pathfinding->m_carNodes[iEndTile];
+			m_path.push_back(CurrentNode.second);
+		}
+		//set its parent to be the end node
+		else
+		{
+			CurrentNode = *m_Pathfinding->m_carNodes[iEndTile].first->parentNode;
+			m_path.push_back(CurrentNode.second);
+		}
+
+		//If the current node isn't the start node
+		if (CurrentNode.first->m_iIndex != iStartTile)
+		{
+			//Loop back through the parents to find the path
+			do {
+				CurrentNode = *CurrentNode.first->parentNode ;
+				m_path.push_back(CurrentNode.second);
+			} while (CurrentNode.first->parentNode != NULL);
 		}
 	}
-	
-	return pair<Node*, Vector2f>();
+	m_bPathFound = false;
+
 }
+
+void Controller::calculateManhattan(int iStartTile, int iEndTile)
+{
+	/// Number of Nodes in x
+	float fXDist = ((m_Pathfinding->m_carNodes[iEndTile].second.x )- (m_Pathfinding->m_carNodes[iStartTile].second.x));
+
+	// Number of Nodes in y
+	float fYDist = ((m_Pathfinding->m_carNodes[iEndTile].second.y) - (m_Pathfinding->m_carNodes[iStartTile].second.y));
+	// Added x and y dist
+	float fDistance = abs(fXDist) + abs(fYDist);
+
+	// Returns the combined distances
+	m_Pathfinding->m_carNodes[iStartTile].first->m_fHValue = fDistance;
+}
+
+void Controller::calculateMoveCost(int iCurrentTile, int iEndTile)
+{
+	if (!m_bPathFound)
+	{
+		
+		//If not on the right edge of the screen
+		if (iCurrentTile % (int)m_Pathfinding->m_uiNodeX < (int)m_Pathfinding->m_uiNodeX - 1)
+		{
+			checkNode(iCurrentTile + 1, iCurrentTile, 10); //Assign right node a cost
+
+			//If also not on the top edge of the screen
+			if (iCurrentTile - m_Pathfinding->m_uiNodeX > 0)
+			{
+				//Assign top right node a cost
+				//If the tile to the right, the top or the top right of the tile is on the closed list
+				if (find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(),m_Pathfinding->m_carNodes[iCurrentTile - (int)m_Pathfinding->m_uiNodeX + 1]) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(),m_Pathfinding->m_carNodes[iCurrentTile - (int)m_Pathfinding->m_uiNodeX]) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(),m_Pathfinding->m_carNodes[iCurrentTile + 1]) != m_Pathfinding->m_carClosedNodes.end()) {
+					checkNode(iCurrentTile - m_Pathfinding->m_uiNodeX + 1, iCurrentTile, 100);  //Make the cost so high its more probable to walk around it
+				}
+				else
+				{
+					checkNode(iCurrentTile - m_Pathfinding->m_uiNodeX + 1, iCurrentTile, 14); //Otherwise allow diagonal movement
+				}
+			}
+
+			//If also not on the bottom edge of the screen
+			if (iCurrentTile + m_Pathfinding->m_uiNodeX < m_Pathfinding->m_carNodes.size())
+			{
+				//Assign bottom right node a cost
+				//If the tile to the right, the bottom or the bottom right of the tile is on the closed list
+				if (find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes[iCurrentTile + (int)m_Pathfinding->m_uiNodeX + 1]) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes[iCurrentTile + (int)m_Pathfinding->m_uiNodeX]) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes[iCurrentTile + 1]) != m_Pathfinding->m_carClosedNodes.end()) {
+					checkNode(iCurrentTile + m_Pathfinding->m_uiNodeX + 1, iCurrentTile, 100); //Make the cost so high its more probable to walk around it
+				}
+				else
+				{
+					checkNode(iCurrentTile + m_Pathfinding->m_uiNodeX + 1, iCurrentTile, 14);//Otherwise allow diagonal movement
+				}
+			}
+		}
+		//If not on the left edge of the screen
+		if (iCurrentTile % (int)m_Pathfinding->m_uiNodeX > 0)
+		{
+			checkNode(iCurrentTile - 1, iCurrentTile, 10); //Assign left node a cost
+
+														   //If also not on the top edge of the screen
+			if (iCurrentTile - m_Pathfinding->m_uiNodeX > 0)
+			{
+				//Assign top left node a cost
+				//If the tile to the left, the top or the top left of the tile is on the closed list
+				if (find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iCurrentTile - (int)m_Pathfinding->m_uiNodeX - 1)) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iCurrentTile - (int)m_Pathfinding->m_uiNodeX)) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iCurrentTile - 1)) != m_Pathfinding->m_carClosedNodes.end()) {
+					checkNode(iCurrentTile - m_Pathfinding->m_uiNodeX - 1, iCurrentTile, 100);  //Make the cost so high its more probable to walk around it
+				}
+				else
+				{
+					checkNode(iCurrentTile - m_Pathfinding->m_uiNodeX - 1, iCurrentTile, 14);//Otherwise allow diagonal movement
+				}
+			}
+
+			//If also not on the bottom edge of the screen
+			if (iCurrentTile + m_Pathfinding->m_uiNodeX < m_Pathfinding->m_carNodes.size())
+			{
+				//Assign bottom left node a cost
+				//If the tile to the left, the bottom or the bottom left of the tile is on the closed list
+				if (find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iCurrentTile + (int)m_Pathfinding->m_uiNodeX - 1)) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iCurrentTile + (int)m_Pathfinding->m_uiNodeX)) != m_Pathfinding->m_carClosedNodes.end() ||
+					find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iCurrentTile - 1)) != m_Pathfinding->m_carClosedNodes.end()) {
+					checkNode(iCurrentTile + m_Pathfinding->m_uiNodeX - 1, iCurrentTile, 100); //Make the cost so high its more probable to walk around it
+				}
+				else
+				{
+					checkNode(iCurrentTile + m_Pathfinding->m_uiNodeX - 1, iCurrentTile, 14);//Otherwise allow diagonal movement
+				}
+			}
+		}
+
+		//If not on the top edge of the screen
+		if (iCurrentTile - m_Pathfinding->m_uiNodeX > 0)
+		{
+			checkNode(iCurrentTile - m_Pathfinding->m_uiNodeX, iCurrentTile, 10); //Assign top node a cost
+		}
+
+		//If not on the bottom edge of the screen.
+		if (iCurrentTile + m_Pathfinding->m_uiNodeX < m_Pathfinding->m_carNodes.size())
+		{
+			checkNode(iCurrentTile + m_Pathfinding->m_uiNodeX, iCurrentTile, 10); //Assign bottom node a cost
+		}
+
+
+		//If the end wall isn't on the closed list
+		if (!nodeInList(m_Pathfinding->m_carNodes[iEndTile], m_Pathfinding->m_carClosedNodes))
+		{
+			//Checks all the surrounding tiles for the end tile
+			for (int i = 0; i < m_viNodesToCheck.size(); i++)
+			{
+				//If any of the surrounding tiles are the end tile parent it and set the path
+				if (iCurrentTile + m_viNodesToCheck.at(i) == iEndTile)
+				{
+					m_bPathFound = true;
+					m_Pathfinding->m_carNodes[iEndTile].first->parentNode = &m_Pathfinding->m_carNodes.at(iCurrentTile);
+				}
+			}
+		}
+		//If current tile is the end tile set the path
+		else if (iCurrentTile == iEndTile)
+		{
+			m_bPathFound = true;
+		}
+	}
+}
+
+void Controller::checkNode(int iTile, int iCurrentTile, int iMoveCost)
+{
+	//If the node isn't on the open list
+	if (find(m_Pathfinding->m_carOpenNodes.begin(), m_Pathfinding->m_carOpenNodes.end(), m_Pathfinding->m_carNodes.at(iTile)) == m_Pathfinding->m_carOpenNodes.end()) {
+		//If the node isn't on the closed list
+		if (find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes.at(iTile)) == m_Pathfinding->m_carClosedNodes.end()) {
+			m_Pathfinding->m_carOpenNodes.push_back(m_Pathfinding->m_carNodes[iTile]); //Add the node to the open list
+			makeCurrent(iTile, iCurrentTile, iMoveCost);
+		}
+	}
+	//If it's faster to move to an already checked node from this node than the previous node
+	else if (m_Pathfinding->m_carNodes[iCurrentTile].first->m_fGValue + iMoveCost < m_Pathfinding->m_carNodes[iTile].first->m_fGValue) {
+		makeCurrent(iTile, iCurrentTile, iMoveCost);
+	}
+}
+
 bool Controller::nodeInList(pair<Node*, Vector2f> node1, vector<pair<Node*, Vector2f>> list)
 {
 
 	if ((find(list.begin(), list.end(), node1)) != list.end())return true;
 	else return false;
 }
-float Controller::getManhattanDistance(pair<Node*, Vector2f> node1, pair<Node*, Vector2f> node2)
+void  Controller::receiveNodeData(Pathfinding *nodeData)
 {
-	// Number of Nodes in x
-	float fXDist = (node2.second.x - node1.second.x) / 50;
+	m_Pathfinding = nodeData;
 
-	// Number of Nodes in x
-	float fYDist = (node2.second.y - node1.second.y) / 100;
-	// Added x and y dist
-	float fDistance = abs(fXDist) + abs(fYDist);
-
-	// Returns the combined distances
-	return fDistance;
+	m_viNodesToCheck = {
+		1,									 //Right
+		-1,									 //Left
+		-(int)m_Pathfinding->m_uiNodeX,		//Top
+		-(int)m_Pathfinding->m_uiNodeX + 1, //Top right
+		-(int)m_Pathfinding->m_uiNodeX - 1, //Top left
+		(int)m_Pathfinding->m_uiNodeX,      //Bottom
+		(int)m_Pathfinding->m_uiNodeX + 1,  //Bottom right
+		(int)m_Pathfinding->m_uiNodeX - 1   //Bottom left
+	};
 }
 
-float Controller::findGValue(pair<Node*, Vector2f> node1, pair<Node*, Vector2f> node2)
+void Controller::makeCurrent(int iTile, int iCurrentTile, int iMoveCost)
 {
-	// Distance from the current Node and open Node
-	Vector2f fDistToNode = Vector2f(node2.second.x - node1.second.x, node2.second.y - node1.second.y);
-
-	float mag = sqrt((fDistToNode.x * fDistToNode.x) + (fDistToNode.y * fDistToNode.y));
-
-	// Returns resultant G value (distance to next Node plus current Node's G)
-	return mag + node1.first->m_fGValue;
+	m_Pathfinding->m_carNodes[iTile].first->parentNode = &m_Pathfinding->m_carNodes[iCurrentTile]; //Make the parent the current node
+	m_Pathfinding->m_carNodes[iTile].first->m_fGValue = m_Pathfinding->m_carNodes[iTile].first->parentNode->first->m_fGValue + iMoveCost; //The node gets its parents movecost plus the travel cost
+	m_Pathfinding->m_carNodes[iTile].first->m_fFValue = m_Pathfinding->m_carNodes[iTile].first->m_fGValue + m_Pathfinding->m_carNodes[iTile].first->m_fHValue; //Calculate the node's F value
 }
 
-vector<pair<Node*, Vector2f>> Controller::adjacentNodes(pair<Node*, Vector2f> currentNode)
+//Used to check if the end node is surrounded by impassable nodes
+bool Controller::validVacinity(int iEndTile)
 {
-	//to be retunrned
-	vector<pair< Node*, Vector2f>> AdjacentNodes;
-
-	if (currentNode.first != NULL)
+	for (int i = 0; i < m_viNodesToCheck.size(); i++) // For every surrounding node
 	{
-
-		unsigned int uiIndex;
-
-		for (int i = 0; i < 8; i++)
+		if (iEndTile + m_viNodesToCheck[i] > 0 && iEndTile + m_viNodesToCheck[i] < m_Pathfinding->m_carNodes.size())// If within the grid space
 		{
-			// a temporary node
-			pair< Node*, Vector2f> tempNode;
-
-			switch (i)
-			{
-				case 1:
-				{
-					//top left
-					uiIndex = (currentNode.first->m_iIndex - 1) - m_Pathfinding->m_uiNodeX;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						//uiIndex = (currentNode.first->m_iIndex - 1);
-						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
-						//uiIndex = (currentNode.first->m_iIndex) - m_Pathfinding->m_uiNodeX;
-						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
-
-						//// If checkNode1 Node exists and is not accessible
-						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-					
-						//// Else If checkNode2 Node exists and is not accessible
-						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-						//// Both checkNodes exist and are accessible
-						//else
-						//{
-						//	// Adds adjacent Node to vector
-						//	AdjacentNodes.push_back(tempNode);
-						//}
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-
-				}
-				case 2:
-				{
-					//top middle
-					uiIndex = currentNode.first->m_iIndex - m_Pathfinding->m_uiNodeX;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-
-						// Adds adjacent Node to vector
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-				case 3:
-				{
-					//top right
-					uiIndex = (currentNode.first->m_iIndex + 1) - m_Pathfinding->m_uiNodeX;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						uiIndex = currentNode.first->m_iIndex - m_Pathfinding->m_uiNodeX;
-						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
-						//uiIndex = currentNode.first->m_iIndex + 1;
-						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
-
-						//// If checkNode1 Node exists and is not accessible
-						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-						//// Else If checkNode2 Node exists and is not accessible
-						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-						//// Both checkNodes exist and are accessible
-						//else
-						//{
-						//	// Adds adjacent Node to vector
-						//	AdjacentNodes.push_back(tempNode);
-						//}
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-				case 4:
-				{
-					//middle right
-					uiIndex = currentNode.first->m_iIndex + 1;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						// Adds adjacent Node to vector
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-				case 5:
-				{
-					//bottom right
-					uiIndex = (currentNode.first->m_iIndex + 1) + m_Pathfinding->m_uiNodeX;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						//uiIndex = currentNode.first->m_iIndex + 1;
-						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
-						//uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
-						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
-
-						//// If checkNode1 Node exists and is not accessible
-						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-						//// Else If checkNode2 Node exists and is not accessible
-						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-						//// Both checkNodes exist and are accessible
-						//else
-						//{
-						//	// Adds adjacent Node to vector
-						//	AdjacentNodes.push_back(tempNode);
-						//}
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-				case 6:
-				{
-					//bottom middle
-					uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						// Adds adjacent Node to vector
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-				case 7:
-				{
-					//bottom left
-					uiIndex = (currentNode.first->m_iIndex - 1) + m_Pathfinding->m_uiNodeX;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						//uiIndex = currentNode.first->m_iIndex + m_Pathfinding->m_uiNodeX;
-						//pair< Node*, Vector2f> node1 = getNodeFromIndex(uiIndex);
-						//uiIndex = currentNode.first->m_iIndex - 1;
-						//pair< Node*, Vector2f> node2 = getNodeFromIndex(uiIndex);
-
-						//// If checkNode1 Node exists and is not accessible
-						//if (node1.first != nullptr && node1.first->m_bAccessable == false) {}
-
-						//// Else If checkNode2 Node exists and is not accessible
-						//else if (node2.first != nullptr && node2.first->m_bAccessable == false) {}
-
-						//// Both checkNodes exist and are accessible
-						//else
-						//{
-						//	// Adds adjacent Node to vector
-						//	AdjacentNodes.push_back(tempNode);
-						//}
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-				case 8:
-				{
-					//bottom middle
-					uiIndex = currentNode.first->m_iIndex - 1;
-					tempNode = getNodeFromIndex(uiIndex);
-
-					if (tempNode.first != NULL)
-					{
-						// Adds adjacent Node to vector
-						AdjacentNodes.push_back(tempNode);
-					}
-					break;
-				}
-			
+			if (find(m_Pathfinding->m_carClosedNodes.begin(), m_Pathfinding->m_carClosedNodes.end(), m_Pathfinding->m_carNodes[(iEndTile + m_viNodesToCheck[i])]) == m_Pathfinding->m_carClosedNodes.end()) { //And not on the closed list
+				return true;
 			}
 		}
 	}
-	
-	
-	std::cout << AdjacentNodes.size();
-	return AdjacentNodes;
+
+	return false; //If all of the tests are false return false
 }
 
-void Controller::QuePath(pair<Node*, Vector2f> node)
+void Controller::setInvalid(sf::Vector2f Node)
 {
-	// Vector for stack of Nodes to be used in path
-	vector<pair<Node*, Vector2f>> pNodes;
-
-	// Pushes destination Node onto vector
-	pNodes.push_back(node);
-
-
-	while (node.first->parentNode->first != m_StartNode.first)
-	{
-		// Make the Node it's Parent
-		node = *node.first->parentNode;
-		// Push the parent onto the path of Nodes
-		pNodes.push_back(node);
- 	}
-
-	while (!pNodes.empty())
-	{
-		// Pushes the position of node onto path
-		m_path.push(pNodes.back().second);
-		
-		// Pops Node off Vector
-		pNodes.pop_back();
-	}
-	
-
-
-}
-
-void Controller::receiveNodeData(Pathfinding * nodeData)
-{
-	m_Pathfinding = nodeData;
+	m_Pathfinding->m_carClosedNodes.push_back(m_Pathfinding->m_carNodes[(Node.y *m_Pathfinding->m_uiNodeX) + Node.x]);
 }

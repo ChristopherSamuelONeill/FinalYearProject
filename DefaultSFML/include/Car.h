@@ -42,6 +42,10 @@ private:
 	int m_iMaxTurnAngle; // \brief Maximum angle the cars can turn
 	float m_fSteerOrientation; // \brief Orientation of wheels
 
+	int m_iNumbOfPointsOnRoute;// \brief How many nodes on the route
+	int m_iCurrentNodeOnRoute;// \brief How far along the route
+	Vector2f m_sfDesriredPoint;// \brief the next point for the car to reach
+
 	bool m_bBraking = false;// \brief True when braking
 	bool m_bLights = true;// \brief True when lights on
 
@@ -166,7 +170,7 @@ public:
 
 	Vector2f getPosition();
 	
-	Vector2f m_sfDesriredPoint;// \brief the next point for the car to reach
+
 	void startPathFinding();
 	void draw(RenderTarget& target, RenderStates states) const;
 	void update(float dt);

@@ -108,6 +108,12 @@
     <ClCompile Include="src\Controller.cpp">
       <Filter>Source Files\Ai</Filter>
     </ClCompile>
+    <ClCompile Include="src\Pavement.cpp">
+      <Filter>Source Files\Game Obejcts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PedController.cpp">
+      <Filter>Source Files\Ai</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Achievement.h">
@@ -165,6 +171,12 @@
       <Filter>Header Files\Ai</Filter>
     </ClInclude>
     <ClInclude Include="include\Controller.h">
+      <Filter>Header Files\Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pavement.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PedController.h">
       <Filter>Header Files\Ai</Filter>
     </ClInclude>
   </ItemGroup>

@@ -35,6 +35,15 @@ public:
 	// \param DeltaTime , amount of time passed (should be called every frame untill returning true)
 	bool changeToGreen(float dt);
 
+	// \brief Vector 2f Returns the position of the light
+	Vector2f getPosition();
+
+	// \brief Vector 2f Returns the size of the light
+	Vector2f getSize();
+
+	// \brief Float Returns the roation of the light
+	float getRotation();
+
 private:
 	Vector2f m_sfPosition; 	// \brief X Y coords of the object
 	Vector2f m_sfSize;		// \brief Dimensions of the object

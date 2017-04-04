@@ -15,6 +15,11 @@ Node::Node(float hValue, float gValue, int index, bool Accessable)
 	m_bAccessable = Accessable;
 }
 
+void Node::ResetParentNode()
+{
+	parentNode = NULL;
+}
+
 void Node::ResetNode()
 {
 	

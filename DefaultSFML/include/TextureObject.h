@@ -37,6 +37,16 @@ public:
 	
 	vector<Texture> m_vCrossRoadsTextures; // \brief Texture for cross roads
 
+   //Pavement Textures
+	Texture m_PavementTwoWayStreetTextures; // \brief Texture for 2 way road 
+			 
+	Texture m_PavementTJunctionTextures; // \brief Texture for T Juntion
+			 
+	Texture m_PavementCornerTextures; // \brief Texture for Corner
+			
+	Texture m_PavementCrossRoadsTextures; // \brief Texture for cross roads
+
+
 	//StartEnd point teture
 	Texture m_StartEndPoint; // \brief Texture Start and end point
 

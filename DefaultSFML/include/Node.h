@@ -37,7 +37,8 @@ public:
 	pair<Node* , Vector2f> *parentNode; // \brief A pointer to the parent node
 
 
-	
+	// \brief Clears parent node to default
+	void ResetParentNode();
 
     // \brief Clears node to default
 	void ResetNode();

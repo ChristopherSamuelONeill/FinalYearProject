@@ -18,6 +18,8 @@
 #include "Profile.h"
 #include "Pedestrian.h"
 #include "Pathfinding.h"
+#include "Pavement.h"
+#include "TrafficLight.h"
 
 
 using namespace sf;
@@ -48,6 +50,9 @@ private:
 	SceneObject m_Time; // \brief time of day overlay for level
 	vector<SceneObject> m_vSceneObejcts; // \brief list of SceneObjects for the Scene
 	vector<Road> m_vRoads; // \brief list of the roads
+	vector<Pavement> m_vPavement; // \brief list of the pavements
+	vector<TrafficLight> m_vTrafficLights; // \brief list of the traffic lights
+	//vector<TrafficLight> m_PedLights; // \brief list of the traffic lights
 
 
 	TextureObject *m_Gametextures;// \brief handle to all game textures
@@ -67,7 +72,8 @@ private:
 
 
 	//editor objects
-	vector<RectangleShape> rectsForTesting;
+	vector<RectangleShape> CarNodes;
+	vector<RectangleShape> PedNodes;
 	int m_iCurrentBackground;// \brief int of the current background (used for cycling)
 	int m_iLevelSize;// \brief int of the Level Size (used for cycling)
 	int m_iLevelTime;// \brief int of the Level time (used for cycling)
@@ -130,10 +136,15 @@ public:
 	RectangleShape m_sfTempRect; // \brief Temp Rect for editor 
 	Sprite m_sfTempSprite; // \brief Temp Sprite for editor 
 	Texture m_sfTempTexture; // \brief Temp Texture for editor 
-	bool m_bDrawPathfinding = false;
+	int m_iDrawPathfinding = 0; // 0 for no , 1 for cars , 2 for ped
+	
 	bool m_bPlacingObject = false; // \brief True while placing an object
 
-	void placeTrafficLights();
+	// \brief function to attempt to place a traffic light to the level
+	// \param Position , vector of the position the object
+	// \param Rotation , float of the orientation the object
+	// \param Type , string of the type of light
+	bool placeTrafficLights(Vector2f position, float rot, string type);
 
 	// \brief function to attempt to place a road to the level
 	// \param Position , vector of the position the object

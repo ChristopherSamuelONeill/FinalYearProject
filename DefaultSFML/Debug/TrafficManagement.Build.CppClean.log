@@ -4,6 +4,7 @@ d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\de
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\button.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\car.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\collisiondetection.obj
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\controller.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\node.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\pathfinding.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\pedestrian.obj
@@ -19,13 +20,12 @@ d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\de
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\textbox.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\textureobject.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\trafficlight.obj
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\controller.obj
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\pavement.obj
+d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\pedcontroller.obj
 d:\uni\year three\project\product creation\code\trafficmanagement\debug\trafficmanagement.ilk
 d:\uni\year three\project\product creation\code\trafficmanagement\debug\trafficmanagement.exe
 d:\uni\year three\project\product creation\code\trafficmanagement\debug\trafficmanagement.pdb
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\car.obj.enc
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\controller.obj.enc
-d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\game.obj.enc
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\trafficm.403904ca.tlog\cl.command.1.tlog
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\trafficm.403904ca.tlog\cl.read.1.tlog
 d:\uni\year three\project\product creation\code\trafficmanagement\defaultsfml\debug\trafficm.403904ca.tlog\cl.write.1.tlog

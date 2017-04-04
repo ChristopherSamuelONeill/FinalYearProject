@@ -48,8 +48,8 @@ int main()
 
 	if (DEBUGMODE)
 	{
-		//LoadLevel("test");
-		editor();
+		LoadLevel("test");
+		//editor();
 	}
 	else
 	{
@@ -1991,6 +1991,10 @@ void editor()
 				if (sType == "CrossRoads")fRotation = 0;
 				if (sType == "StartPoint")fRotation = 0;
 				if (sType == "EndPoint")fRotation = 0;
+				if (sType == "NormalRoad" && fRotation == 180)fRotation = 0;
+				if (sType == "NormalRoad" && fRotation == 270)fRotation = 90;
+				if (sType == "PedLight" && fRotation == 180)fRotation = 0;
+				if (sType == "PedLight"&& fRotation == 270)fRotation = 90;
 				Editor.spawnTempObject(sfPlacingPos, fRotation, sType);
 				Editor.m_bPlacingObject = true;
 				if (Keyboard::isKeyPressed(Keyboard::Return))
@@ -2033,7 +2037,23 @@ void editor()
 
 					
 					}
-					
+					if (sType == "TrafficLight" || sType == "PedLight")
+					{
+						if (Editor.placeTrafficLights(sfPlacingPos, fRotation, sType))
+						{
+							Editor.m_bPlacingObject = false;
+							resetSelectors();
+							sound->m_vFXSounds[0].setBuffer(sound->m_vBufferFX[0]);
+							sound->m_vFXSounds[0].setVolume(player->m_iGameAudioVolume);
+							sound->m_vFXSounds[0].play();
+						}
+						else
+						{
+							sound->m_vInterfaceSounds[1].setBuffer(sound->m_vBufferInterfaceSounds[1]);
+							sound->m_vInterfaceSounds[1].setVolume(player->m_iInterfaceAudioVolume);
+							sound->m_vInterfaceSounds[1].play();
+						}
+					}
 				}
 			}
 			else
@@ -2347,7 +2367,7 @@ void editor()
 					{
 						placingBool = true;
 						LightSelectorBool = false;
-						sType = "Traffic Light";
+						sType = "TrafficLight";
 
 					}
 					//check if to spawn a pedestrian light
@@ -2356,7 +2376,7 @@ void editor()
 						placingBool = true;
 						LightSelectorBool = false;
 						RoadSelectorBool = false;
-						sType = "Pedestrian Light";
+						sType = "PedLight";
 
 					}
 					//show pathfinding or not
@@ -2364,8 +2384,11 @@ void editor()
 					{
 						placingBool = false;
 						resetSelectors();
-						if(Editor.m_bDrawPathfinding == false )Editor.m_bDrawPathfinding = true;
-						else if(Editor.m_bDrawPathfinding == true)Editor.m_bDrawPathfinding = false;
+						Editor.m_iDrawPathfinding++;
+						if (Editor.m_iDrawPathfinding > 2)
+						{
+							Editor.m_iDrawPathfinding = 0;
+						}
 
 					}
 					

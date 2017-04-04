@@ -13,42 +13,36 @@ using namespace sf;
 
 class Controller
 {
+private:
+	
 
-public:
-	void receiveNodeData(Pathfinding *nodeData);
-	queue<Vector2f> m_path; //!< Queue of positions forming a route
-
-protected:
+	vector<int> m_viNodesToCheck;//  \brief vector of ints for getting surrounding nodes
+	bool m_bPathFound;
+	bool nodeInList(pair< Node*, Vector2f> node1, vector<pair< Node*, Vector2f>> list);  // \brief Retunrs true if the node is i nthe list
+	void calculateManhattan(int iStartTile, int iEndTile);
+	void calculateMoveCost(int iCurrentTile, int iEndTile);
+	void checkNode(int iTile, int iCurrentTile, int iMoveCost);
+	void makeCurrent(int iTile, int iCurrentTile, int iMoveCost);
+	bool validVacinity(int iEndTile);
+	void setInvalid(sf::Vector2f Node);
+	pair< Node*, Vector2f> getNode(Vector2f pos); // \brief Retunrs the node at a given pos
 
 	Pathfinding *m_Pathfinding; // \brief Pointer to Path data
-	pair< Node*, Vector2f> m_TargetNode; // \brief node of the destination
-	pair< Node*, Vector2f> m_StartNode; // \brief node of the destination
+
+
+protected:
+	vector<Vector2f> m_path; //  \brief Vector of positions forming a route
 	Vector2f m_sfGoal;// \brief XY of the destination
 	Vector2f m_sfStart;// \brief XY of the start
 	Vector2f m_sfPosition; // \brief X Y position of car
+
+public:
+
+	void receiveNodeData(Pathfinding *nodeData);
+	Controller();
+	void findPath();// \brief Function that runs the A* algorithm
+
 	
-	int plz;
-	int secPlz;
-
-	int m_iPreviousNode;// \brief the previous node index parent
-	int m_iCurrentNode;
-
-	void generatePath();
-
-private:
-	
-	pair< Node*, Vector2f> getNode(Vector2f pos); // \brief Retunrs the node at a given pos
-	pair< Node*, Vector2f> getNodeFromIndex(int index); // \brief Retunrs the node from a given index
-	bool nodeInList(pair< Node*, Vector2f> node1, vector<pair< Node*, Vector2f>> list);  // \brief Retunrs true if the node is i nthe list
-	
-	float getManhattanDistance(pair< Node*, Vector2f> node1, pair< Node*, Vector2f> node2); // \brief Retunrs X and Y combined dist (path)
-	float findGValue(pair< Node*, Vector2f> node1, pair< Node*, Vector2f> node2); // \brief G values of PAth
-	
-	vector<pair< Node*, Vector2f>> Controller::adjacentNodes(pair< Node*, Vector2f> currentNode); // \brief Finds the surrounding 8 nodes (only returns valid ones)
-
-	void QuePath(pair< Node*, Vector2f> node);
-
-
 
 };
 
