@@ -42,6 +42,19 @@ public:
 	TextBox(string text, Vector2f pos, Vector2f size, string textureName);
 
 	////////////////////////////////////////////////////////////
+	/// \brief Overloaded Constructor
+	///
+	/// Creates the TextBox with its parameteres
+	///
+	/// \param text string Text that is displayed on the TextBox
+	/// \param defaultText string Text that is displayed to the left of the text box
+	/// \param pos sVector2f position of the TextBox
+	/// \param size sVector2f size of the TextBox
+	////////////////////////////////////////////////////////////
+	TextBox(string defaultText, string text , Vector2f pos, Vector2f size, string textureName);
+
+
+	////////////////////////////////////////////////////////////
 	/// \brief Default deConstructor
 	///
 	/// Deletes the textBox 
@@ -78,6 +91,11 @@ public:
 	/// \brief string for the text
 	////////////////////////////////////////////////////////////
 	String m_sText;
+
+	///////////////////////////////////////////////////////////
+	/// \brief string for the default text of the button
+	////////////////////////////////////////////////////////////
+	String m_sDefaultText;
 
 private:
 	///////////////////////////////////////////////////////////

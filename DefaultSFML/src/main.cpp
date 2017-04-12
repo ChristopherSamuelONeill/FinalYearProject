@@ -1164,18 +1164,18 @@ void settingsMenu(bool tutorial)
 		string s;
 		s = to_string(player->m_iGameAudioVolume);
 
-		TextBox gameVolume("Game Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+		TextBox gameVolume("Game Volume : " , s , TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button gameVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 		s = to_string(player->m_iMusicAudioVolume);
 
-		TextBox musicVolume("Music Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+		TextBox musicVolume("Music Volume : " , s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button musicVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 		s = to_string(player->m_iInterfaceAudioVolume);
 
 
-		TextBox interfaceVolume("Interface Volume " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+		TextBox interfaceVolume("Interface Volume : " , s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button interfaceVolumeSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 
 
@@ -1183,12 +1183,12 @@ void settingsMenu(bool tutorial)
 
 		TextBoxStart = Vector2f(700 * resolutionScale.x, 300 * resolutionScale.y);
 
-		TextBox resolutionX("Resolution : x " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+		TextBox resolutionX("Resolution (x) : " , s , TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button resolutionXSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;;
 
 		s = to_string(player->m_sfResolution.y);
-		TextBox resolutionY("Resolution : y " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+		TextBox resolutionY("Resolution (y) : " , s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button resolutionYSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 		TextBoxStart.y += 100 * resolutionScale.y;
 
@@ -1196,7 +1196,7 @@ void settingsMenu(bool tutorial)
 		if (player->m_bFullscreen == true) s = "Yes";
 		if (player->m_bFullscreen == false) s = "No";
 
-		TextBox fullScreen("Fullscreen Mode " + s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
+		TextBox fullScreen("Fullscreen Mode : " , s, TextBoxStart, Vector2f(343 * resolutionScale.x, 37 * resolutionScale.y), "Textbox");
 		Button fullScreenSubmit("Submit", Vector2f(TextBoxStart.x + (343 * resolutionScale.x), TextBoxStart.y), Vector2f(buttonSize.x / 2.5, buttonSize.y / 2.5), resolutionScale, "Button_Green");
 	
 
@@ -1318,9 +1318,23 @@ void settingsMenu(bool tutorial)
 
 						if ( fullScreenSubmit.m_bClicked(sfMousePos))
 						{
-							if (fullScreen.m_sText == "yes")	player->m_bFullscreen = true;
-							else if (fullScreen.m_sText == "no")	player->m_bFullscreen = false;
-							else player->m_bFullscreen = false;
+							if (fullScreen.m_sText == "yes")
+							{
+								player->m_bFullscreen = true;
+								window.close();
+								settingsMenu(false);
+							}
+							else if (fullScreen.m_sText == "no")
+							{
+								player->m_bFullscreen = false;
+								window.close();
+								settingsMenu(false);
+							}
+							else
+							{
+								player->m_bFullscreen = false;
+								fullScreen.m_sText = "No";
+							}
 
 
 						}
@@ -1331,6 +1345,12 @@ void settingsMenu(bool tutorial)
 							if (value >= 0 && value <= 100)
 							{
 								player->m_iGameAudioVolume = value;
+								window.close();
+								settingsMenu(false);
+							}
+							else
+							{
+								gameVolume.m_sText = to_string(player->m_iGameAudioVolume);
 							}
 						}
 
@@ -1341,6 +1361,12 @@ void settingsMenu(bool tutorial)
 							if (value >= 0 && value <= 100)
 							{
 								player->m_iMusicAudioVolume = value;
+								window.close();
+								settingsMenu(false);
+							}
+							else
+							{
+								musicVolume.m_sText = to_string(player->m_iMusicAudioVolume);
 							}
 
 						}
@@ -1352,6 +1378,12 @@ void settingsMenu(bool tutorial)
 							if (value >= 0 && value <= 100)
 							{
 								player->m_iInterfaceAudioVolume = value;
+								window.close();
+								settingsMenu(false);
+							}
+							else
+							{
+								interfaceVolume.m_sText = to_string(player->m_iInterfaceAudioVolume);
 							}
 
 						}
@@ -1362,6 +1394,12 @@ void settingsMenu(bool tutorial)
 							if (value >= 800 && value <= 3840)
 							{
 								player->m_sfResolution.x = value;
+								window.close();
+								settingsMenu(false);
+							}
+							else
+							{
+								resolutionX.m_sText = to_string(player->m_sfResolution.x);
 							}
 						}
 						if ( resolutionYSubmit.m_bClicked(sfMousePos))
@@ -1371,6 +1409,12 @@ void settingsMenu(bool tutorial)
 							if (value >= 600 && value <= 2160)
 							{
 								player->m_sfResolution.y = value;
+								window.close();
+								settingsMenu(false);
+							}
+							else
+							{
+								resolutionY.m_sText = to_string(player->m_sfResolution.y);
 							}
 						}
 
